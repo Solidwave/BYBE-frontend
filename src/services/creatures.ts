@@ -17,11 +17,23 @@ export const creaturesApi = createApi({
     getCreaturesList: builder.query<CreaturesResponse, string>({
       query: () => 'list',
     }),
+    getFamiliesList: builder.query<string[], string>({
+      query: () => 'families',
+    }),
+    getRaritiesList: builder.query<string[], string>({
+      query: () => 'rarities',
+    }),
+    getSizesList: builder.query<string[], string>({
+      query: () => 'sizes',
+    }),
+    getAlignmentsList: builder.query<string[], string>({
+      query: () => 'aligments',
+    }),
   }),
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCreaturesListQuery } = creaturesApi
+export const { useGetCreaturesListQuery, useGetFamiliesListQuery } = creaturesApi
 
 //https://bybe.fly.dev/bestiary/

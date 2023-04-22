@@ -1,59 +1,36 @@
 
-import { Paper, Grid } from '@mui/material';
+import { Grid, Select, Typography, useTheme } from '@mui/material';
 import { useGetCreaturesListQuery } from '../../services/creatures';
-import { Theme, useTheme } from '@emotion/react';
-import { log } from 'console';
-
+import Panel from '../../components/panel';
+import Background from '../../components/background';
+import Container from '../../components/container';
+import BasicTable from '../../components/table';
+import Header from '../../components/header';
 
 const AppContainer = () => {
-  // const data = useGetCreaturesListQuery('');
-  
-  const theme = useTheme()
 
-  
-  
-  // console.log(data.data);
-  // if (data.isLoading) {
-  //   return (
-  //     <div>Loading</div>
-  //   )
-  // }
-
-  // if (data.error) {
-  //   return (
-  //     <div>Error</div>
-  //   )
-  // }
-     
   return (
-    <div className="app" style={{
-      backgroundColor: theme.palette.brown.main,
-      minHeight: 1000,
-      padding: 20
-    }}>
-     
-          <div style={{
-            borderRadius: 5,
-            margin: 10,
-            height: '100%',
-            border: '5px solid',
-            borderColor: theme.palette.brown.secondary,
-            backgroundColor: theme.palette.brown.main,
-            
-          }}>
-            <Grid>
-              <Paper  >
-                
-              </Paper>
+    <Background >
+        <Panel padding='4rem' border='16px solid'>
+          <Grid justifyContent={'space-evenly'} alignItems={'center'} container spacing={'30px'}>
+            <Grid  sx={{
+            }} item xs={8}>
+                <Panel  padding='16px' border='5px solid' sx={{
+                  overflow: 'hidden'
+                }}>
+                  <Header text='Total encounter cost:' cost={180}></Header>
+                  <BasicTable></BasicTable>
+                </Panel>
             </Grid>
-            {/* {data.data?.results?.map((creature, index) => (
-              <div>
-                {creature.name}
-              </div>
-            ))} */}
+            <Grid  item xs={4}>
+              <Panel border='5px solid' ></Panel>
+            </Grid>
+          </Grid>
 
-          </div>
-    </div>
+        </Panel>
+
+
+    </Background>
   );
 }
 

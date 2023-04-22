@@ -2,33 +2,35 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { store } from './app/store';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import { createTheme } from '@mui/material';
-import { ThemeProvider } from '@emotion/react';
 import AppContainer from './containers/app';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
-
-declare module "@mui/material/styles/createPalette" {
-  export interface PaletteOptions {
-    brown?: {
-      main?: string,
-      secondary?: string
-    };
-  }
-}
-
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#CCC'
+      main: '#511E15',
     },
-    brown: {
-      main: '#C1A57F'
+    secondary: {
+      main: '#882013'
+    },
+    tertiary: {
+      main: '#C1A57F',
+      dark: '#9F765C'
+    }
+  },
+  components: {
+    MuiTypography: {
+      styleOverrides: {
+        paragraph: {
+          letterSpacing: 1
+        },
+        
+      }
     }
   }
 })
@@ -38,7 +40,7 @@ root.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <AppContainer />
-      </ThemeProvider>
+        </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );
