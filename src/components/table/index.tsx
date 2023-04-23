@@ -1,5 +1,5 @@
 import { Button, CircularProgress, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useTheme } from "@mui/material"
-import { useGetCreaturesListQuery, useGetFamiliesListQuery } from "../../services/creatures"
+import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
 import { Creature } from "../../types/creature"
 import { useState } from "react"
@@ -64,20 +64,21 @@ const columns: ColumnsType = [
     {
         value: 'alignment',
         label: 'Alignment',
-        type: 'input'
+        type: 'select',
+        options: 'alignments'
 
     },
     {
         value: 'size',
         label: 'Size',
-        type: 'input'
-
-
+        type: 'select',
+        options: 'sizes'
     },
     {
         value: 'rarity',
         label: 'Rarity',
-        type: 'input'
+        type: 'select',
+        options: 'rarities'
 
     }
 ]
@@ -89,6 +90,18 @@ const BasicTable = (props: Props) => {
         families: useGetFamiliesListQuery('').data?.map(family => ({
             label: family,
             value: family
+        })),
+        rarities: useGetRaritiesListQuery('').data?.map(rarity => ({
+            label: rarity,
+            value: rarity
+        })),
+        alignments: useGetAlignmentsListQuery('').data?.map(alignment => ({
+            label: alignment,
+            value: alignment
+        })),
+        sizes: useGetSizesListQuery('').data?.map(size => ({
+            label: size,
+            value: size
         }))
     }
 
@@ -190,7 +203,7 @@ const BasicTable = (props: Props) => {
                             }}>
                                 {columns.filter(column => isColumnVisible(column.value)).map(column => (
                                     <TableCell sx={{
-                                        background: theme.palette.tertiary.main,
+                                        background: theme.palette.tertiary.light,
                                         borderBottom: '0px',
                                         minWidth: column.minWidth,
                                         padding: '3.5px'

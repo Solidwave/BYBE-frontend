@@ -4,6 +4,7 @@ declare module "@mui/material/styles/createPalette" {
     export interface PaletteOptions {
         tertiary: {
             main: string,
+            light: string,
             dark: string
         }
     }
@@ -11,6 +12,7 @@ declare module "@mui/material/styles/createPalette" {
     export interface Palette {
         tertiary: {
             main: string,
+            light: string,
             dark: string
         }
     }

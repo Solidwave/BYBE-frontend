@@ -20,7 +20,8 @@ const theme = createTheme({
     },
     tertiary: {
       main: '#C1A57F',
-      dark: '#9F765C'
+      dark: '#9F765C',
+      light:'#C09F6D'
     }
   },
   gradient: {
