@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material'
+import { Autocomplete, FilledInputProps, TextField } from '@mui/material'
 import React, { ChangeEventHandler } from 'react'
 import { Column } from '../../../types/column'
 
@@ -11,6 +11,7 @@ type Props = {
   }[]
 }
 
+
 function SelectHeader({onChange, column,options}: Props) {
   if (!options) {
     return <div></div>
@@ -20,8 +21,9 @@ function SelectHeader({onChange, column,options}: Props) {
     <Autocomplete
       disablePortal
       multiple
+      limitTags={0}
       options={options}
-      renderInput={(params) => <TextField {...params} label={column.label} />}
+      renderInput={(params) => <TextField variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true }}  label={column.label} />}
     />
   )
 }

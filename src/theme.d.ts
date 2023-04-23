@@ -15,3 +15,27 @@ declare module "@mui/material/styles/createPalette" {
         }
     }
 }
+
+declare module '@mui/material/styles' {
+    interface Theme {
+        gradient: {
+            main: string;
+            secondary: string;
+        };
+        extraShadows: {
+            panel: string,
+            card: string
+        }
+    }
+    // allow configuration using `createTheme`
+    interface ThemeOptions {
+        gradient?: {
+            main?: string;
+            secondary?: string;
+        };
+        extraShadows?: {
+            panel?: string,
+            card?: string
+        }
+    }
+}

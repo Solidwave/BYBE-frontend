@@ -23,6 +23,14 @@ const theme = createTheme({
       dark: '#9F765C'
     }
   },
+  gradient: {
+    main: 'radial-gradient(50% 50% at 50% 50%, #E2BE87 0%, #AA8B5B 100%)',
+    secondary: 'radial-gradient(115.4% 115.4% at 50% 50%, #D6B37E 0%, #A48558 100%)'
+  },
+  extraShadows: {
+    panel: '0px 0px 10px #000000, inset 0px 0px 4px #000000',
+    card: '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12)'
+  },
   components: {
     MuiTypography: {
       styleOverrides: {

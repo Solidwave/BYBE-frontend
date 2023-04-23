@@ -4,7 +4,9 @@ export type Column = {
     label: string
     options?: 'families' | 'rarities' | 'sizes' | 'alignments'
     minWidth?: number
-    maxWidth?: string
+    maxWidth?: string,
+    subColumns?: Column[]
+    subtype?: string
     align?: 'right'
 }
 

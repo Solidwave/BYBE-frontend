@@ -6,24 +6,41 @@ import Background from '../../components/background';
 import Container from '../../components/container';
 import BasicTable from '../../components/table';
 import Header from '../../components/header';
+import CreaturesList from '../CreaturesList';
+import { Creature } from '../../types/creature';
+import { useState } from 'react';
 
 const AppContainer = () => {
+  const [encounter, setEncounter] = useState<Creature[]>([])
+
+  const updateEncounter = (encounter: Creature[]) => {
+    setEncounter(encounter)
+  }
+
+  const theme = useTheme()
 
   return (
     <Background >
-        <Panel padding='4rem' border='16px solid'>
-          <Grid justifyContent={'space-evenly'} alignItems={'center'} container spacing={'30px'}>
+        <Panel  sx={{
+          height: '100%',
+          background: theme.gradient.main
+        }} borderRadius='2rem' padding='4rem 5.25rem 4rem 4rem' border='1rem solid'>
+          <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
             <Grid  sx={{
             }} item xs={8}>
-                <Panel  padding='16px' border='5px solid' sx={{
-                  overflow: 'hidden'
+                <Panel  borderRadius='1rem' padding='1rem' border='5px solid' sx={{
+                  maxHeight: 'calc(100vh - 300px)',
+                  background: theme.gradient.secondary,
+                  boxShadow: theme.extraShadows.panel
                 }}>
                   <Header text='Total encounter cost:' cost={180}></Header>
-                  <BasicTable></BasicTable>
+                  <BasicTable updateEncounter={setEncounter}></BasicTable>
                 </Panel>
             </Grid>
             <Grid  item xs={4}>
-              <Panel border='5px solid' ></Panel>
+            <Panel minWidth='100px'  minHeight='400px' border='0px' >
+                <CreaturesList creatures={encounter} />
+              </Panel>
             </Grid>
           </Grid>
 

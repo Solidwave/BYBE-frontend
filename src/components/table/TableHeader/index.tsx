@@ -4,20 +4,23 @@ import InputHeader from './InputHeader'
 import SelectHeader from './SelectHeader'
 import Text from './Text'
 import { Column, ColumnType } from '../../../types/column'
+import Multi from './Multi'
 
 type Props = {
     column: Column,
     options?: {
         label: string,
         value: string
-    }[]
+    }[],
+    padding?: string
 }
 
 const types = {
     empty: Empty,
     input: InputHeader,
     select: SelectHeader,
-    text: Text
+    text: Text,
+    double: Multi
 }
 
 function TableHeader({column,options}: Props) {
