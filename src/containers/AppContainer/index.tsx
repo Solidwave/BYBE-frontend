@@ -9,6 +9,7 @@ import Header from '../../components/header';
 import CreaturesList from '../CreaturesList';
 import { Creature } from '../../types/creature';
 import { useState } from 'react';
+import MainActions from '../../components/MainActions';
 
 const AppContainer = () => {
   const [encounter, setEncounter] = useState<Creature[]>([])
@@ -23,8 +24,10 @@ const AppContainer = () => {
     <Background >
         <Panel  sx={{
           height: '100%',
-          background: theme.gradient.main
+          background: theme.gradient.main,
+          position: 'relative'
         }} borderRadius='2rem' padding='4rem 5.25rem 4rem 4rem' border='1rem solid'>
+          <MainActions />
           <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
             <Grid  sx={{
             }} item xs={8}>
@@ -45,8 +48,6 @@ const AppContainer = () => {
           </Grid>
 
         </Panel>
-
-
     </Background>
   );
 }

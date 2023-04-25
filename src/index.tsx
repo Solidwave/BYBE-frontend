@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import AppContainer from './containers/app';
+import App from './App';
 import { createTheme, ThemeProvider } from '@mui/material';
+import AppContainer from './containers/AppContainer';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -14,16 +15,29 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#511E15',
+      
     },
     secondary: {
-      main: '#882013'
+      main: '#882013',
+      dark: '#724534'
     },
     tertiary: {
       main: '#C1A57F',
       dark: '#9F765C',
       light:'#C09F6D'
+    },
+    mainAction: {
+      hover: {
+        background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #68390C 0%, #110D02 100%, #110D02 100%)',
+        border: '4px solid #6C3805'
+      },
+      standard: {
+        background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #FFD986 0%, #CE5E00 100%)',
+        border: '4px solid #882013'
+      }
     }
   },
+  
   gradient: {
     main: 'radial-gradient(50% 50% at 50% 50%, #E2BE87 0%, #AA8B5B 100%)',
     secondary: 'radial-gradient(115.4% 115.4% at 50% 50%, #D6B37E 0%, #A48558 100%)'
@@ -38,8 +52,23 @@ const theme = createTheme({
         paragraph: {
           letterSpacing: 1
         },
-        
       }
+    },
+    MuiButton: {
+      variants: [
+        {
+          props: {variant: 'action'},
+          style: {
+            color: '#7F4A22',
+            background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #FFD986 0%, #CE5E00 100%)',
+            border: '4px solid #6C3805',
+            borderRadius: 32,
+            fontWeight: 500,
+            fontSize: '.875rem',
+            lineHeight: '1.5rem'
+          }
+        }
+      ]
     }
   }
 })

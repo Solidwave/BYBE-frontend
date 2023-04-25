@@ -6,6 +6,16 @@ declare module "@mui/material/styles/createPalette" {
             main: string,
             light: string,
             dark: string
+        },
+        mainAction: {
+            hover: {
+                background: string,
+                border: string
+            },
+            standard: {
+                background: string,
+                border: string
+            }
         }
     }
 
@@ -14,6 +24,16 @@ declare module "@mui/material/styles/createPalette" {
             main: string,
             light: string,
             dark: string
+        },
+        mainAction?: {
+            hover?: {
+                background?: string,
+                border?: string
+            },
+            standard?: {
+                background?: string,
+                border?: string
+            }
         }
     }
 }
@@ -39,5 +59,11 @@ declare module '@mui/material/styles' {
             panel?: string,
             card?: string
         }
+    }
+}
+
+declare module '@mui/material/Button' {
+    interface ButtonPropsVariantOverrides {
+        action: true;
     }
 }
