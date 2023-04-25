@@ -15,7 +15,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#511E15',
-      
+
     },
     secondary: {
       main: '#882013',
@@ -24,7 +24,7 @@ const theme = createTheme({
     tertiary: {
       main: '#C1A57F',
       dark: '#9F765C',
-      light:'#C09F6D'
+      light: '#C09F6D'
     },
     mainAction: {
       hover: {
@@ -37,7 +37,7 @@ const theme = createTheme({
       }
     }
   },
-  
+
   gradient: {
     main: 'radial-gradient(50% 50% at 50% 50%, #E2BE87 0%, #AA8B5B 100%)',
     secondary: 'radial-gradient(115.4% 115.4% at 50% 50%, #D6B37E 0%, #A48558 100%)'
@@ -57,7 +57,7 @@ const theme = createTheme({
     MuiButton: {
       variants: [
         {
-          props: {variant: 'action'},
+          props: { variant: 'action' },
           style: {
             color: '#7F4A22',
             background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #FFD986 0%, #CE5E00 100%)',
@@ -66,6 +66,17 @@ const theme = createTheme({
             fontWeight: 500,
             fontSize: '.875rem',
             lineHeight: '1.5rem'
+          }
+        }
+      ]
+    },
+    MuiPaper: {
+      variants: [
+        {
+          props: { variant: 'fantasy'},
+          style: {
+            background: 'radial-gradient(50% 50% at 50% 50%, #E2BE87 0%, #AA8B5B 100%)',
+            borderRadius: 32
           }
         }
       ]
@@ -78,7 +89,7 @@ root.render(
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <AppContainer />
-        </ThemeProvider>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

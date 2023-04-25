@@ -67,3 +67,8 @@ declare module '@mui/material/Button' {
         action: true;
     }
 }
+declare module '@mui/material/Paper' {
+    interface PaperPropsVariantOverrides {
+        fantasy: true;
+    }
+}

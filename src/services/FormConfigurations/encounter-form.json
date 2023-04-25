@@ -1,0 +1,65 @@
+{
+    "actions": [
+        {
+            "type": "submit",
+            "label": "Generate encounter"
+        }
+    ],
+    "fields": [
+        {
+            "type": "select",
+            "fieldName": "family",
+            "label": "Family",
+            "options": "families"
+        },
+        {
+            "type": "select",
+            "label": "Rarity",
+            "fieldName": "rarity",
+            "options": "rarities"
+        },
+        {
+            "type": "select",
+            "label": "Size",
+            "fieldName": "size",
+            "options": "sizes"
+        },
+        {
+            "type": "select",
+            "label": "Alignment",
+            "fieldName": "alignment",
+            "options": "alignments"
+        },
+        {
+            "type": "select",
+            "label": "Difficulty",
+            "fieldName": "encounter_difficulty",
+            "options": [
+                {
+                    "value": "TRIVIAL",
+                    "label": "Trivial"
+                },
+                {
+                    "value": "LOW",
+                    "label": "Low"
+                },
+                {
+                    "value": "MODERATE",
+                    "label": "Moderate"
+                },
+                {
+                    "value": "SEVERE",
+                    "label": "Severe"
+                },
+                {
+                    "value": "EXTREME",
+                    "label": "Extreme"
+                },
+                {
+                    "value": "IMPOSSIBLE",
+                    "label": "Impossible"
+                }
+            ]
+        }
+    ]
+}

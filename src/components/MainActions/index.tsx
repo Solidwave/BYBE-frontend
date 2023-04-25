@@ -2,7 +2,9 @@ import { styled } from '@mui/material'
 import React from 'react'
 import Action from './Action'
 
-type Props = {}
+type Props = {
+    handleAction: Function
+}
 
 export type ActionType = {
     type: string,
@@ -10,7 +12,7 @@ export type ActionType = {
 }
 
 const Root = styled('div')(props => ({
-    boxSizing:'border-box',
+    boxSizing: 'border-box',
     height: '72px',
     width: 'fit-content',
     position: 'absolute',
@@ -28,7 +30,7 @@ const Root = styled('div')(props => ({
     background: props.theme.palette.secondary.dark
 }))
 
-const actions : ActionType[] = [
+const actions: ActionType[] = [
     {
         type: 'encounter_builder',
         label: 'ENCOUNTER BUILDER'
@@ -47,12 +49,12 @@ const actions : ActionType[] = [
     }
 ]
 
-function MainActions({}: Props) {
-  return (
-    <Root>{actions.map((action, index) => (
-        <Action key={index} action={action} />
-    ))}</Root>
-  )
+function MainActions({ handleAction }: Props) {
+    return (
+        <Root>{actions.map((action, index) => (
+            <Action handleAction={handleAction} key={index} action={action} />
+        ))}</Root>
+    )
 }
 
 export default MainActions

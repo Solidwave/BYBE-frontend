@@ -145,7 +145,6 @@ const BasicTable = (props: Props) => {
     }
 
     const isColumnVisible = (type: string) => {
-        console.log(state.hideColumns.includes(type), state.hideColumns, type)
         return !state.hideColumns.includes(type)
     }
 

@@ -3,10 +3,11 @@ import { ActionType } from '.'
 import { Button, styled } from '@mui/material'
 
 type Props = {
-    action: ActionType
+    action: ActionType,
+    handleAction: Function
 }
 
-function Action({action}: Props) {
+function Action({action, handleAction}: Props) {
   return (
     <Button sx={{
           boxSizing: 'border-box',
@@ -15,7 +16,7 @@ function Action({action}: Props) {
           ":last-child": {
             marginRight: 0
           }
-    }} variant='action'>{action.label}</Button>
+    }} onClick={() => {handleAction(action)}} variant='action'>{action.label}</Button>
   )
 }
 
