@@ -11,7 +11,7 @@ type Props = {
 
 type ValuesType = {
     field: EncounterField,
-    value: number | string | undefined
+    value: number | string | Number[] | undefined
 }[]
 
 const style: SxProps = {
@@ -30,7 +30,7 @@ function Form({ form, onSubmit }: Props) {
     const {actions, fields} = form
     const [values, setValues] = useState<ValuesType>(fields.map(field => ({value: undefined, field})))
 
-    const [isValid, setIsValid] = useState(false)
+    // const [isValid, setIsValid] = useState(false)
 
     useEffect(() => {
         
@@ -40,6 +40,7 @@ function Form({ form, onSubmit }: Props) {
         switch (action.type) {
             case 'submit':
                 onSubmit(values)
+                console.log(values)
                 break;
         
             default:

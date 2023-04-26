@@ -2,6 +2,7 @@ import React from 'react'
 import { EncounterField } from '../../../types/EncounterForm'
 import Text from './Text'
 import Select from './Select'
+import ArrayField from './ArrayField'
 
 type Props = {
     field: EncounterField,
@@ -10,7 +11,8 @@ type Props = {
 
 const types = {
     input: Text,
-    select: Select
+    select: Select,
+    array: ArrayField
 }
 
 function Field({ field, onChange }: Props) {

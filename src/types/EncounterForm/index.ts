@@ -9,11 +9,12 @@ export type FormActionType = {
 }
 
 export type EncounterField = {
-    type: 'input' | 'select',
+    type: 'input' | 'select' | 'array',
     label: string,
     fieldName: string,
     options?: Option[] | 'families',
-    multiple?: boolean
+    multiple?: boolean,
+    forBody?: boolean
 }
 
 export type Option = {
