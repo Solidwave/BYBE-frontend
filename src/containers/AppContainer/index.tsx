@@ -11,11 +11,12 @@ import { Creature } from '../../types/creature';
 import React, { useState } from 'react';
 // import encounterFormJson from '../../services/FormConfigurations/encounter-form.json'
 import MainActions, { ActionType } from '../../components/MainActions';
-import Form from '../../components/Form';
-import { EncounterForm } from '../../types/EncounterForm';
+import Form, { ValuesType } from '../../components/Form';
+import { EncounterField, EncounterForm } from '../../types/EncounterForm';
+import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
 
 const AppContainer = () => {
-  const [encounter, setEncounter] = useState<Creature[]>([])
+  const [encounter, { data }] = useLazyGenerateEncounterQuery()
 
   const [modalOpen,setModalOpen] = useState(false)
 
@@ -28,13 +29,23 @@ const AppContainer = () => {
       case 'encounter_builder':
         setModalOpen(true)
     }
-      
   }
 
   const form: EncounterForm = require('../../services/FormConfigurations/encounter-form.json')
   
   const updateEncounter = (encounter: Creature[]) => {
-    setEncounter(encounter)
+    console.log('')
+  }
+
+  const getRequestEncounter = (form: ValuesType): EncounterRequest => {
+    const tmpEncounterRequest : EncounterRequest = {}
+    form.forEach(field => {
+      let value: (string & Number[]) | undefined = field.value as (string & Number[]) | undefined;
+
+      tmpEncounterRequest[field.field.fieldName] = value 
+    });
+
+    return tmpEncounterRequest
   }
 
   const theme = useTheme()
@@ -56,19 +67,21 @@ const AppContainer = () => {
                   boxShadow: theme.extraShadows.panel
                 }}>
                   <Header text='Total encounter cost:' cost={180}></Header>
-                  <BasicTable updateEncounter={setEncounter}></BasicTable>
+                  <BasicTable ></BasicTable>
                 </Panel>
             </Grid>
             <Grid  item xs={4}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList creatures={encounter} />
+                <CreaturesList creatures={data || []} />
               </Panel>
             </Grid>
           </Grid>
 
         </Panel>
         <Modal onClose={handleModalClose} open={modalOpen} >
-            <Form onSubmit={() => {}} form={form} />
+            <Form onSubmit={(values: ValuesType) => {
+              encounter(getRequestEncounter(values))
+            }} form={form} />
         </Modal>
     </Background>
   );

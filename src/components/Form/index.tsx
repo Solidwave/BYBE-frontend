@@ -9,7 +9,7 @@ type Props = {
     onSubmit: Function
 }
 
-type ValuesType = {
+export type ValuesType = {
     field: EncounterField,
     value: number | string | Number[] | undefined
 }[]
@@ -40,7 +40,6 @@ function Form({ form, onSubmit }: Props) {
         switch (action.type) {
             case 'submit':
                 onSubmit(values)
-                console.log(values)
                 break;
         
             default:

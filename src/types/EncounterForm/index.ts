@@ -11,7 +11,7 @@ export type FormActionType = {
 export type EncounterField = {
     type: 'input' | 'select' | 'array',
     label: string,
-    fieldName: string,
+    fieldName: 'size' | 'party_levels' | 'rarity' | 'family' | 'alignment',
     options?: Option[] | 'families',
     multiple?: boolean,
     forBody?: boolean

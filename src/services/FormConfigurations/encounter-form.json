@@ -66,12 +66,6 @@
             "label": "Party levels",
             "fieldName": "party_levels",
             "forBody": true
-        },
-        {
-            "type": "array",
-            "label": "Enemy levels",
-            "fieldName": "enemy_levels",
-            "forBody": true
         }
     ]
 }

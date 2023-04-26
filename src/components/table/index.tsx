@@ -12,7 +12,7 @@ type StateType = {
 }
 
 type Props = {
-    updateEncounter: Function
+    updateEncounter?: Function
 }
 
 
@@ -163,7 +163,6 @@ const BasicTable = (props: Props) => {
                     textAlign: 'center',
                     marginRight: 'auto'
                 }}>Creatures</Typography>
-                <Button onClick={() => {props.updateEncounter(getRandomEncounter(3))}}>Get random encoutner</Button>
                 <FormControl sx={{
                     m: 1
                 }}>
@@ -223,13 +222,13 @@ const BasicTable = (props: Props) => {
                                 >
                                     <TableCell sx={{
                                         border: '0px'
-                                    }}><SearchButton></SearchButton></TableCell>
-
-                                    {columns.filter( column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
-                                        <TableCell sx={{
-                                            border: '0px'
-                                        }}>{creature[column.value]}</TableCell>
-                                    ))}
+                                    }}>
+                                        <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
+                                        {columns.filter( column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
+                                            <TableCell sx={{
+                                                border: '0px'
+                                            }}>{creature[column.value]}</TableCell>
+                                        ))}
                                 </TableRow>
                             ))}
                         </TableBody>
