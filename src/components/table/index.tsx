@@ -12,7 +12,8 @@ type StateType = {
 }
 
 type Props = {
-    updateEncounter?: Function
+    updateEncounter?: Function,
+    onRowClick?: Function
 }
 
 
@@ -216,6 +217,7 @@ const BasicTable = (props: Props) => {
                             {data?.data?.results?.map((creature: Creature, index: number) => (
                                 <TableRow
                                     key={creature.name}
+                                    
                                     sx={{
                                         background: index % 2 ? theme.palette.tertiary.dark : ''
                                     }}

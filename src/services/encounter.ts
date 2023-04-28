@@ -21,7 +21,7 @@ export const encounterApi = createApi({
                 const {
                     family,rarity,size,alignment,encounter_difficulty,party_levels
                 } = args
-                
+
                 return {
                     url: 'generator',
                     params: {family,rarity,size,alignment,encounter_difficulty},

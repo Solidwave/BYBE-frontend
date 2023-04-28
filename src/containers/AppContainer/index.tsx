@@ -20,8 +20,30 @@ const AppContainer = () => {
 
   const [modalOpen,setModalOpen] = useState(false)
 
+  const [localCreatures, setLocalCraetures] = useState<Creature[]>(data || [])
+
   const handleModalClose = () => {
     setModalOpen(false)
+  }
+
+  const onRowClick = (creature: Creature) => {
+    setLocalCraetures(() => {
+      let tmpData = [...localCreatures]
+
+      tmpData.push(creature)
+
+      return tmpData
+    })
+  }
+
+  const removeCreature = (index: number) => {
+    setLocalCraetures(() => {
+      let tmpData = [...localCreatures]
+
+      tmpData.splice(index, 1)
+
+      return tmpData
+    })
   }
 
   const handleAction = (action: ActionType) => {
@@ -67,12 +89,12 @@ const AppContainer = () => {
                   boxShadow: theme.extraShadows.panel
                 }}>
                   <Header text='Total encounter cost:' cost={180}></Header>
-                  <BasicTable ></BasicTable>
+                  <BasicTable  ></BasicTable>
                 </Panel>
             </Grid>
             <Grid  item xs={4}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList creatures={data || []} />
+                <CreaturesList creatures={localCreatures || []} />
               </Panel>
             </Grid>
           </Grid>
