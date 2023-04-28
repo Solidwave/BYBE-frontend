@@ -14,19 +14,20 @@ export type EncounterRequest = { family?: string, rarity?: string, size?: string
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
     reducerPath: 'encounterPath',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://bybe.fly.dev/encounter/', mode: 'cors' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://bybe.fly.dev/encounter/', mode: 'no-cors' }),
     endpoints: (builder) => ({
         generateEncounter: builder.query<EncounterResponse, EncounterRequest>({
             query: (args) => {
                 const {
                     family,rarity,size,alignment,encounter_difficulty,party_levels
                 } = args
-
+                
                 return {
                     url: 'generator',
                     params: {family,rarity,size,alignment,encounter_difficulty},
                     method: 'post',
-                    body: party_levels
+                    body: party_levels,
+                    mode: 'no-cors'
                 }
             },
         }),
