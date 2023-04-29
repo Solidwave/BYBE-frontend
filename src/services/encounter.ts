@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Creature } from '../types/creature'
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL
+
 export interface CreaturesResponse {
     results?: Array<Creature>;
     next?: string,
@@ -14,7 +16,7 @@ export type EncounterRequest = { family?: string, rarity?: string, size?: string
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
     reducerPath: 'encounterPath',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://bybe.fly.dev/encounter/', mode: 'no-cors' }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/encounter/`, mode: 'no-cors' }),
     endpoints: (builder) => ({
         generateEncounter: builder.query<EncounterResponse, EncounterRequest>({
             query: (args) => {
