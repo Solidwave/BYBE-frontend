@@ -1,4 +1,4 @@
-import { Autocomplete, FilledInputProps, TextField } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 import React, { ChangeEventHandler } from 'react'
 import { Column } from '../../../types/column'
 

@@ -2,7 +2,7 @@ import React from 'react'
 
 type Props = {}
 
-function Empty({}: Props) {
+function Empty(props: Props) {
   return (
     <div></div>
   )

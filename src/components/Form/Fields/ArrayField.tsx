@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { EncounterField } from '../../../types/EncounterForm'
-import { Icon, IconButton, Input, TextField, Typography, styled, useTheme } from '@mui/material'
+import { IconButton, TextField, Typography, styled, useTheme } from '@mui/material'
 import { Add, Remove } from '@mui/icons-material'
 
 type Props = {

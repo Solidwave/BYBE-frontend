@@ -1,6 +1,6 @@
 import React from 'react'
 import { EncounterField } from '../../../types/EncounterForm'
-import { Autocomplete, MenuItem, Select as MuiSelect, TextField } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 import { useGetAlignmentsListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from '../../../services/creatures'
 
 type Props = {

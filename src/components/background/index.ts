@@ -2,7 +2,7 @@ import { styled } from "@mui/material"
 
 
 const Background = styled('div')((props) => ({
-    backgroundColor: props.theme.palette.tertiary.main,
+    backgroundColor: props.theme.palette.tertiary?.main,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

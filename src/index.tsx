@@ -43,7 +43,6 @@ const theme = createTheme({
       extreme: '#ED6237'
     }
   },
-
   gradient: {
     main: 'radial-gradient(50% 50% at 50% 50%, #E2BE87 0%, #AA8B5B 100%)',
     secondary: 'radial-gradient(115.4% 115.4% at 50% 50%, #D6B37E 0%, #A48558 100%)'

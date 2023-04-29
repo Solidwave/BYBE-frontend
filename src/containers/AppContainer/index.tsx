@@ -1,9 +1,7 @@
 
-import { Grid, Modal, Select, Typography, useTheme } from '@mui/material';
-import { useGetCreaturesListQuery } from '../../services/creatures';
+import { Grid, Modal, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
-import Container from '../../components/container';
 import BasicTable from '../../components/table';
 import Header from '../../components/header';
 import CreaturesList from '../CreaturesList';
@@ -12,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 // import encounterFormJson from '../../services/FormConfigurations/encounter-form.json'
 import MainActions, { ActionType } from '../../components/MainActions';
 import Form, { ValuesType } from '../../components/Form';
-import { EncounterField, EncounterForm } from '../../types/EncounterForm';
+import { EncounterForm } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
 
 const AppContainer = () => {
@@ -103,7 +101,7 @@ const AppContainer = () => {
     <Background >
         <Panel  sx={{
           height: '100%',
-          background: theme.gradient.main,
+          background: theme.gradient?.main,
           position: 'relative'
         }} borderRadius='2rem' padding='4rem 5.25rem 4rem 4rem' border='1rem solid'>
           <MainActions handleAction={handleAction} />
@@ -112,8 +110,8 @@ const AppContainer = () => {
             }} item xs={7}>
                 <Panel  borderRadius='1rem' padding='1rem' border='5px solid' sx={{
                   maxHeight: 'calc(100vh - 300px)',
-                  background: theme.gradient.secondary,
-                  boxShadow: theme.extraShadows.panel
+                  background: theme.gradient?.secondary,
+                  boxShadow: theme.extraShadows?.panel
                 }}>
                   <Header text='Total encounter cost:' cost={180}></Header>
                   <BasicTable onRowClick={addCreature} ></BasicTable>

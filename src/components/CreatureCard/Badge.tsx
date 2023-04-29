@@ -1,4 +1,4 @@
-import { Theme, Typography, styled, useTheme } from '@mui/material'
+import { Theme, Typography, styled } from '@mui/material'
 import React from 'react'
 
 type Props = {
@@ -35,9 +35,6 @@ const Root = styled('div')((props: Props) => ({
 
 
 function Badge({text, value }: Props) {
-    const theme = useTheme()
-
-    
     return (
         <Root >
             <Typography sx={{

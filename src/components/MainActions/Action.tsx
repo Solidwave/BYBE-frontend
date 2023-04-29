@@ -1,6 +1,6 @@
 import React from 'react'
 import { ActionType } from '.'
-import { Button, styled } from '@mui/material'
+import { Button } from '@mui/material'
 
 type Props = {
     action: ActionType,

@@ -1,10 +1,13 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 
-type Props = {}
+type Props = {
+  text?: string
+}
 
-function Text({}: Props) {
+function Text({text}: Props) {
   return (
-    <div>Text</div>
+    <Typography>{text}</Typography>
   )
 }
 

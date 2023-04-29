@@ -3,7 +3,7 @@ import Empty from './Empty'
 import InputHeader from './InputHeader'
 import SelectHeader from './SelectHeader'
 import Text from './Text'
-import { Column, ColumnType } from '../../../types/column'
+import { Column } from '../../../types/column'
 import Multi from './Multi'
 
 type Props = {

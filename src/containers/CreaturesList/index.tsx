@@ -1,7 +1,7 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React from 'react'
 import { Creature } from '../../types/creature'
 import CreatureCard from '../../components/CreatureCard'
-import { Button, TextField, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import Header from '../../components/header'
 
 type Props = {

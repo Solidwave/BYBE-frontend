@@ -1,8 +1,8 @@
-import { Button, CircularProgress, FormControl, IconButton, InputLabel, MenuItem, OutlinedInput, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, useTheme } from "@mui/material"
+import { CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
 import { Creature } from "../../types/creature"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Container from "../container"
 import SearchButton from "./SearchButton"
 import { Column } from "../../types/column"
@@ -93,14 +93,12 @@ const BasicTable = ({ onRowClick }: Props) => {
     });
 
     useEffect(() => {
-        console.log(entry?.target.getAttribute('data-cursor'));
-        
         if (inView) {
             setCurrentPage(parseInt(entry?.target.getAttribute('data-cursor') || '0') + 1)
         }
         
         
-    },[inView])
+    }, [inView, entry])
     
 
     const [currentPage, setCurrentPage] = useState(0)
@@ -110,12 +108,12 @@ const BasicTable = ({ onRowClick }: Props) => {
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
     useEffect(() => {
-         
         setLocalData([...localData,...data?.results || []])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data])
 
     const options = {
-        families: useGetFamiliesListQuery('').data?.map(family => ({
+        families: useGetFamiliesListQuery('').data?.map((family) => ({
             label: family,
             value: family
         })),
