@@ -8,7 +8,7 @@ import BasicTable from '../../components/table';
 import Header from '../../components/header';
 import CreaturesList from '../CreaturesList';
 import { Creature } from '../../types/creature';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import encounterFormJson from '../../services/FormConfigurations/encounter-form.json'
 import MainActions, { ActionType } from '../../components/MainActions';
 import Form, { ValuesType } from '../../components/Form';
@@ -20,13 +20,43 @@ const AppContainer = () => {
 
   const [modalOpen,setModalOpen] = useState(false)
 
-  const [localCreatures, setLocalCraetures] = useState<Creature[]>(data || [])
+  const [localCreatures, setLocalCraetures] = useState<Creature[]>(() => {
+    let storedEncounter = localStorage.getItem('encounter_list')
+    console.log(storedEncounter, 'reading storage');
+
+    let tmpData: Creature[] = []
+
+    if (storedEncounter !== null) {
+      try {
+        tmpData = JSON.parse(storedEncounter) || []
+        return tmpData
+      } catch (error) {
+        
+      }
+    }
+
+    return data || []
+    
+  })
+
+  useEffect(() => {
+    if (data) {
+      setLocalCraetures(data)
+    }
+  },[data])
+ 
+    
+  useEffect(() => {
+    console.log('updating localstorage');
+    
+    localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
+  },[localCreatures])
 
   const handleModalClose = () => {
     setModalOpen(false)
   }
 
-  const onRowClick = (creature: Creature) => {
+  const addCreature = (creature: Creature) => {
     setLocalCraetures(() => {
       let tmpData = [...localCreatures]
 
@@ -55,9 +85,6 @@ const AppContainer = () => {
 
   const form: EncounterForm = require('../../services/FormConfigurations/encounter-form.json')
   
-  const updateEncounter = (encounter: Creature[]) => {
-    console.log('')
-  }
 
   const getRequestEncounter = (form: ValuesType): EncounterRequest => {
     const tmpEncounterRequest : EncounterRequest = {}
@@ -82,19 +109,19 @@ const AppContainer = () => {
           <MainActions handleAction={handleAction} />
           <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
             <Grid  sx={{
-            }} item xs={8}>
+            }} item xs={7}>
                 <Panel  borderRadius='1rem' padding='1rem' border='5px solid' sx={{
                   maxHeight: 'calc(100vh - 300px)',
                   background: theme.gradient.secondary,
                   boxShadow: theme.extraShadows.panel
                 }}>
                   <Header text='Total encounter cost:' cost={180}></Header>
-                  <BasicTable  ></BasicTable>
+                  <BasicTable onRowClick={addCreature} ></BasicTable>
                 </Panel>
             </Grid>
-            <Grid  item xs={4}>
+            <Grid  item xs={5}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList creatures={localCreatures || []} />
+                <CreaturesList removeCreature={removeCreature} creatures={localCreatures || []} />
               </Panel>
             </Grid>
           </Grid>

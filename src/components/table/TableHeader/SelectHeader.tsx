@@ -19,11 +19,13 @@ function SelectHeader({onChange, column,options}: Props) {
 
   return (
     <Autocomplete
-      disablePortal
+      sx={{
+        overflow: 'hidden'
+      }}
       multiple
       limitTags={0}
       options={options}
-      renderInput={(params) => <TextField variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true }}  label={column.label} />}
+      renderInput={(params) => <TextField variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true, style: {flexWrap: 'nowrap'},  }}  label={column.label} />}
     />
   )
 }

@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import App from './App';
 import { createTheme, ThemeProvider } from '@mui/material';
 import AppContainer from './containers/AppContainer';
 
@@ -35,6 +34,13 @@ const theme = createTheme({
         background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #FFD986 0%, #CE5E00 100%)',
         border: '4px solid #882013'
       }
+    },
+    badge: {
+      trivial: '#97C05C',
+      low: '#D1DA59',
+      moderate: '#F7C144',
+      severe: '#F29C38',
+      extreme: '#ED6237'
     }
   },
 

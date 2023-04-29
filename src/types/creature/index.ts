@@ -7,5 +7,6 @@ export type Creature = {
     alignment: string,
     size: string,
     rarity: string,
-    archive_link?: string
+    archive_link?: string,
+    quantity?: number
 }

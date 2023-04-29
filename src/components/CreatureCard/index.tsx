@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
 import { Creature } from '../../types/creature'
 import { IconButton, TextField, Typography, styled } from '@mui/material'
-import { KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
+import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
+import Badge from './Badge'
 
 type Props = {
-  creature: Creature
+  creature: Creature,
+  quantity: number,
+  removeCreature: Function,
+  index: number
 }
 
 const Container = styled('div')((props => ({
-  maxHeight: 48,
   display: 'flex',
   alignItems: 'center',
+  background: props.theme.palette.tertiary.main,
   fontSize: '.875rem',
   flexDirection: 'row',
+  position: 'relative',
   padding: '.5rem 1rem',
   border: ' 1px solid rgba(0, 0, 0, 0.23)',
   boxShadow: props.theme.extraShadows.card,
@@ -21,8 +26,8 @@ const Container = styled('div')((props => ({
   borderRadius: 16
 })))
 
-function CreatureCard({ creature }: Props) {
-  const [count, setCount] = useState(0)
+function CreatureCard({ creature, removeCreature, index, quantity }: Props) {
+  const [count, setCount] = useState(quantity)
   const [fav, setFav] = useState(false)
 
   const increaseCount = () => {
@@ -45,6 +50,16 @@ function CreatureCard({ creature }: Props) {
 
   return (
     <Container>
+      <IconButton sx={{
+        position: 'absolute',
+        top: -10,
+        right: 0
+      }}
+      onClick={() => {
+        removeCreature(index)
+      }}>
+        <Delete></Delete>
+      </IconButton>
       <TextField defaultValue={count} value={count} InputProps={{
         disableUnderline: true,
         fullWidth: false
@@ -53,7 +68,8 @@ function CreatureCard({ creature }: Props) {
         inputProps={{style: { verticalAlign: 'center', padding: 12, textAlign: 'right'} }}
         sx={{
           justifySelf: 'flex-start',
-          maxWidth: '50px',
+          width: 50,
+          minWidth: 50,
           marginRight: '1rem'
         }} variant='filled'></TextField>
       <div style={{
@@ -62,7 +78,7 @@ function CreatureCard({ creature }: Props) {
         justifySelf: 'center'
       }}>
         <Typography fontSize={14}>{creature.name} ({creature.family})</Typography>
-        <Typography fontSize={14}>XP 120</Typography>
+        <Badge text={'XP'} value={60}  />
       </div>
       <div style={{
         display: 'flex',

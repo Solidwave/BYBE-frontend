@@ -9,7 +9,9 @@ type Props = {
 
 function SearchButton({link}: Props) {
   return (
-    <IconButton href={link} target='_blank' sx={{
+    <IconButton href={link} onClick={(event) => {
+      event.stopPropagation()
+    }} target='_blank' sx={{
           background: 'linear-gradient(180deg, #FFDC5E 0%, #FFCF6E 41.15%, #FFB12B 58.33%, #FFA439 100%)',
           border: '1px solid #FFDC5E',
           color: 'white',

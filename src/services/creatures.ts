@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Creature } from '../types/creature'
 
 export interface CreaturesResponse {
-  results?: Array<Creature>;
+  results: Array<Creature>;
   next?: string,
-  count?: number
+  count: number
 }
 
 
@@ -14,8 +14,17 @@ export const creaturesApi = createApi({
   reducerPath: 'creaturesPath',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://bybe.fly.dev/bestiary/', mode: 'cors'}),
   endpoints: (builder) => ({
-    getCreaturesList: builder.query<CreaturesResponse, string>({
-      query: () => 'list',
+    getCreaturesList: builder.query<CreaturesResponse, number>({
+      query: (cursor) => {
+        return {
+          url: 'list',
+          method: 'get',
+          params: {
+            cursor,
+            page_size: 50
+          }
+        }
+      }
     }),
     getFamiliesList: builder.query<string[], string>({
       query: () => 'families',

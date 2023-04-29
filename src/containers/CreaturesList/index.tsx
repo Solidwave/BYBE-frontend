@@ -5,26 +5,34 @@ import { Button, TextField, styled } from '@mui/material'
 import Header from '../../components/header'
 
 type Props = {
-    creatures: Creature[]
+    creatures: Creature[],
+    removeCreature: Function
 }
 
 const Root = styled('div')(props => ({
     width: '100%',
-    padding: 10,
-    boxSizing: 'border-box'
+    padding: 10
+}))
+const ListContainer = styled('div')(props => ({
+    width: '100%',
+    maxHeight: 'calc(100vh - 400px)',
+    overflowY: 'auto',
+    padding: '0px .5rem'
 }))
 
-const CreaturesList = (props: Props) => {
-    const { creatures } = props
+
+const CreaturesList = ({ creatures, removeCreature }: Props) => {
 
 
     return (
         //TODO rendere textfield uguali
         <Root >
             <Header text='Total encounter cost:' cost={180}></Header>
-            {creatures.map(creature => (
-                <CreatureCard creature={creature}></CreatureCard>
-            ))}
+            <ListContainer>
+                {creatures.map((creature, index) => (
+                    <CreatureCard key={index} quantity={1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
+                ))}
+            </ListContainer>
         </Root>
     )
 }

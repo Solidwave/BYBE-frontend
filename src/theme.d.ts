@@ -16,6 +16,13 @@ declare module "@mui/material/styles/createPalette" {
                 background: string,
                 border: string
             }
+        },
+        badge: {
+            trivial: string,
+            low: string,
+            moderate: string,
+            severe: string,
+            extreme: string
         }
     }
 
@@ -34,6 +41,13 @@ declare module "@mui/material/styles/createPalette" {
                 background?: string,
                 border?: string
             }
+        },
+        badge?: {
+            trivial?: string,
+            low?: string,
+            moderate?: string,
+            severe?: string,
+            extreme?: string
         }
     }
 }
