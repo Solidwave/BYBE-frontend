@@ -1,0 +1,12 @@
+version: '3'
+services:
+  dashboard:
+    image: bybe-frontend:0.1.0-alpha
+    build:
+      context: ./
+      args:
+        version: 0.1.0-alpha
+    # volumes:
+    #   - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 9000:80
