@@ -2,7 +2,7 @@
 import { Grid, Modal, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
-import BasicTable from '../../components/table';
+import BasicTable from '../../components/BasicTable';
 import Header from '../../components/header';
 import CreaturesList from '../CreaturesList';
 import { Creature } from '../../types/creature';
@@ -82,7 +82,6 @@ const AppContainer = () => {
   }
 
   const form: EncounterForm = require('../../services/FormConfigurations/encounter-form.json')
-  
 
   const getRequestEncounter = (form: ValuesType): EncounterRequest => {
     const tmpEncounterRequest : EncounterRequest = {}
