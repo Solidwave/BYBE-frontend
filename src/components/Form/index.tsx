@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { EncounterField, EncounterForm, FormActionType } from '../../types/EncounterForm'
 import Field from './Fields'
 import { Button, Paper, SxProps } from '@mui/material'
@@ -26,7 +26,7 @@ const style: SxProps = {
 
 
 
-function Form({ form, onSubmit }: Props) {
+const Form = ({ form, onSubmit }: Props) => {
     const {actions, fields} = form
     const [values, setValues] = useState<ValuesType>(fields.map(field => ({value: undefined, field})))
 
@@ -60,11 +60,11 @@ function Form({ form, onSubmit }: Props) {
     return (
         <Paper variant='fantasy' sx={style}>
             <Header text='Encounter fields' />
-            {fields.map(field => (
-                <Field onChange={onChange} field={field} />
+            {fields.map((field, index) => (
+                <Field key={index} onChange={onChange} field={field} />
             ))}
-            {actions.map(action => (
-                <Button onClick={() => {
+            {actions.map((action, index) => (
+                <Button key={index} onClick={() => {
                     handleAction(action)
                 }} fullWidth variant='contained'>{action.label}</Button>
             ))}

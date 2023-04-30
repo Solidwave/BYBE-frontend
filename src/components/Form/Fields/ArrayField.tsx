@@ -52,7 +52,7 @@ function ArrayField({ field, onChange }: Props) {
             </Root>
             <Root>
                 {values.map((value, index) => (
-                    <TextField sx={{
+                    <TextField key={index} sx={{
                         marginRight: 1,
                         ":last-child": {
                             marginRight: 0

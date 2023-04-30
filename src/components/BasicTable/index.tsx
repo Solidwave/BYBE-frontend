@@ -196,6 +196,9 @@ const BasicTable = ({ onRowClick }: Props) => {
                             <MenuItem
                                 key={column.value}
                                 value={column.value}
+                                style={{
+                                    fontWeight: state.hideColumns.indexOf(column.value) === -1 ? 400 : 700
+                                }}
                             >
                                 {column.label}
                             </MenuItem>

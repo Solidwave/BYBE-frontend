@@ -60,7 +60,7 @@ function CreatureCard({ creature, removeCreature, index, quantity }: Props) {
       }}>
         <Delete></Delete>
       </IconButton>
-      <TextField defaultValue={count} value={count} InputProps={{
+      <TextField value={count} InputProps={{
         disableUnderline: true,
         fullWidth: false
       }}

@@ -66,11 +66,17 @@ const theme = createTheme({
           style: {
             color: '#7F4A22',
             background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #FFD986 0%, #CE5E00 100%)',
-            border: '4px solid #6C3805',
+            border: '4px solid #882013', 
             borderRadius: 32,
             fontWeight: 500,
             fontSize: '.875rem',
-            lineHeight: '1.5rem'
+            lineHeight: '1.5rem',
+            ":hover":{
+              background: 'radial-gradient(130.48% 138.54% at 50.33% 50%, #68390C 0%, #110D02 100%, #110D02 100%)',
+              border: '4px solid #6C3805',
+              transition: 'all ease-in-out .5s',
+              color: '#DDC3A4',
+            }
           }
         }
       ]

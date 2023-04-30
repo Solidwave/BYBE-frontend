@@ -1,5 +1,5 @@
 
-import { Grid, Modal, useTheme } from '@mui/material';
+import { DialogContent, Grid, Modal, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
 import BasicTable from '../../components/BasicTable';
@@ -45,8 +45,6 @@ const AppContainer = () => {
  
     
   useEffect(() => {
-    console.log('updating localstorage');
-    
     localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
   },[localCreatures])
 
@@ -124,10 +122,12 @@ const AppContainer = () => {
           </Grid>
 
         </Panel>
-        <Modal onClose={handleModalClose} open={modalOpen} >
+        <Modal keepMounted onClose={handleModalClose} open={modalOpen} >
+          <DialogContent>
             <Form onSubmit={(values: ValuesType) => {
               encounter(getRequestEncounter(values))
             }} form={form} />
+          </DialogContent>
         </Modal>
     </Background>
   );
