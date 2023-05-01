@@ -1,5 +1,5 @@
 
-import { DialogContent, Grid, Modal, useTheme } from '@mui/material';
+import { AppBar, Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
 import BasicTable from '../../components/BasicTable';
@@ -94,17 +94,22 @@ const AppContainer = () => {
 
   const theme = useTheme()
 
+  const mobile = useMediaQuery(theme.breakpoints.down('md'))
+
   return (
     <Background >
         <Panel  sx={{
           height: '100%',
           background: theme.gradient?.main,
-          position: 'relative'
-        }} borderRadius='2rem' padding='4rem 5.25rem 4rem 4rem' border='1rem solid'>
-          <MainActions handleAction={handleAction} />
+          position: 'relative',
+          [theme.breakpoints.down('md')]: {
+            width: '100%'
+          }
+      }} borderRadius='2rem' padding={mobile ? '0' : '4rem 5.25rem 4rem 4rem'} border={mobile ? '0px' : '1rem solid'}>
+          {mobile ? '' : <MainActions handleAction={handleAction} />}
           <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
             <Grid  sx={{
-            }} item xs={7}>
+            }} item xs={12} md={7}>
                 <Panel  borderRadius='1rem' padding='1rem' border='5px solid' sx={{
                   maxHeight: 'calc(100vh - 300px)',
                   background: theme.gradient?.secondary,
@@ -114,7 +119,20 @@ const AppContainer = () => {
                   <BasicTable onRowClick={addCreature} ></BasicTable>
                 </Panel>
             </Grid>
-            <Grid  item xs={5}>
+            {mobile && <Grid item xs={12}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+              <Button variant='action' fullWidth onClick={() => {
+                handleAction({type: 'encounter_builder', label: 'anything'})
+              }} sx={{
+                margin: 'auto'
+              }}>Generate random encounter</Button>
+            </div>
+            </Grid> }
+            <Grid item xs={12} md={5}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
                 <CreaturesList removeCreature={removeCreature} creatures={localCreatures || []} />
               </Panel>

@@ -1,14 +1,18 @@
 import { styled } from "@mui/material"
 
 
-const Background = styled('div')((props) => ({
-    backgroundColor: props.theme.palette.tertiary?.main,
+const Background = styled('div')(({theme}) => ({
+    backgroundColor: theme.palette.tertiary?.main,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     boxSizing: 'border-box',
+    minHeight: '100vh',
     height: '100%',
-    padding: '5rem 18rem'
+    padding: '5rem 18rem',
+    [theme.breakpoints.down('md')]: {
+        padding: 0
+    }
     // overflow: 'hidden'
 }),
 )
