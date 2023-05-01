@@ -1,5 +1,5 @@
 
-import { AppBar, Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
+import { Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
 import BasicTable from '../../components/BasicTable';
@@ -20,7 +20,6 @@ const AppContainer = () => {
 
   const [localCreatures, setLocalCraetures] = useState<Creature[]>(() => {
     let storedEncounter = localStorage.getItem('encounter_list')
-    console.log(storedEncounter, 'reading storage');
 
     let tmpData: Creature[] = []
 
