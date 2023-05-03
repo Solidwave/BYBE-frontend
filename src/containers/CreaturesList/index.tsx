@@ -25,37 +25,62 @@ const ListContainer = styled('div')(props => ({
 
         
 function getCreaturesLevels(creatures: Creature[]): number[] {
-    return creatures.map(creature => creature.level)
+    return creatures.map(creature => {
+        let tmpArray: number[] = []
+
+        for (let index = 0; index < (creature.quantity || 1); index++) {
+            tmpArray.push(creature.level)
+        }
+        return tmpArray
+    }).flat()
 }
 
 const CreaturesList = ({ creatures, removeCreature }: Props) => {
     const [encounterInfo, {data, isLoading}] = useLazyGetEncounterInfoQuery()
     const [experience, setExperience] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>('')
+    const [localCreatures, setLocalCreatures] = useState<Creature[]>([])
 
     const party_levels = useAppSelector((state : RootState) => state.party.party_levels)
-    const enemy_levels = getCreaturesLevels(creatures)
+    const enemy_levels = getCreaturesLevels(localCreatures)
+    
     useEffect(() => {
        setExperience(data?.experience || 0) 
        setDifficulty(data?.difficulty || '')
     }, [data])
 
     useEffect(() => {
-        if (creatures && creatures.length > 0) {
+        setLocalCreatures(creatures.map(creature => ({...creature, quantity: creature.quantity || 1})))
+    }, [creatures])
+
+    useEffect(() => {
+        if (localCreatures && localCreatures.length > 0) {
             encounterInfo({ party_levels, enemy_levels })
         } else {
             setExperience(0)
             setDifficulty('')
         }
-    }, [creatures])
+    },[localCreatures])
+
+    const setQuantity = (creature: Creature, quantity: number) => {
+        const index = localCreatures.findIndex(tmpCreature => tmpCreature.id === creature.id)
+        
+        if (index !== -1) {
+            let cloneCreatures = [...localCreatures]
+
+            cloneCreatures[index].quantity = quantity
+
+            setLocalCreatures(cloneCreatures)
+        }
+    }
 
     return (
         //TODO rendere textfield uguali
         <Root >
             <Header text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
             <ListContainer>
-                {creatures.map((creature, index) => (
-                    <CreatureCard key={index} quantity={1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
+                {localCreatures.map((creature, index) => (
+                    <CreatureCard key={index} setQuantity={setQuantity} quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
                 ))}
             </ListContainer>
         </Root>

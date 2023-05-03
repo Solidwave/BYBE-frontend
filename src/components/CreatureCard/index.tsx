@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Creature } from '../../types/creature'
 import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
@@ -8,6 +8,7 @@ type Props = {
   creature: Creature,
   quantity: number,
   removeCreature: Function,
+  setQuantity: Function,
   index: number
 }
 
@@ -26,9 +27,13 @@ const Container = styled('div')((props => ({
   borderRadius: 16
 })))
 
-function CreatureCard({ creature, removeCreature, index, quantity }: Props) {
-  const [count, setCount] = useState(quantity)
+function CreatureCard({ creature, removeCreature, index, quantity, setQuantity }: Props) {
+  const [count, setCount] = useState(quantity || 1)
   const [fav, setFav] = useState(false)
+
+  useEffect(() => {
+    setQuantity(creature,count)
+  },[count])
 
   const increaseCount = () => {
     setCount(count + 1)
