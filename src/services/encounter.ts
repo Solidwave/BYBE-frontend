@@ -16,7 +16,7 @@ export type EncounterRequest = { family?: string, rarity?: string, size?: string
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
     reducerPath: 'encounterPath',
-    baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/encounter/`, mode: 'no-cors' }),
+    baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/encounter/`, mode: 'cors'}),
     endpoints: (builder) => ({
         generateEncounter: builder.query<EncounterResponse, EncounterRequest>({
             query: (args) => {
@@ -28,8 +28,7 @@ export const encounterApi = createApi({
                     url: 'generator',
                     params: {family,rarity,size,alignment,encounter_difficulty},
                     method: 'post',
-                    body: party_levels,
-                    mode: 'no-cors'
+                    body: party_levels
                 }
             },
         }),
