@@ -33,7 +33,7 @@ function CreatureCard({ creature, removeCreature, index, quantity, setQuantity }
 
   useEffect(() => {
     setQuantity(creature,count)
-  },[count])
+  },[count, setQuantity, creature])
 
   const increaseCount = () => {
     setCount(count + 1)

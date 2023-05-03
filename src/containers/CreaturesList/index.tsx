@@ -36,7 +36,7 @@ function getCreaturesLevels(creatures: Creature[]): number[] {
 }
 
 const CreaturesList = ({ creatures, removeCreature }: Props) => {
-    const [encounterInfo, {data, isLoading}] = useLazyGetEncounterInfoQuery()
+    const [encounterInfo, {data}] = useLazyGetEncounterInfoQuery()
     const [experience, setExperience] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>('')
     const [localCreatures, setLocalCreatures] = useState<Creature[]>([])
@@ -60,7 +60,8 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
             setExperience(0)
             setDifficulty('')
         }
-    },[localCreatures])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [localCreatures])
 
     const setQuantity = (creature: Creature, quantity: number) => {
         const index = localCreatures.findIndex(tmpCreature => tmpCreature.id === creature.id)
