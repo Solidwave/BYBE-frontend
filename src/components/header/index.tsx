@@ -3,7 +3,8 @@ import React from 'react'
 
 type Props = {
   text?: string,
-  cost?: number
+  cost?: number,
+  subtitle?: string
 }
 
 const HeaderBackground = styled('div')(
@@ -14,16 +15,18 @@ const HeaderBackground = styled('div')(
     borderRadius: '8px 8px 0 0',
     display: 'flex',
     justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
     color: props.theme.palette.tertiary.main,
     fontSize: '0.875rem'
     
   }))
 
-function Header({text, cost}: Props) {
+function Header({text, cost, subtitle}: Props) {
   return (
     <HeaderBackground>
       <Typography>{text}: {cost}</Typography>
+      <Typography>{subtitle}</Typography>
     </HeaderBackground>
   )
 }

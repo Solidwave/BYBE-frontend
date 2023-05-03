@@ -12,13 +12,14 @@ import MainActions, { ActionType } from '../../components/MainActions';
 import Form, { ValuesType } from '../../components/Form';
 import { EncounterForm } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
+import { setPartyLevels } from '../../services/partySlice';
 
 const AppContainer = () => {
   const [encounter, { data }] = useLazyGenerateEncounterQuery()
 
   const [modalOpen,setModalOpen] = useState(false)
 
-  const [localCreatures, setLocalCraetures] = useState<Creature[]>(() => {
+  const [localCreatures, setLocalCreatures] = useState<Creature[]>(() => {
     let storedEncounter = localStorage.getItem('encounter_list')
 
     let tmpData: Creature[] = []
@@ -38,7 +39,7 @@ const AppContainer = () => {
 
   useEffect(() => {
     if (data) {
-      setLocalCraetures(data)
+      setLocalCreatures(data)
     }
   },[data])
  
@@ -52,7 +53,7 @@ const AppContainer = () => {
   }
 
   const addCreature = (creature: Creature) => {
-    setLocalCraetures(() => {
+    setLocalCreatures(() => {
       let tmpData = [...localCreatures]
 
       tmpData.push(creature)
@@ -62,7 +63,7 @@ const AppContainer = () => {
   }
 
   const removeCreature = (index: number) => {
-    setLocalCraetures(() => {
+    setLocalCreatures(() => {
       let tmpData = [...localCreatures]
 
       tmpData.splice(index, 1)
@@ -83,7 +84,7 @@ const AppContainer = () => {
   const getRequestEncounter = (form: ValuesType): EncounterRequest => {
     const tmpEncounterRequest : EncounterRequest = {}
     form.forEach(field => {
-      let value: (string & Number[]) | undefined = field.value as (string & Number[]) | undefined;
+      let value: (string & number[]) | undefined = field.value as (string & number[]) | undefined;
 
       tmpEncounterRequest[field.field.fieldName] = value 
     });
@@ -142,7 +143,12 @@ const AppContainer = () => {
         <Modal keepMounted onClose={handleModalClose} open={modalOpen} >
           <DialogContent>
             <Form onSubmit={(values: ValuesType) => {
-              encounter(getRequestEncounter(values))
+              const encounterRequest = getRequestEncounter(values)
+              encounter(encounterRequest)
+
+              if (encounterRequest.party_levels) {
+                setPartyLevels(encounterRequest.party_levels)
+              }
             }} form={form} />
           </DialogContent>
         </Modal>

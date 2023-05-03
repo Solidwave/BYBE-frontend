@@ -11,7 +11,7 @@ type Props = {
 
 export type ValuesType = {
     field: EncounterField,
-    value: number | string | Number[] | undefined
+    value: number | string | number[] | undefined
 }[]
 
 const style: SxProps = {

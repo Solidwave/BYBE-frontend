@@ -11,7 +11,25 @@ export interface CreaturesResponse {
 
 export type EncounterResponse = Creature[]
 
-export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: Number[] }
+export type EncounterInfoRequest = {
+    party_levels: number[],
+    enemy_levels: number[]
+}
+
+export type EncounterInfoResponse = {
+    experience: number,
+    difficulty: string,
+    levels:{
+        TRIVIAL: number,
+        LOW: number,
+        MODERATE: number,
+        SEVERE: number,
+        EXTREME: number,
+        IMPOSSIBLE: number
+    }
+}
+
+export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: number[] }
 
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
@@ -32,12 +50,28 @@ export const encounterApi = createApi({
                 }
             },
         }),
+        getEncounterInfo: builder.query<EncounterInfoResponse, EncounterInfoRequest>({
+            query: (args) => {
+                const {
+                    party_levels, enemy_levels
+                } = args
+
+                return {
+                    url: 'info',
+                    method: 'post',
+                    body: {
+                        party_levels,
+                        enemy_levels
+                    }
+                }
+            },
+        }),
         
     }),
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useLazyGenerateEncounterQuery } = encounterApi
+export const { useLazyGenerateEncounterQuery, useLazyGetEncounterInfoQuery } = encounterApi
 
 //https://bybe.fly.dev/bestiary/
