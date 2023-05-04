@@ -33,7 +33,8 @@ function CreatureCard({ creature, removeCreature, index, quantity, setQuantity }
 
   useEffect(() => {
     setQuantity(creature,count)
-  },[count, setQuantity, creature])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[count])
 
   const increaseCount = () => {
     setCount(count + 1)
