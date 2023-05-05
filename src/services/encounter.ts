@@ -29,7 +29,7 @@ export type EncounterInfoResponse = {
     }
 }
 
-export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: number[] }
+export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: number[], callback?: Function }
 
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
@@ -49,6 +49,13 @@ export const encounterApi = createApi({
                     body: party_levels
                 }
             },
+            transformResponse: (response: EncounterResponse, meta, arg) => {
+                if (arg.callback) {
+                    arg.callback()
+                }
+                
+                return response
+            }
         }),
         getEncounterInfo: builder.query<EncounterInfoResponse, EncounterInfoRequest>({
             query: (args) => {

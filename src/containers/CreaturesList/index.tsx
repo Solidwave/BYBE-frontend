@@ -28,7 +28,7 @@ function getCreaturesLevels(creatures: Creature[]): number[] {
     return creatures.map(creature => {
         let tmpArray: number[] = []
 
-        for (let index = 0; index < (creature.quantity || 1); index++) {
+        for (let index = 0; index < (creature.quantity || 0); index++) {
             tmpArray.push(creature.level)
         }
         return tmpArray

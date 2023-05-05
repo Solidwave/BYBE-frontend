@@ -13,9 +13,12 @@ import Form, { ValuesType } from '../../components/Form';
 import { EncounterForm } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
 import { setPartyLevels } from '../../services/partySlice';
+import { useAppDispatch } from '../../app/hooks';
 
 const AppContainer = () => {
   const [encounter, { data }] = useLazyGenerateEncounterQuery()
+
+  const dispatch = useAppDispatch()
 
   const [modalOpen,setModalOpen] = useState(false)
 
@@ -144,10 +147,13 @@ const AppContainer = () => {
           <DialogContent>
             <Form onSubmit={(values: ValuesType) => {
               const encounterRequest = getRequestEncounter(values)
-              encounter(encounterRequest)
 
+              encounterRequest.callback = handleModalClose
+              
+              encounter(encounterRequest)
+              
               if (encounterRequest.party_levels) {
-                setPartyLevels(encounterRequest.party_levels)
+                dispatch(setPartyLevels(encounterRequest.party_levels))
               }
             }} form={form} />
           </DialogContent>
