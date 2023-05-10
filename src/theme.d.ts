@@ -86,3 +86,9 @@ declare module '@mui/material/Paper' {
         fantasy: true;
     }
 }
+
+declare module "@mui/material" {
+    interface ButtonPropsColorOverrides {
+        tertiary: true;
+    }
+}

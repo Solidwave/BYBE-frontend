@@ -45,6 +45,8 @@ const AppContainer = () => {
       setLocalCreatures(data.results)
     }
   },[data])
+
+
  
     
   useEffect(() => {
@@ -73,6 +75,10 @@ const AppContainer = () => {
 
       return tmpData
     })
+  }
+
+  const removeAllCreatures = () => {
+    setLocalCreatures([])
   }
 
   const handleAction = (action: ActionType) => {
@@ -137,7 +143,7 @@ const AppContainer = () => {
             </Grid> }
             <Grid item xs={12} md={5}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList removeCreature={removeCreature} creatures={localCreatures || []} />
+                <CreaturesList removeAll={removeAllCreatures} removeCreature={removeCreature} creatures={localCreatures || []} />
               </Panel>
             </Grid>
           </Grid>

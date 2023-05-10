@@ -79,7 +79,8 @@ const theme = createTheme({
             }
           }
         }
-      ]
+      ],
+      
     },
     MuiPaper: {
       variants: [

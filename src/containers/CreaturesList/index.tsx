@@ -10,6 +10,7 @@ import { RootState } from '../../app/store'
 type Props = {
     creatures: Creature[],
     removeCreature: Function
+    removeAll: Function
 }
 
 const Root = styled('div')(props => ({
@@ -35,7 +36,7 @@ function getCreaturesLevels(creatures: Creature[]): number[] {
     }).flat()
 }
 
-const CreaturesList = ({ creatures, removeCreature }: Props) => {
+const CreaturesList = ({ creatures, removeCreature, removeAll }: Props) => {
     const [encounterInfo, {data}] = useLazyGetEncounterInfoQuery()
     const [experience, setExperience] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>('')
@@ -76,7 +77,7 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
     const setCreature = (creature: Creature, index: number) => {
         if (index !== -1) {
             let cloneCreatures = [...localCreatures]
-            
+
             let tmpCreature = { ...creature, quantity: cloneCreatures[index].quantity }
 
             cloneCreatures[index] = tmpCreature
@@ -88,7 +89,7 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
     return (
         //TODO rendere textfield uguali
         <Root >
-            <Header text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
+            <Header action={{callback: removeAll, text: 'Clear'}} text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
             <ListContainer>
                 {localCreatures.map((creature, index) => (
                     <CreatureCard setCreature={setCreature} key={index} setQuantity={setQuantity} quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
