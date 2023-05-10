@@ -36,13 +36,13 @@ const AppContainer = () => {
       }
     }
 
-    return data || []
+    return data?.results || []
     
   })
 
   useEffect(() => {
     if (data) {
-      setLocalCreatures(data)
+      setLocalCreatures(data.results)
     }
   },[data])
  

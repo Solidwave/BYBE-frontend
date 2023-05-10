@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Creature } from '../types/creature'
+import { callbackify } from 'util';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL
 
@@ -9,7 +10,20 @@ export interface CreaturesResponse {
     count?: number
 }
 
-export type EncounterResponse = Creature[]
+export type EncounterResponse = {
+    results: Creature[],
+    count: number,
+    experience: number,
+    difficulty: string,
+    levels: {
+        TRIVIAL: number,
+        LOW: number,
+        MODERATE: number,
+        SEVERE: number,
+        EXTREME: number,
+        IMPOSSIBLE: number
+    }
+}
 
 export type EncounterInfoRequest = {
     party_levels: number[],

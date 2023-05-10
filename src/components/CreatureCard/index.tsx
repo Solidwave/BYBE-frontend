@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { Creature } from '../../types/creature'
 import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
-import Badge from './Badge'
+import Badge, { Variant } from './Badge'
+import { useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
 
 type Props = {
   creature: Creature,
   quantity: number,
   removeCreature: Function,
   setQuantity: Function,
-  index: number
+  index: number,
+  setCreature: Function
 }
 
 const Container = styled('div')((props => ({
@@ -27,9 +29,54 @@ const Container = styled('div')((props => ({
   borderRadius: 16
 })))
 
-function CreatureCard({ creature, removeCreature, index, quantity, setQuantity }: Props) {
+export type VariantMap = {
+  weak?: Creature,
+  normal?: Creature,
+  elite?: Creature
+}
+
+function CreatureCard({ creature, removeCreature, index, quantity, setQuantity, setCreature }: Props) {
+  const [getElite, { data: eliteData }] = useLazyGetEliteQuery()
+  const [getWeak, { data: weakData }] = useLazyGetWeakQuery()
   const [count, setCount] = useState(quantity || 1)
   const [fav, setFav] = useState(false)
+  const [variant, setVariant] = useState<Variant>('normal')
+  const [variantMap, setVariantMap] = useState<VariantMap>({normal: creature})
+
+
+  useEffect(() => {
+    switch (variant) {
+      case 'elite':
+        if (!variantMap.elite) {
+          getElite(creature.id)
+        } else {
+          setCreature(variantMap.elite, index)
+        }
+        break;
+      case 'weak':
+        if (!variantMap.weak) {
+          getWeak(creature.id)
+        } else {
+          setCreature(variantMap.weak, index)
+        }
+        break;
+      default:
+        setCreature(variantMap.normal, index)
+        break;
+    }
+  },[variant])
+
+  useEffect(() => {
+    if (eliteData) {
+      setVariantMap({...variantMap, elite: eliteData.results})
+    }
+  },[eliteData])
+
+  useEffect(() => {
+    if (weakData) {
+      setVariantMap({ ...variantMap, weak: weakData.results })
+    }
+  }, [weakData])
 
   useEffect(() => {
     setQuantity(creature,count)
@@ -84,7 +131,24 @@ function CreatureCard({ creature, removeCreature, index, quantity, setQuantity }
         justifySelf: 'center'
       }}>
         <Typography fontSize={14}>{creature.name} ({creature.family})</Typography>
-        <Badge text={'XP'} value={60}  />
+        <div style={{
+          display: 'flex'
+        }}>
+          <Badge onClick = {() => {
+            if (variant === 'weak') {
+              setVariant('normal')
+            } else {
+              setVariant('weak')
+            }
+          }} text={'Weak'} selected={variant === 'weak'} variant='weak' />
+          <Badge onClick={() => {
+            if (variant === 'elite') {
+              setVariant('normal')
+            } else {
+              setVariant('elite')
+            }
+          }} text={'Elite'} selected={variant === 'elite'} variant='elite'/>
+        </div>
       </div>
       <div style={{
         display: 'flex',

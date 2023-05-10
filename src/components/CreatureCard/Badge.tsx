@@ -1,46 +1,55 @@
-import { Theme, Typography, styled } from '@mui/material'
-import React from 'react'
+import {  Theme, Typography, styled } from '@mui/material'
+import React, { MouseEventHandler } from 'react'
+
+export type Variant = 'elite' | 'weak' | 'normal'
 
 type Props = {
     text?: String,
     value?: number,
-    theme?: Theme
+    variant?: Variant,
+    theme?: Theme,
+    selected: boolean,
+    onClick: Function & MouseEventHandler<HTMLButtonElement>
 }
 
-const getColor = (value: number) => {
-    switch (true) {
-        case value <= 40:
+const getColor = (variant: Variant) => {
+    switch (variant) {
+        case 'weak':
             return 'trivial'
-        case value <= 80:
-            return 'low'
-        case value <= 120:
-            return 'moderate'
-        case value <= 160:
-            return 'severe'
-        default:
+        case 'elite':
             return 'extreme'
+        default:
+            return 'trivial'
     }
 }
 
-const Root = styled('div')((props: Props) => ({
+const Root = styled('button')((props: Props) => ({
     borderRadius: 64,
     display: 'flex',
     justifyContent: 'center',
+    border: 0,
     width: 'fit-content',
     padding: '0 6.5px',
+    opacity: props.selected ? 1 : 0.5,
     alignItems: 'center',
-    background: props.theme?.palette.badge ? props.theme?.palette.badge[getColor(props.value || 40)]  : ''
+    transition: 'opacity ease-in-out .2s',
+    cursor: 'pointer',
+    background: props.theme?.palette.badge ? props.theme?.palette.badge[getColor(props.variant || 'weak')]  : '',
+    ":hover": {
+        opacity: 1
+    }
+    
 }))
 
 
 
-function Badge({text, value }: Props) {
+function Badge(props: Props) {
     return (
-        <Root >
+        <Root {...props}  >
             <Typography sx={{
                 fontWeight: 500,
                 fontSize: '.75rem'
-            }}>{text} {value}</Typography>
+            }}>{props.text}</Typography>
         </Root>
     )
 }

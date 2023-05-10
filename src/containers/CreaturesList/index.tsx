@@ -42,7 +42,6 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
     const [localCreatures, setLocalCreatures] = useState<Creature[]>([])
 
     const party_levels = useAppSelector((state : RootState) => state.party.party_levels)
-    const enemy_levels = getCreaturesLevels(localCreatures)
     
     useEffect(() => {
        setExperience(data?.experience || 0) 
@@ -55,7 +54,7 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
 
     useEffect(() => {
         if (localCreatures && localCreatures.length > 0) {
-            encounterInfo({ party_levels, enemy_levels })
+            encounterInfo({ party_levels, enemy_levels: getCreaturesLevels(localCreatures) })
         } else {
             setExperience(0)
             setDifficulty('')
@@ -74,6 +73,17 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
             setLocalCreatures(cloneCreatures)
         }
     }
+    const setCreature = (creature: Creature, index: number) => {
+        if (index !== -1) {
+            let cloneCreatures = [...localCreatures]
+            
+            let tmpCreature = { ...creature, quantity: cloneCreatures[index].quantity }
+
+            cloneCreatures[index] = tmpCreature
+
+            setLocalCreatures(cloneCreatures)
+        }
+    }
 
     return (
         //TODO rendere textfield uguali
@@ -81,7 +91,7 @@ const CreaturesList = ({ creatures, removeCreature }: Props) => {
             <Header text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
             <ListContainer>
                 {localCreatures.map((creature, index) => (
-                    <CreatureCard key={index} setQuantity={setQuantity} quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
+                    <CreatureCard setCreature={setCreature} key={index} setQuantity={setQuantity} quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
                 ))}
             </ListContainer>
         </Root>

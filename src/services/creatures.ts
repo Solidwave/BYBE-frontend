@@ -9,11 +9,14 @@ export interface CreaturesResponse {
   count: number
 }
 
+export type VariantResponseType = {
+  results: Creature
+}
 
 // Define a service using a base URL and expected endpoints
 export const creaturesApi = createApi({
   reducerPath: 'creaturesPath',
-  baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors'}),
+  baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors' }),
   endpoints: (builder) => ({
     getCreaturesList: builder.query<CreaturesResponse, number>({
       query: (cursor) => {
@@ -39,11 +42,53 @@ export const creaturesApi = createApi({
     getAlignmentsList: builder.query<string[], string>({
       query: () => 'alignments',
     }),
+    getElite: builder.query<VariantResponseType, string>({
+      query: (creature_id) => {
+        return {
+          url: 'elite',
+          method: 'get',
+          params: {
+            creature_id
+          }
+        }
+      },
+      transformResponse: (response: VariantResponseType, meta, arg) => {
+        if (!response.results.quantity) {
+          
+        }
+        return response
+      }
+    }),
+    getWeak: builder.query<VariantResponseType, string >({
+      query: (creature_id) => {
+        return {
+          url: 'weak',
+          method: 'get',
+          params: {
+            creature_id
+          }
+        }
+      },
+      transformResponse: (response: VariantResponseType, meta, arg) => {
+        if (!response.results.quantity) {
+
+        }
+        return response
+      }
+    }),
   }),
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCreaturesListQuery, useGetFamiliesListQuery, useGetAlignmentsListQuery, useGetRaritiesListQuery, useGetSizesListQuery } = creaturesApi
+export const {
+  useGetCreaturesListQuery,
+  useGetFamiliesListQuery,
+  useGetAlignmentsListQuery,
+  useGetRaritiesListQuery,
+  useGetSizesListQuery,
+  useLazyGetEliteQuery,
+  useLazyGetWeakQuery
+ } = creaturesApi
 
 //https://bybe.fly.dev/bestiary/
