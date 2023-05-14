@@ -13,10 +13,6 @@ type Props = {
 
 
 function SelectHeader({onChange, column,options}: Props) {
-  if (!options) {
-    return <div></div>
-  }
-
   return (
     <Autocomplete
       sx={{
@@ -24,7 +20,7 @@ function SelectHeader({onChange, column,options}: Props) {
       }}
       multiple
       limitTags={0}
-      options={options}
+      options={options || []}
       renderInput={(params) => <TextField variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true, style: {flexWrap: 'nowrap'},  }}  label={column.label} />}
     />
   )

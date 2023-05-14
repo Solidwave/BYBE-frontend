@@ -27,7 +27,7 @@ function Multi({ column }: Props) {
         <Root>
             {column.subColumns?.map((subColumn, index) => (
                 <HeaderContainer key={index} >
-                    <TableHeader column={subColumn}></TableHeader>
+                    <TableHeader  column={subColumn}></TableHeader>
                 </HeaderContainer>
             ))}
         </Root>

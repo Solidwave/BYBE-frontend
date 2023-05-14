@@ -4,7 +4,6 @@ import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
 import Badge, { Variant } from './Badge'
 import { useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
-import { log } from 'console'
 
 type Props = {
   creature: Creature,

@@ -1,4 +1,4 @@
-import { CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
+import { CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
 import { Creature } from "../../types/creature"
@@ -8,6 +8,7 @@ import SearchButton from "./SearchButton"
 import { Column } from "../../types/column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
+import usePrevious from "../../app/hooks"
 type StateType = {
     hideColumns: string[]
 }
@@ -21,13 +22,46 @@ const pageSize = 50
 
 type ColumnsType = Column[]
 
-const columns: ColumnsType = [
+const orderOptions = [
     {
-        value: 'name',
-        label: '',
-        type: 'empty',
-        maxWidth: '20px'
+        value: 'UNORDERED',
+        label: 'none'
     },
+    {
+        value: 'ID',
+        label: 'Id'
+    },
+    {
+        value: 'NAME',
+        label: 'Name'
+    }, {
+        value: 'HP',
+        label: 'Hp'
+    },
+    {
+        value: 'FAMILY',
+        label: 'Family'
+    },
+    {
+        value: 'LEVEL',
+        label: 'Level'
+    },
+    {
+        value: 'ALIGNMENT',
+        label: 'Alignement'
+    },
+    {
+        value: 'SIZE',
+        label: 'Size'
+    },
+    {
+        value: 'RARITY',
+        label: 'Rarity'
+    }
+]
+
+const columns: ColumnsType = [
+   
     {
         value: 'name',
         label: 'Name',
@@ -94,23 +128,29 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     useEffect(() => {
         if (inView) {
-            setCurrentPage(parseInt(entry?.target.getAttribute('data-cursor') || '0') + 1)
+            setCursor(parseInt(entry?.target.getAttribute('data-cursor') || '0') + 1)
         }
-        
-        
     }, [inView, entry])
-    
 
-    const [currentPage, setCurrentPage] = useState(0)
+    const [cursor, setCursor] = useState(0)
 
-    const {data, isLoading} = useGetCreaturesListQuery(currentPage)
+    const prevCursor = usePrevious(cursor)
+
+    const [order, setOrder] = useState<string>('')
+
+    const { data, isLoading, isFetching } = useGetCreaturesListQuery({ cursor, order })
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
     useEffect(() => {
-        setLocalData([...localData,...data?.results || []])
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setLocalData([...localData, ...data?.results || []])
+
     }, [data])
+
+    useEffect(() => {
+        setLocalData([])
+        setCursor(0)
+    }, [order])
 
     const options = {
         families: useGetFamiliesListQuery('').data?.map((family) => ({
@@ -137,11 +177,7 @@ const BasicTable = ({ onRowClick }: Props) => {
         hideColumns: []
     })
 
-    if (currentPage === 0 && isLoading) {
-        return (
-            <CircularProgress></CircularProgress>
-        )
-    }
+    const loading = cursor === 0 && (isLoading || isFetching)
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
         const {
@@ -157,7 +193,6 @@ const BasicTable = ({ onRowClick }: Props) => {
             { ...state, hideColumns: [] }
         );
     };
-
 
     const isColumnVisible = (type: string) => {
         return !state.hideColumns.includes(type)
@@ -186,6 +221,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                         minWidth: '200px'
                     }}
                         label='hide-column-select-label'
+                        color='secondary'
                         id="hide-column-select"
                         multiple
                         endAdornment={<IconButton sx={{ visibility: state.hideColumns.length ? "visible" : "hidden", m: 1 }} onClick={handleClearClick}><Clear /></IconButton>}
@@ -209,13 +245,45 @@ const BasicTable = ({ onRowClick }: Props) => {
 
             <TableContainer sx={{
                 overflow: 'auto',
-                maxHeight: 'calc(100vh - 500px)'
+                maxHeight: 'calc(100vh - 500px)',
+                minHeight: 'calc(100vh - 500px)'
             }} >
                 <Table stickyHeader={true}>
                     <TableHead >
                         <TableRow sx={{
                             borderBottom: '1px solid grey'
                         }}>
+                            <TableCell key={'order'} sx={{
+                                background: '#BF9E6D',
+                                borderBottom: '0px',
+                                padding: '3.5px',
+                                minWidth: '100px',
+                                maxWidth: '100px'
+                            }} >
+                                <FormControl fullWidth variant='filled'>
+                                    <InputLabel id='order-select-label'>Sort by</InputLabel>
+                                    <Select
+                                        disableUnderline
+                                        id='order-select-label'
+                                        variant='filled'
+                                        label='Sort by'
+                                        value={order}
+                                        onChange={(e) => {
+                                            const {
+                                                value
+                                            } = e.target
+
+                                            if (value) {
+                                                setOrder(value || '')
+                                            }
+                                        }}
+                                    >
+                                        {orderOptions.map(option => (
+                                            <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                            </TableCell>
                             {columns.filter(column => isColumnVisible(column.value)).map((column, index) => (
                                 <TableCell key={index} sx={{
                                     background: '#BF9E6D',
@@ -223,45 +291,57 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     minWidth: column.minWidth,
                                     padding: '3.5px'
                                 }} >
-                                    <TableHeader options={column.options ? options[column.options as keyof typeof options] : []} column={column}></TableHeader>
-
+                                    <TableHeader options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
                                 </TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {localData.map((creature: Creature, index: number) => {
-                            const page = Math.floor((index + 1)/pageSize)
-
-                            
-                            const last = index === localData.length - 1
-                            return (
-                            <TableRow
-                                key={index}
-                                ref={last ? ref : null}
-                                onClick={() => {
-                                    if (onRowClick) {
-                                        onRowClick(creature)
-                                    }
-                                }}
-                                sx={{
-                                    background: index % 2 ? theme.palette.tertiary.dark : '',
-                                    cursor: 'pointer'
-                                }}
-                                data-cursor={page}
-                                
-                            >
-                                <TableCell  sx={{
-                                    border: '0px'
-                                }}>
-                                    <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
-                                {columns.filter(column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
+                        {loading ? [...Array(10).keys()].map(item => (
+                            <TableRow>
+                                {columns.map((column: Column, index: number) => (
                                     <TableCell key={index} sx={{
-                                        border: '0px'
-                                    }}>{creature[column.value]}</TableCell>
+                                        border: '0px',
+                                    }}><Skeleton ></Skeleton></TableCell>
+                                    
                                 ))}
+                                <TableCell key='placeholder' sx={{
+                                    border: '0px'
+                                }}><Skeleton ></Skeleton></TableCell>
                             </TableRow>
-                        )})}
+                        )) : 
+                        localData.map((creature: Creature, index: number) => {
+                            const cursor = index + 1
+
+                            const last = index === localData.length - 1
+                           
+                            return (
+                                <TableRow
+                                    key={index}
+                                    ref={last ? ref : null}
+                                    onClick={() => {
+                                        if (onRowClick) {
+                                            onRowClick(creature)
+                                        }
+                                    }}
+                                    sx={{
+                                        background: index % 2 ? theme.palette.tertiary.dark : '',
+                                        cursor: 'pointer'
+                                    }}
+                                    data-cursor={cursor}
+                                >
+                                    <TableCell sx={{
+                                        border: '0px'
+                                    }}>
+                                        <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
+                                    {columns.filter(column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
+                                        <TableCell key={index} sx={{
+                                            border: '0px'
+                                        }}>{creature[column.value]}</TableCell>
+                                    ))}
+                                </TableRow>
+                            )
+                        })}
                     </TableBody>
                 </Table>
             </TableContainer>

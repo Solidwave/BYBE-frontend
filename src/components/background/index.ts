@@ -9,7 +9,7 @@ const Background = styled('div')(({theme}) => ({
     boxSizing: 'border-box',
     minHeight: '100vh',
     height: '100%',
-    padding: '5rem 18rem',
+    padding: '5rem',
     [theme.breakpoints.down('md')]: {
         padding: 0
     }

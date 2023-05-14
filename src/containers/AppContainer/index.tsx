@@ -47,8 +47,6 @@ const AppContainer = () => {
   },[data])
     
   useEffect(() => {
-    console.log(localCreatures);
-    
     localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
   },[localCreatures])
 

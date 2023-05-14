@@ -13,18 +13,24 @@ export type VariantResponseType = {
   results: Creature
 }
 
+export type ListRequest = {
+  cursor: number,
+  order: string
+}
+
 // Define a service using a base URL and expected endpoints
 export const creaturesApi = createApi({
   reducerPath: 'creaturesPath',
   baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors' }),
   endpoints: (builder) => ({
-    getCreaturesList: builder.query<CreaturesResponse, number>({
-      query: (cursor) => {
+    getCreaturesList: builder.query<CreaturesResponse, ListRequest>({
+      query: ({cursor, order}) => {
         return {
           url: 'list',
           method: 'get',
           params: {
             cursor,
+            order: order !== '' ? order : undefined,
             page_size: 50
           }
         }

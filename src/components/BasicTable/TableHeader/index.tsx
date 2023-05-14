@@ -5,6 +5,7 @@ import SelectHeader from './SelectHeader'
 import Text from './Text'
 import { Column } from '../../../types/column'
 import Multi from './Multi'
+import SingleSelect from './SingleSelect'
 
 type Props = {
     column: Column,
@@ -12,11 +13,12 @@ type Props = {
         label: string,
         value: string
     }[],
+    onChange?: Function,
     padding?: string
 }
 
 const types = {
-    empty: Empty,
+    singleSelect: SingleSelect,
     input: InputHeader,
     select: SelectHeader,
     text: Text,
