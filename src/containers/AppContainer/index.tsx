@@ -45,11 +45,10 @@ const AppContainer = () => {
       setLocalCreatures(data.results)
     }
   },[data])
-
-
- 
     
   useEffect(() => {
+    console.log(localCreatures);
+    
     localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
   },[localCreatures])
 
@@ -61,7 +60,9 @@ const AppContainer = () => {
     setLocalCreatures(() => {
       let tmpData = [...localCreatures]
 
-      tmpData.push(creature)
+      let tmpCreature : Creature = {...creature, variant: 'normal'}
+
+      tmpData.push(tmpCreature)
 
       return tmpData
     })
@@ -79,6 +80,14 @@ const AppContainer = () => {
 
   const removeAllCreatures = () => {
     setLocalCreatures([])
+  }
+
+  const updateCreature = (creature: Creature, index: number) => {
+    let tmpLocalCretures = [...localCreatures]
+
+    tmpLocalCretures[index] = creature
+
+    setLocalCreatures(tmpLocalCretures)
   }
 
   const handleAction = (action: ActionType) => {
@@ -143,7 +152,7 @@ const AppContainer = () => {
             </Grid> }
             <Grid item xs={12} md={5}>
             <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList removeAll={removeAllCreatures} removeCreature={removeCreature} creatures={localCreatures || []} />
+                <CreaturesList removeAll={removeAllCreatures}  removeCreature={removeCreature} updateCreature={updateCreature} creatures={localCreatures || []} />
               </Panel>
             </Grid>
           </Grid>
@@ -154,8 +163,6 @@ const AppContainer = () => {
             <Form onSubmit={(values: ValuesType) => {
               const encounterRequest = getRequestEncounter(values)
 
-              encounterRequest.callback = handleModalClose
-              
               encounter(encounterRequest)
               
               if (encounterRequest.party_levels) {

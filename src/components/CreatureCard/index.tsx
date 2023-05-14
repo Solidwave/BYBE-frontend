@@ -4,14 +4,14 @@ import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
 import Badge, { Variant } from './Badge'
 import { useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
+import { log } from 'console'
 
 type Props = {
   creature: Creature,
   quantity: number,
   removeCreature: Function,
-  setQuantity: Function,
   index: number,
-  setCreature: Function
+  updateCreature: Function
 }
 
 const Container = styled('div')((props => ({
@@ -35,7 +35,7 @@ export type VariantMap = {
   elite?: Creature
 }
 
-function CreatureCard({ creature, removeCreature, index, quantity, setQuantity, setCreature }: Props) {
+function CreatureCard({ creature, removeCreature, index, quantity, updateCreature }: Props) {
   const [getElite, { data: eliteData }] = useLazyGetEliteQuery()
   const [getWeak, { data: weakData }] = useLazyGetWeakQuery()
   const [count, setCount] = useState(quantity || 1)
@@ -50,36 +50,39 @@ function CreatureCard({ creature, removeCreature, index, quantity, setQuantity, 
         if (!variantMap.elite) {
           getElite(creature.id)
         } else {
-          setCreature(variantMap.elite, index)
+          updateCreature(variantMap.elite, index)
         }
         break;
       case 'weak':
         if (!variantMap.weak) {
           getWeak(creature.id)
         } else {
-          setCreature(variantMap.weak, index)
+          updateCreature(variantMap.weak, index)
         }
         break;
       default:
-        setCreature(variantMap.normal, index)
+        updateCreature(variantMap.normal, index)
         break;
     }
   },[variant])
 
   useEffect(() => {
     if (eliteData) {
+      updateCreature(eliteData.results, index)
       setVariantMap({...variantMap, elite: eliteData.results})
     }
   },[eliteData])
 
   useEffect(() => {
     if (weakData) {
+      updateCreature(weakData.results, index)
+
       setVariantMap({ ...variantMap, weak: weakData.results })
     }
   }, [weakData])
 
   useEffect(() => {
-    setQuantity(creature,count)
+    updateCreature({...creature, quantity: count},index)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[count])
 
@@ -135,19 +138,19 @@ function CreatureCard({ creature, removeCreature, index, quantity, setQuantity, 
           display: 'flex'
         }}>
           <Badge onClick = {() => {
-            if (variant === 'weak') {
+            if (creature.variant === 'weak') {
               setVariant('normal')
             } else {
               setVariant('weak')
             }
-          }} text={'Weak'} selected={variant === 'weak'} variant='weak' />
+          }} text={'Weak'} selected={creature.variant === 'weak'} variant='weak' />
           <Badge onClick={() => {
-            if (variant === 'elite') {
+            if (creature.variant === 'elite') {
               setVariant('normal')
             } else {
               setVariant('elite')
             }
-          }} text={'Elite'} selected={variant === 'elite'} variant='elite'/>
+          }} text={'Elite'} selected={creature.variant === 'elite'} variant='elite'/>
         </div>
       </div>
       <div style={{

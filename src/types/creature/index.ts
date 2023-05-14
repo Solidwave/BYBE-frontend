@@ -8,5 +8,6 @@ export type Creature = {
     size: string,
     rarity: string,
     archive_link?: string,
-    quantity?: number
+    quantity?: number,
+    variant?: 'weak' | 'normal' | 'elite'
 }

@@ -8,9 +8,10 @@ import { useAppSelector } from '../../app/hooks'
 import { RootState } from '../../app/store'
 
 type Props = {
-    creatures: Creature[],
+    creatures: Creature[]
     removeCreature: Function
     removeAll: Function
+    updateCreature: Function
 }
 
 const Root = styled('div')(props => ({
@@ -36,11 +37,10 @@ function getCreaturesLevels(creatures: Creature[]): number[] {
     }).flat()
 }
 
-const CreaturesList = ({ creatures, removeCreature, removeAll }: Props) => {
+const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }: Props) => {
     const [encounterInfo, {data}] = useLazyGetEncounterInfoQuery()
     const [experience, setExperience] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>('')
-    const [localCreatures, setLocalCreatures] = useState<Creature[]>([])
 
     const party_levels = useAppSelector((state : RootState) => state.party.party_levels)
     
@@ -50,49 +50,23 @@ const CreaturesList = ({ creatures, removeCreature, removeAll }: Props) => {
     }, [data])
 
     useEffect(() => {
-        setLocalCreatures(creatures.map(creature => ({...creature, quantity: creature.quantity || 1})))
-    }, [creatures])
-
-    useEffect(() => {
-        if (localCreatures && localCreatures.length > 0) {
-            encounterInfo({ party_levels, enemy_levels: getCreaturesLevels(localCreatures) })
+        if (creatures && creatures.length > 0) {
+            encounterInfo({ party_levels, enemy_levels: getCreaturesLevels(creatures) })
         } else {
             setExperience(0)
             setDifficulty('')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [localCreatures])
-
-    const setQuantity = (creature: Creature, quantity: number) => {
-        const index = localCreatures.findIndex(tmpCreature => tmpCreature.id === creature.id)
-        
-        if (index !== -1) {
-            let cloneCreatures = [...localCreatures]
-
-            cloneCreatures[index].quantity = quantity
-
-            setLocalCreatures(cloneCreatures)
-        }
-    }
-    const setCreature = (creature: Creature, index: number) => {
-        if (index !== -1) {
-            let cloneCreatures = [...localCreatures]
-
-            let tmpCreature = { ...creature, quantity: cloneCreatures[index].quantity }
-
-            cloneCreatures[index] = tmpCreature
-
-            setLocalCreatures(cloneCreatures)
-        }
-    }
+    }, [creatures])
+    
 
     return (
         //TODO rendere textfield uguali
         <Root >
             <Header action={{callback: removeAll, text: 'Clear'}} text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
             <ListContainer>
-                {localCreatures.map((creature, index) => (
-                    <CreatureCard setCreature={setCreature} key={index} setQuantity={setQuantity} quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
+                {creatures.map((creature, index) => (
+                    <CreatureCard updateCreature={updateCreature} key={index}  quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
                 ))}
             </ListContainer>
         </Root>

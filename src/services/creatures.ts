@@ -54,8 +54,9 @@ export const creaturesApi = createApi({
       },
       transformResponse: (response: VariantResponseType, meta, arg) => {
         if (!response.results.quantity) {
-          
+          response.results.quantity = 1
         }
+        response.results.variant = 'elite'
         return response
       }
     }),
@@ -71,8 +72,10 @@ export const creaturesApi = createApi({
       },
       transformResponse: (response: VariantResponseType, meta, arg) => {
         if (!response.results.quantity) {
-
+          response.results.quantity = 1
         }
+
+        response.results.variant = 'weak'
         return response
       }
     }),

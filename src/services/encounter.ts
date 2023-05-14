@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { Creature } from '../types/creature'
-import { callbackify } from 'util';
+import { creaturesApi } from './creatures';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL
 
@@ -43,7 +43,7 @@ export type EncounterInfoResponse = {
     }
 }
 
-export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: number[], callback?: Function }
+export type EncounterRequest = { family?: string, rarity?: string, size?: string, alignment?: string, encounter_difficulty?: string, party_levels?: number[] }
 
 // Define a service using a base URL and expected endpoints
 export const encounterApi = createApi({
@@ -64,9 +64,13 @@ export const encounterApi = createApi({
                 }
             },
             transformResponse: (response: EncounterResponse, meta, arg) => {
-                if (arg.callback) {
-                    arg.callback()
-                }
+
+                response.results = response.results.map(creature => {
+                    return {
+                        ...creature,
+                        variant: 'normal'
+                    }
+                })
                 
                 return response
             }
