@@ -1,5 +1,5 @@
 
-import { Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
+import { Button, CircularProgress, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
 import BasicTable from '../../components/BasicTable';
@@ -16,7 +16,7 @@ import { setPartyLevels } from '../../services/partySlice';
 import { useAppDispatch } from '../../app/hooks';
 
 const AppContainer = () => {
-  const [encounter, { data }] = useLazyGenerateEncounterQuery()
+  const [encounter, { data, isFetching }] = useLazyGenerateEncounterQuery()
 
   const dispatch = useAppDispatch()
 
@@ -49,6 +49,7 @@ const AppContainer = () => {
   useEffect(() => {
     localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
   },[localCreatures])
+
 
   const handleModalClose = () => {
     setModalOpen(false)
@@ -158,14 +159,18 @@ const AppContainer = () => {
         </Panel>
         <Modal keepMounted onClose={handleModalClose} open={modalOpen} >
           <DialogContent>
-            <Form onSubmit={(values: ValuesType) => {
+            <Form isSubmitting={isFetching} onSubmit={(values: ValuesType) => {
               const encounterRequest = getRequestEncounter(values)
-
-              encounter(encounterRequest)
               
               if (encounterRequest.party_levels) {
                 dispatch(setPartyLevels(encounterRequest.party_levels))
               }
+              
+              encounter(encounterRequest).then(res => {
+                if (res.isSuccess) {
+                  handleModalClose()
+                }
+              })
             }} form={form} />
           </DialogContent>
         </Modal>

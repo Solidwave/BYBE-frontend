@@ -1,12 +1,13 @@
 import React, {  useEffect, useState } from 'react'
 import { EncounterField, EncounterForm, FormActionType } from '../../types/EncounterForm'
 import Field from './Fields'
-import { Button, Paper, SxProps } from '@mui/material'
+import { Button, CircularProgress, Paper, SxProps } from '@mui/material'
 import Header from '../header'
 
 type Props = {
     form: EncounterForm,
-    onSubmit: Function
+    onSubmit: Function,
+    isSubmitting?: boolean
 }
 
 export type ValuesType = {
@@ -16,6 +17,8 @@ export type ValuesType = {
 
 const style: SxProps = {
     position: 'absolute' as 'absolute',
+    display: 'flex',
+    flexDirection: 'column',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -26,15 +29,9 @@ const style: SxProps = {
 
 
 
-const Form = ({ form, onSubmit }: Props) => {
+const Form = ({ form, onSubmit, isSubmitting }: Props) => {
     const {actions, fields} = form
     const [values, setValues] = useState<ValuesType>(fields.map(field => ({value: undefined, field})))
-
-    // const [isValid, setIsValid] = useState(false)
-
-    useEffect(() => {
-        
-    })
 
     const handleAction = (action: FormActionType) => {
         switch (action.type) {
@@ -63,11 +60,19 @@ const Form = ({ form, onSubmit }: Props) => {
             {fields.map((field, index) => (
                 <Field key={index} onChange={onChange} field={field} />
             ))}
-            {actions.map((action, index) => (
-                <Button key={index} onClick={() => {
-                    handleAction(action)
-                }} fullWidth variant='contained'>{action.label}</Button>
-            ))}
+            {actions.map((action, index) => {
+                if (action.type === 'submit' && isSubmitting) {
+                    return <CircularProgress  sx={{
+                        alignSelf: 'center'
+                    }}></CircularProgress>
+                }
+                
+                return (
+                    <Button key={index} onClick={() => {
+                        handleAction(action)
+                    }} fullWidth variant='contained'>{action.label}</Button>
+                )
+            })}
         </Paper>
     )
 }
