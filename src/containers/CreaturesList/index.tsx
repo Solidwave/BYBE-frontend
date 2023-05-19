@@ -14,6 +14,8 @@ type Props = {
     updateCreature: Function
 }
 
+
+
 const Root = styled('div')(props => ({
     width: '100%',
     padding: 10
@@ -25,22 +27,11 @@ const ListContainer = styled('div')(props => ({
     padding: '0px .5rem'
 }))
 
-        
-function getCreaturesLevels(creatures: Creature[]): number[] {
-    return creatures.map(creature => {
-        let tmpArray: number[] = []
-
-        for (let index = 0; index < (creature.quantity || 0); index++) {
-            tmpArray.push(creature.level)
-        }
-        return tmpArray
-    }).flat()
-}
-
 const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }: Props) => {
     const [encounterInfo, {data}] = useLazyGetEncounterInfoQuery()
     const [experience, setExperience] = useState<number>(0)
     const [difficulty, setDifficulty] = useState<string>('')
+    const [creaturesLevels, setCreatureLevels] = useState<number[]>([])
 
     const party_levels = useAppSelector((state : RootState) => state.party.party_levels)
     
@@ -50,15 +41,27 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
     }, [data])
 
     useEffect(() => {
-        if (creatures && creatures.length > 0) {
-            encounterInfo({ party_levels, enemy_levels: getCreaturesLevels(creatures) })
+        if (creaturesLevels.length > 0) {
+            encounterInfo({ party_levels, enemy_levels: creaturesLevels })
         } else {
             setExperience(0)
             setDifficulty('')
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [creaturesLevels])
+
+    useEffect(() => {
+        let tempLevels : number[] = []
+
+        creatures.forEach(creature => {
+            let quantity = typeof creature.quantity === 'number' ? creature.quantity : 1
+
+            for (let index = 0; index < quantity; index++) {
+                tempLevels.push(creature.level)
+            }
+        })
+
+        setCreatureLevels(tempLevels)
     }, [creatures])
-    
 
     return (
         //TODO rendere textfield uguali
@@ -66,7 +69,7 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
             <Header action={{callback: removeAll, text: 'Clear'}} text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
             <ListContainer>
                 {creatures.map((creature, index) => (
-                    <CreatureCard updateCreature={updateCreature} key={index}  quantity={creature.quantity || 1} index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
+                    <CreatureCard updateCreature={updateCreature} key={index}  index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
                 ))}
             </ListContainer>
         </Root>

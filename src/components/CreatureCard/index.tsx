@@ -7,7 +7,6 @@ import { useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatu
 
 type Props = {
   creature: Creature,
-  quantity: number,
   removeCreature: Function,
   index: number,
   updateCreature: Function
@@ -34,30 +33,21 @@ export type VariantMap = {
   elite?: Creature
 }
 
-function CreatureCard({ creature, removeCreature, index, quantity, updateCreature }: Props) {
+function CreatureCard({ creature, removeCreature, index, updateCreature }: Props) {
   const [getElite, { data: eliteData }] = useLazyGetEliteQuery()
   const [getWeak, { data: weakData }] = useLazyGetWeakQuery()
-  const [count, setCount] = useState(quantity || 1)
+  const [count, setCount] = useState(creature.quantity || 1)
   const [fav, setFav] = useState(false)
   const [variant, setVariant] = useState<Variant>('normal')
   const [variantMap, setVariantMap] = useState<VariantMap>({normal: creature})
 
-
   useEffect(() => {
     switch (variant) {
       case 'elite':
-        if (!variantMap.elite) {
           getElite(creature.id)
-        } else {
-          updateCreature(variantMap.elite, index)
-        }
         break;
       case 'weak':
-        if (!variantMap.weak) {
           getWeak(creature.id)
-        } else {
-          updateCreature(variantMap.weak, index)
-        }
         break;
       default:
         updateCreature(variantMap.normal, index)
@@ -68,25 +58,27 @@ function CreatureCard({ creature, removeCreature, index, quantity, updateCreatur
   useEffect(() => {
     if (eliteData) {
       updateCreature(eliteData.results, index)
-      setVariantMap({...variantMap, elite: eliteData.results})
     }
   },[eliteData])
 
   useEffect(() => {
     if (weakData) {
       updateCreature(weakData.results, index)
-
-      setVariantMap({ ...variantMap, weak: weakData.results })
     }
   }, [weakData])
 
   useEffect(() => {
-    updateCreature({...creature, quantity: count},index)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    updateCreature({...creature, quantity: count}, index)
   },[count])
 
   const increaseCount = () => {
     setCount(count + 1)
+  }
+
+  const decreaseCount = () => {
+    if (count > 0) {
+      setCount(count - 1)
+    }
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,9 +91,7 @@ function CreatureCard({ creature, removeCreature, index, quantity, updateCreatur
 
     setCount(Number(value))
   }
-  const decreaseCount = () => {
-    setCount(count - 1)
-  }
+  
 
   return (
     <Container>
