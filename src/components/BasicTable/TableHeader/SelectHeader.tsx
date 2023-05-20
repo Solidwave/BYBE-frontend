@@ -3,7 +3,7 @@ import React, { ChangeEventHandler } from 'react'
 import { Column } from '../../../types/column'
 
 type Props = {
-  onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> | undefined,
+  onChange?: Function,
   column: Column,
   options?: {
     label: string,

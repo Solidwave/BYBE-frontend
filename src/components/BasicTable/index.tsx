@@ -9,6 +9,7 @@ import { Column } from "../../types/column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import usePrevious from "../../app/hooks"
+import { isEqual } from "lodash"
 type StateType = {
     hideColumns: string[]
 }
@@ -18,9 +19,19 @@ type Props = {
     onRowClick?: Function
 }
 
-const pageSize = 50
+const page_size = 50
+
+type FiltersType = {
+    name_filter?: string,
+    hp?: string,
+    min_level_filter?: string,
+    max_level_filter?: string,
+    family_filter?: string,
+    rarity_filter?: string,
+}
 
 type ColumnsType = Column[]
+
 
 const orderOptions = [
     {
@@ -61,11 +72,12 @@ const orderOptions = [
 ]
 
 const columns: ColumnsType = [
-   
+
     {
         value: 'name',
         label: 'Name',
-        type: 'input'
+        type: 'input',
+        minWidth: 200
     },
     {
         value: 'level',
@@ -89,33 +101,38 @@ const columns: ColumnsType = [
     {
         value: 'hp',
         label: 'Hp',
-        type: 'input'
+        type: 'input',
+        minWidth: 100
 
     },
     {
         value: 'family',
         label: 'Family',
         type: 'select',
-        options: 'families'
+        options: 'families',
+        minWidth: 100
     },
     {
         value: 'alignment',
         label: 'Alignment',
         type: 'select',
-        options: 'alignments'
+        options: 'alignments',
+        minWidth: 100
 
     },
     {
         value: 'size',
         label: 'Size',
         type: 'select',
-        options: 'sizes'
+        options: 'sizes',
+        minWidth: 100
     },
     {
         value: 'rarity',
         label: 'Rarity',
         type: 'select',
-        options: 'rarities'
+        options: 'rarities',
+        minWidth: 100
 
     }
 ]
@@ -138,19 +155,24 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const [order, setOrder] = useState<string>('')
 
-    const { data, isLoading, isFetching } = useGetCreaturesListQuery({ cursor, order })
+    const [filters, setFilters] = useState<FiltersType>({})
+
+    const prevFilters = usePrevious(filters)
+
+    const prevOrder = usePrevious(order)
+
+    const { data, isLoading, isFetching } = useGetCreaturesListQuery({ cursor, order, page_size, ...filters })
+
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
     useEffect(() => {
-        setLocalData([...localData, ...data?.results || []])
-
-    }, [data])
-
-    useEffect(() => {
-        setLocalData([])
-        setCursor(0)
-    }, [order])
+        if (!isEqual(prevOrder, order) || !isEqual(prevFilters, filters)) {
+            setLocalData(data?.results || [])
+        } else {
+            setLocalData([...localData, ...data?.results || []])
+        }
+    }, [order, filters, data])
 
     const options = {
         families: useGetFamiliesListQuery('').data?.map((family) => ({
@@ -196,6 +218,14 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const isColumnVisible = (type: string) => {
         return !state.hideColumns.includes(type)
+    }
+
+    const onFilterChange = (filterName: string, value: string) => {
+        let tmpFilters = { ...filters }
+
+        tmpFilters[filterName as keyof FiltersType] = value
+
+        setFilters(tmpFilters)
     }
 
     return (
@@ -291,7 +321,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     minWidth: column.minWidth,
                                     padding: '3.5px'
                                 }} >
-                                    <TableHeader options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
+                                    <TableHeader onChange={onFilterChange} options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
                                 </TableCell>
                             ))}
                         </TableRow>
@@ -303,45 +333,45 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     <TableCell key={index} sx={{
                                         border: '0px',
                                     }}><Skeleton ></Skeleton></TableCell>
-                                    
+
                                 ))}
                                 <TableCell key='placeholder' sx={{
                                     border: '0px'
                                 }}><Skeleton ></Skeleton></TableCell>
                             </TableRow>
-                        )) : 
-                        localData.map((creature: Creature, index: number) => {
-                            const cursor = index + 1
+                        )) :
+                            localData.map((creature: Creature, index: number) => {
+                                const cursor = index + 1
 
-                            const last = index === localData.length - 1
-                           
-                            return (
-                                <TableRow
-                                    key={index}
-                                    ref={last ? ref : null}
-                                    onClick={() => {
-                                        if (onRowClick) {
-                                            onRowClick(creature)
-                                        }
-                                    }}
-                                    sx={{
-                                        background: index % 2 ? theme.palette.tertiary.dark : '',
-                                        cursor: 'pointer'
-                                    }}
-                                    data-cursor={cursor}
-                                >
-                                    <TableCell sx={{
-                                        border: '0px'
-                                    }}>
-                                        <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
-                                    {columns.filter(column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
-                                        <TableCell key={index} sx={{
+                                const last = localData.length >= (page_size - 1) && index === localData.length - 1
+
+                                return (
+                                    <TableRow
+                                        key={index}
+                                        ref={last ? ref : null}
+                                        onClick={() => {
+                                            if (onRowClick) {
+                                                onRowClick(creature)
+                                            }
+                                        }}
+                                        sx={{
+                                            background: index % 2 ? theme.palette.tertiary.dark : '',
+                                            cursor: 'pointer'
+                                        }}
+                                        data-cursor={cursor}
+                                    >
+                                        <TableCell sx={{
                                             border: '0px'
-                                        }}>{creature[column.value]}</TableCell>
-                                    ))}
-                                </TableRow>
-                            )
-                        })}
+                                        }}>
+                                            <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
+                                        {columns.filter(column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
+                                            <TableCell key={index} sx={{
+                                                border: '0px'
+                                            }}>{creature[column.value]}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                )
+                            })}
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -13,7 +13,7 @@ type Props = {
         label: string,
         value: string
     }[],
-    onChange?: Function,
+    onChange: Function,
     padding?: string
 }
 
@@ -25,12 +25,12 @@ const types = {
     double: Multi
 }
 
-function TableHeader({column,options}: Props) {
+function TableHeader({column,options, onChange}: Props) {
     const TmpItem = types[column.type as keyof typeof types]
     
     return (
         <React.Fragment>
-            <TmpItem options={options} column={column} />
+            <TmpItem options={options} onChange={onChange} column={column} />
         </React.Fragment>
     )
 }

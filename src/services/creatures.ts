@@ -15,7 +15,9 @@ export type VariantResponseType = {
 
 export type ListRequest = {
   cursor: number,
-  order: string
+  page_size: number,
+  order: string,
+  name_filter?: string
 }
 
 // Define a service using a base URL and expected endpoints
@@ -24,14 +26,15 @@ export const creaturesApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors' }),
   endpoints: (builder) => ({
     getCreaturesList: builder.query<CreaturesResponse, ListRequest>({
-      query: ({cursor, order}) => {
+      query: ({cursor, order, page_size, name_filter}) => {
         return {
           url: 'list',
           method: 'get',
           params: {
             cursor,
             order: order !== '' ? order : undefined,
-            page_size: 50
+            page_size,
+            name_filter
           }
         }
       }
@@ -78,6 +81,21 @@ export const creaturesApi = createApi({
         return response
       }
     }),
+    getCreature: builder.query<VariantResponseType, string>({
+      query: (creature_id) => {
+        return {
+          url: '',
+          method: 'get',
+          params: {
+            creature_id
+          }
+        }
+      },
+      transformResponse: (response: VariantResponseType, meta, arg) => {
+        response.results.variant = 'normal'
+        return response
+      }
+    }),
   }),
 })
 
@@ -90,7 +108,8 @@ export const {
   useGetRaritiesListQuery,
   useGetSizesListQuery,
   useLazyGetEliteQuery,
-  useLazyGetWeakQuery
+  useLazyGetWeakQuery,
+  useLazyGetCreatureQuery
  } = creaturesApi
 
 //https://bybe.fly.dev/bestiary/

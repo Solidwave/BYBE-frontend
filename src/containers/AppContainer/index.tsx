@@ -1,5 +1,5 @@
 
-import { Button, CircularProgress, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
+import { Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/panel';
 import Background from '../../components/background';
 import BasicTable from '../../components/BasicTable';

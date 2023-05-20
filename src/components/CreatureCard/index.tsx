@@ -3,7 +3,7 @@ import { Creature } from '../../types/creature'
 import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
 import Badge, { Variant } from './Badge'
-import { useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
+import { useLazyGetCreatureQuery, useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
 
 type Props = {
   creature: Creature,
@@ -27,22 +27,15 @@ const Container = styled('div')((props => ({
   borderRadius: 16
 })))
 
-export type VariantMap = {
-  weak?: Creature,
-  normal?: Creature,
-  elite?: Creature
-}
-
 function CreatureCard({ creature, removeCreature, index, updateCreature }: Props) {
   const [getElite, { data: eliteData }] = useLazyGetEliteQuery()
   const [getWeak, { data: weakData }] = useLazyGetWeakQuery()
+  const [getCreature, {data: creatureData}] = useLazyGetCreatureQuery()
   const [count, setCount] = useState(creature.quantity || 1)
   const [fav, setFav] = useState(false)
-  const [variant, setVariant] = useState<Variant>('normal')
-  const [variantMap, setVariantMap] = useState<VariantMap>({normal: creature})
 
-  useEffect(() => {
-    switch (variant) {
+  const handleBadgeClick = (badge: Variant) => {
+    switch (badge) {
       case 'elite':
           getElite(creature.id)
         break;
@@ -50,16 +43,22 @@ function CreatureCard({ creature, removeCreature, index, updateCreature }: Props
           getWeak(creature.id)
         break;
       default:
-        updateCreature(variantMap.normal, index)
+          getCreature(creature.id)
         break;
     }
-  },[variant])
+  }
 
   useEffect(() => {
     if (eliteData) {
       updateCreature(eliteData.results, index)
     }
   },[eliteData])
+
+  useEffect(() => {
+    if (creatureData) {
+      updateCreature(creatureData.results, index)
+    }
+  }, [creatureData])
 
   useEffect(() => {
     if (weakData) {
@@ -128,16 +127,16 @@ function CreatureCard({ creature, removeCreature, index, updateCreature }: Props
         }}>
           <Badge onClick = {() => {
             if (creature.variant === 'weak') {
-              setVariant('normal')
+              handleBadgeClick('normal')
             } else {
-              setVariant('weak')
+              handleBadgeClick('weak')
             }
           }} text={'Weak'} selected={creature.variant === 'weak'} variant='weak' />
           <Badge onClick={() => {
             if (creature.variant === 'elite') {
-              setVariant('normal')
+              handleBadgeClick('normal')
             } else {
-              setVariant('elite')
+              handleBadgeClick('elite')
             }
           }} text={'Elite'} selected={creature.variant === 'elite'} variant='elite'/>
         </div>

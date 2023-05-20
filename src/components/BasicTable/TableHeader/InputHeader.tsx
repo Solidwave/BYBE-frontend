@@ -4,14 +4,20 @@ import { Column } from '../../../types/column'
 
 type Props = {
   column: Column,
-  onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
+  onChange?: Function
 }
 
 function InputHeader({column, onChange}: Props) {
   return (
-    <TextField variant='filled' InputProps={{
+    <TextField onChange={(e) => {
+      const { value } = e.target
+      
+      if (onChange) {
+        onChange(column.value + '_filter', value)
+      }
+    }} variant='filled' InputProps={{
       disableUnderline: true
-    }}  fullWidth label={column.label} placeholder={column.label} onChange={onChange}></TextField>
+    }}  fullWidth label={column.label} placeholder={column.label}></TextField>
   )
 }
 
