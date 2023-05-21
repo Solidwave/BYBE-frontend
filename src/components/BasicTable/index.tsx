@@ -1,4 +1,4 @@
-import { CircularProgress, FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
+import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
 import { Creature } from "../../types/creature"
@@ -8,8 +8,7 @@ import SearchButton from "./SearchButton"
 import { Column } from "../../types/column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
-import usePrevious from "../../app/hooks"
-import { isEqual, uniqueId } from "lodash"
+import { uniqueId } from "lodash"
 type StateType = {
     hideColumns: string[]
 }
@@ -31,7 +30,6 @@ type FiltersType = {
 }
 
 type ColumnsType = Column[]
-
 
 const orderOptions = [
     {
@@ -151,18 +149,11 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const [cursor, setCursor] = useState(0)
 
-    const prevCursor = usePrevious(cursor)
-
     const [order, setOrder] = useState<string>('')
 
     const [filters, setFilters] = useState<FiltersType>({})
 
-    const prevFilters = usePrevious(filters)
-
-    const prevOrder = usePrevious(order)
-
     const { data, isLoading, isFetching } = useGetCreaturesListQuery({ cursor, order, page_size, ...filters })
-
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
