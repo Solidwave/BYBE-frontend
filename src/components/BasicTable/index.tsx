@@ -9,7 +9,7 @@ import { Column } from "../../types/column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import usePrevious from "../../app/hooks"
-import { isEqual } from "lodash"
+import { isEqual, uniqueId } from "lodash"
 type StateType = {
     hideColumns: string[]
 }
@@ -167,10 +167,16 @@ const BasicTable = ({ onRowClick }: Props) => {
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
     useEffect(() => {
-        if (!isEqual(prevOrder, order) || !isEqual(prevFilters, filters)) {
-            setLocalData(data?.results || [])
-        } else {
+        // if (!isEqual(prevOrder, order) || !isEqual(prevFilters, filters)) {
+        //     setLocalData(data?.results || [])
+        // } else {
+            
+        //     setLocalData([...localData, ...data?.results || []])
+        // }
+        if (cursor != 0 ) {
             setLocalData([...localData, ...data?.results || []])
+        } else {
+            setLocalData(data?.results || [])
         }
     }, [order, filters, data])
 
@@ -224,9 +230,23 @@ const BasicTable = ({ onRowClick }: Props) => {
         let tmpFilters = { ...filters }
 
         tmpFilters[filterName as keyof FiltersType] = value
-
+        setCursor(0)
         setFilters(tmpFilters)
     }
+
+    const placeHolder = () => [...Array(page_size).keys()].map((item,index) => (
+        <TableRow key={uniqueId("prefix")}>
+            {columns.map((column: Column, index: number) => (
+                <TableCell key={index} sx={{
+                    border: '0px',
+                }}><Skeleton ></Skeleton></TableCell>
+
+            ))}
+            <TableCell key='placeholder' sx={{
+                border: '0px'
+            }}><Skeleton ></Skeleton></TableCell>
+        </TableRow>
+    ))
 
     return (
         <Container width="100%" sx={{
@@ -304,6 +324,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                             } = e.target
 
                                             if (value) {
+                                                setCursor(0)
                                                 setOrder(value || '')
                                             }
                                         }}
@@ -327,19 +348,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {loading ? [...Array(10).keys()].map(item => (
-                            <TableRow>
-                                {columns.map((column: Column, index: number) => (
-                                    <TableCell key={index} sx={{
-                                        border: '0px',
-                                    }}><Skeleton ></Skeleton></TableCell>
-
-                                ))}
-                                <TableCell key='placeholder' sx={{
-                                    border: '0px'
-                                }}><Skeleton ></Skeleton></TableCell>
-                            </TableRow>
-                        )) :
+                        {loading ? placeHolder() :
                             localData.map((creature: Creature, index: number) => {
                                 const cursor = index + 1
 
@@ -372,6 +381,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     </TableRow>
                                 )
                             })}
+                        {!loading && data.next && placeHolder()}
                     </TableBody>
                 </Table>
             </TableContainer>
