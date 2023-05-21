@@ -8,4 +8,6 @@ RUN wget "https://github.com/Solidwave/BYBE-frontend/releases/download/${version
 
 RUN unzip /build.zip
 
+EXPOSE 80
+
 RUN cp -r /build/* /usr/share/nginx/html
