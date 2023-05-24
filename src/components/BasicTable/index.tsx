@@ -154,7 +154,7 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const [filters, setFilters] = useState<FiltersType>({})
 
-    const { data, isLoading, isFetching } = useGetCreaturesListQuery({ cursor, order, page_size, ...filters })
+    const { data, isLoading, isFetching, isError } = useGetCreaturesListQuery({ cursor, order, page_size, ...filters })
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
@@ -373,7 +373,8 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     </TableRow>
                                 )
                             })}
-                        {!loading && data.next && placeHolder()}
+                        {!loading && data?.next && placeHolder()}
+                            {isError && <Typography>Sorry! Something went wrong while trying get all the creatures! Try again later..</Typography>}
                     </TableBody>
                 </Table>
             </TableContainer>
