@@ -12,9 +12,13 @@ import MainActions from '../../components/MainActions';
 import Form from '../../components/Form';
 import { EncounterForm, ValuesType } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
-import { setPartyLevels } from '../../services/partySlice';
+import { setPartyLevels } from '../../slices/partySlice';
 import { useAppDispatch } from '../../app/hooks';
 import { ActionType } from '../../types/MainActions';
+import ModalContainer from '../ModalContainer/indext';
+import { closeModal, openModal } from '../../slices/modal';
+
+const encounterModalId = 'encounter_modal'
 
 const AppContainer = () => {
   const [encounter, { data, isFetching }] = useLazyGenerateEncounterQuery()
@@ -52,8 +56,8 @@ const AppContainer = () => {
   },[localCreatures])
 
 
-  const handleModalClose = () => {
-    setModalOpen(false)
+  const handleModalClose = (modalId: string) => {
+    dispatch(closeModal(modalId))
   }
 
   const addCreature = (creature: Creature) => {
@@ -93,7 +97,7 @@ const AppContainer = () => {
   const handleAction = (action: ActionType) => {
     switch(action.type){
       case 'encounter_builder':
-        setModalOpen(true)
+        dispatch(openModal(encounterModalId))
     }
   }
 
@@ -158,21 +162,24 @@ const AppContainer = () => {
           </Grid>
 
         </Panel>
+        <ModalContainer modalId={encounterModalId}>
+           <Form modalId={encounterModalId} isSubmitting={isFetching} onSubmit={(values: ValuesType) => {
+            const encounterRequest = getRequestEncounter(values)
+            
+            if (encounterRequest.party_levels) {
+              dispatch(setPartyLevels(encounterRequest.party_levels))
+            }
+            
+            encounter(encounterRequest).then(res => {
+              if (res.isSuccess) {
+                handleModalClose(encounterModalId)
+              }
+            })
+          }} form={form} />
+        </ModalContainer>
         <Modal keepMounted onClose={handleModalClose} open={modalOpen} >
           <DialogContent>
-            <Form isSubmitting={isFetching} onSubmit={(values: ValuesType) => {
-              const encounterRequest = getRequestEncounter(values)
-              
-              if (encounterRequest.party_levels) {
-                dispatch(setPartyLevels(encounterRequest.party_levels))
-              }
-              
-              encounter(encounterRequest).then(res => {
-                if (res.isSuccess) {
-                  handleModalClose()
-                }
-              })
-            }} form={form} />
+            
           </DialogContent>
         </Modal>
     </Background>
