@@ -1,19 +1,20 @@
 
 import { Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
-import Panel from '../../components/panel';
-import Background from '../../components/background';
+import Panel from '../../components/Panel';
+import Background from '../../components/Backround';
 import BasicTable from '../../components/BasicTable';
-import Header from '../../components/header';
+import Header from '../../components/Header';
 import CreaturesList from '../CreaturesList';
-import { Creature } from '../../types/creature';
+import { Creature } from '../../types/Creature';
 import React, { useEffect, useState } from 'react';
 // import encounterFormJson from '../../services/FormConfigurations/encounter-form.json'
-import MainActions, { ActionType } from '../../components/MainActions';
-import Form, { ValuesType } from '../../components/Form';
-import { EncounterForm } from '../../types/EncounterForm';
+import MainActions from '../../components/MainActions';
+import Form from '../../components/Form';
+import { EncounterForm, ValuesType } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
 import { setPartyLevels } from '../../services/partySlice';
 import { useAppDispatch } from '../../app/hooks';
+import { ActionType } from '../../types/MainActions';
 
 const AppContainer = () => {
   const [encounter, { data, isFetching }] = useLazyGenerateEncounterQuery()

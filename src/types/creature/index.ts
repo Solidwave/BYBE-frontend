@@ -11,3 +11,5 @@ export type Creature = {
     quantity?: number,
     variant?: 'weak' | 'normal' | 'elite'
 }
+
+export type Variant = 'elite' | 'weak' | 'normal'

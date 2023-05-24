@@ -1,15 +1,13 @@
 import { styled } from '@mui/material'
 import React from 'react'
 import Action from './Action'
+import { ActionType } from '../../types/MainActions'
 
 type Props = {
     handleAction: Function
 }
 
-export type ActionType = {
-    type: string,
-    label: string
-}
+
 
 const Root = styled('div')(props => ({
     boxSizing: 'border-box',

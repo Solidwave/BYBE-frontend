@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column } from '../../../types/column'
+import { Column } from '../../../types/Column'
 import TableHeader from '.'
 import { styled } from '@mui/material'
 

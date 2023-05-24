@@ -1,7 +1,7 @@
 import {  Theme, Typography, styled } from '@mui/material'
 import React, { MouseEventHandler } from 'react'
+import { Variant } from '../../types/Creature'
 
-export type Variant = 'elite' | 'weak' | 'normal'
 
 type Props = {
     text?: String,

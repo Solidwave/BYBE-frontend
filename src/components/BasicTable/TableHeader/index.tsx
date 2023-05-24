@@ -3,7 +3,7 @@ import Empty from './Empty'
 import InputHeader from './InputHeader'
 import SelectHeader from './SelectHeader'
 import Text from './Text'
-import { Column } from '../../../types/column'
+import { Column } from '../../../types/Column'
 import Multi from './Multi'
 import SingleSelect from './SingleSelect'
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Creature } from '../../types/creature'
+import { Creature, Variant } from '../../types/Creature'
 import { IconButton, TextField, Typography, styled } from '@mui/material'
 import { Delete, KeyboardArrowDown, KeyboardArrowUp, Star, StarBorder } from '@mui/icons-material'
-import Badge, { Variant } from './Badge'
+import Badge from './Badge'
 import { useLazyGetCreatureQuery, useLazyGetEliteQuery, useLazyGetWeakQuery } from '../../services/creatures'
 
 type Props = {

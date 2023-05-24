@@ -21,3 +21,8 @@ export type Option = {
     value: string,
     label: string
 }
+
+export type ValuesType = {
+    field: EncounterField,
+    value: number | string | number[] | undefined
+}[]

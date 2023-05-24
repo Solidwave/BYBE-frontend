@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../app/store"
 
 
-export type PartyState = {
+type PartyState = {
     party_levels: number[]
 }
 

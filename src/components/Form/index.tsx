@@ -1,8 +1,8 @@
 import React, {  useEffect, useState } from 'react'
-import { EncounterField, EncounterForm, FormActionType } from '../../types/EncounterForm'
+import { EncounterField, EncounterForm, FormActionType, ValuesType } from '../../types/EncounterForm'
 import Field from './Fields'
 import { Button, CircularProgress, Paper, SxProps } from '@mui/material'
-import Header from '../header'
+import Header from '../Header'
 
 type Props = {
     form: EncounterForm,
@@ -10,10 +10,6 @@ type Props = {
     isSubmitting?: boolean
 }
 
-export type ValuesType = {
-    field: EncounterField,
-    value: number | string | number[] | undefined
-}[]
 
 const style: SxProps = {
     position: 'absolute' as 'absolute',

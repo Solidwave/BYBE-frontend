@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Creature } from '../types/creature'
+import { Creature } from '../types/Creature'
 import { creaturesApi } from './creatures';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL

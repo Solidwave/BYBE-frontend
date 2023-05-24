@@ -1,14 +1,15 @@
 import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
-import { Creature } from "../../types/creature"
+import { Creature } from "../../types/Creature"
 import { useEffect, useState } from "react"
-import Container from "../container"
+import Container from "../Container"
 import SearchButton from "./SearchButton"
-import { Column } from "../../types/column"
+import { Column } from "../../types/Column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import { uniqueId } from "lodash"
+
 type StateType = {
     hideColumns: string[]
 }

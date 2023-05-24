@@ -1,9 +1,9 @@
 // Need to use the React-specific entry point to allow generating React hooks
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { Creature } from '../types/creature'
+import { Creature } from '../types/Creature'
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL
-export interface CreaturesResponse {
+export type CreaturesResponse = {
   results: Array<Creature>;
   next?: string,
   count: number
