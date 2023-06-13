@@ -17,7 +17,12 @@ export type ListRequest = {
   cursor: number,
   page_size: number,
   order: string,
-  name_filter?: string
+  sort_field?: string,
+  name_filter?: string,
+  alignment_filter?: string,
+  family_filter?: string,
+  rarity_filter?: string,
+  size_filter?: string
 }
 
 // Define a service using a base URL and expected endpoints
@@ -26,15 +31,20 @@ export const creaturesApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors' }),
   endpoints: (builder) => ({
     getCreaturesList: builder.query<CreaturesResponse, ListRequest>({
-      query: ({cursor, order, page_size, name_filter}) => {
+      query: ({cursor, order, page_size, name_filter, sort_field, alignment_filter, family_filter, rarity_filter, size_filter}) => {
         return {
           url: 'list',
           method: 'get',
           params: {
             cursor,
-            order: order !== '' ? order : undefined,
+            sort_field: sort_field ,
+            order: order,
             page_size,
-            name_filter
+            name_filter,
+            alignment_filter,
+            family_filter,
+            rarity_filter,
+            size_filter
           }
         }
       }

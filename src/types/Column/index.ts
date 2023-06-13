@@ -1,5 +1,5 @@
 export type Column = {
-    value: 'name' | 'level' | 'hp' | 'family' | 'alignment' | 'size' | 'rarity' 
+    value: 'name' | 'level' | 'hp' | 'family' | 'alignment' | 'size' | 'rarity' | 'min_level' | 'max_level'
     type: ColumnType
     label: string
     icon?: string,

@@ -1,6 +1,8 @@
-import { FormControl, IconButton, InputLabel, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
+import { FormControl, IconButton, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
+import ImportExportIcon from '@mui/icons-material/ImportExport';
+import SortIcon from '@mui/icons-material/Sort';
 import { Creature } from "../../types/Creature"
 import { useEffect, useState } from "react"
 import Container from "../Container"
@@ -33,10 +35,6 @@ type FiltersType = {
 type ColumnsType = Column[]
 
 const orderOptions = [
-    {
-        value: 'UNORDERED',
-        label: 'none'
-    },
     {
         value: 'ID',
         label: 'Id'
@@ -85,12 +83,12 @@ const columns: ColumnsType = [
         minWidth: 150,
         subColumns: [
             {
-                value: 'level',
+                value: 'max_level',
                 label: 'Min lvl',
                 type: 'input'
             },
             {
-                value: 'level',
+                value: 'min_level',
                 label: 'Max lvl',
                 type: 'input'
             },
@@ -117,7 +115,6 @@ const columns: ColumnsType = [
         type: 'select',
         options: 'alignments',
         minWidth: 100
-
     },
     {
         value: 'size',
@@ -150,21 +147,28 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const [cursor, setCursor] = useState(0)
 
-    const [order, setOrder] = useState<string>('')
+    const [order, setOrder] = useState<string>('ASCENDING')
+
+    const [sortField, setSortField] = useState<string>('ID')
 
     const [filters, setFilters] = useState<FiltersType>({})
 
-    const { data, isLoading, isFetching, isError } = useGetCreaturesListQuery({ cursor, order, page_size, ...filters })
+    const { data, isLoading, isFetching, isError } = useGetCreaturesListQuery({ cursor, order,sort_field: sortField, page_size, ...filters })
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
 
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     useEffect(() => {
-        // if (!isEqual(prevOrder, order) || !isEqual(prevFilters, filters)) {
-        //     setLocalData(data?.results || [])
-        // } else {
-            
-        //     setLocalData([...localData, ...data?.results || []])
-        // }
         if (cursor != 0 ) {
             setLocalData([...localData, ...data?.results || []])
         } else {
@@ -223,6 +227,8 @@ const BasicTable = ({ onRowClick }: Props) => {
 
         tmpFilters[filterName as keyof FiltersType] = value
         setCursor(0)
+        console.log(tmpFilters);
+        
         setFilters(tmpFilters)
     }
 
@@ -299,33 +305,63 @@ const BasicTable = ({ onRowClick }: Props) => {
                                 background: '#BF9E6D',
                                 borderBottom: '0px',
                                 padding: '3.5px',
-                                minWidth: '100px',
-                                maxWidth: '100px'
+                               
                             }} >
-                                <FormControl fullWidth variant='filled'>
-                                    <InputLabel id='order-select-label'>Sort by</InputLabel>
-                                    <Select
-                                        disableUnderline
-                                        id='order-select-label'
-                                        variant='filled'
-                                        label='Sort by'
-                                        value={order}
-                                        onChange={(e) => {
-                                            const {
-                                                value
-                                            } = e.target
-
-                                            if (value) {
-                                                setCursor(0)
-                                                setOrder(value || '')
-                                            }
-                                        }}
-                                    >
+                                <div style={{
+                                    display: 'flex',
+                                }}>
+                                    <IconButton  sx={{
+                                        minWidth: '56px',
+                                        minHeight: '56px'
+                                    }} onClick={handleClick}>
+                                        <SortIcon />
+                                    </IconButton>
+                                    <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
                                         {orderOptions.map(option => (
-                                            <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
+                                            <MenuItem value={option.value} sx={{
+                                                fontWeight: option.value === sortField ? '700' : 400
+                                            }} onClick={() => {
+                                                setCursor(0)
+                                                setAnchorEl(null)
+                                                setSortField(option.value || '')
+                                            }} key={option.value}>{option.label}</MenuItem>
                                         ))}
-                                    </Select>
-                                </FormControl>
+                                    </Menu>
+                                       
+                                        {/* <Select
+                                            disableUnderline
+                                            id='order-select-label'
+                                            variant='filled'
+                                            label='Sort by'
+                                            value={sortField}
+                                            onChange={(e) => {
+                                                const {
+                                                    value
+                                                } = e.target
+
+                                                if (value) {
+                                                    setCursor(0)
+                                                    setSortField(value || '')
+                                                }
+                                            }}
+                                        >
+                                            {orderOptions.map(option => (
+                                                <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
+                                            ))}
+                                        </Select> */}
+                                    <IconButton sx={{
+                                        minWidth: '56px',
+                                        minHeight: '56px'
+                                    }} onClick={() => {
+                                        if (order === 'ASCENDING') {
+                                            setOrder('DESCENDING')
+                                        } else {
+                                            setOrder('ASCENDING')
+                                        }
+                                    }}>
+                                        <ImportExportIcon />
+                                    </IconButton>
+                                </div>
                             </TableCell>
                             {columns.filter(column => isColumnVisible(column.value)).map((column, index) => (
                                 <TableCell key={index} sx={{

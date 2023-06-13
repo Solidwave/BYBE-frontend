@@ -20,6 +20,16 @@ function SingleSelect({ onChange, column, options }: Props) {
     return (
        <Select
             variant='standard'
+            onChange={(e) => {
+                const {
+                    value
+                } = e.target
+
+                console.log(value);
+                
+
+                onChange(column.value + '_filter',value)
+            }}
             defaultValue={options[0].value}
             >
             {options.map(option =>(
