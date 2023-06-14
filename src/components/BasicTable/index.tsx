@@ -25,11 +25,9 @@ const page_size = 50
 
 type FiltersType = {
     name_filter?: string,
-    hp?: string,
-    min_level_filter?: string,
-    max_level_filter?: string,
     family_filter?: string,
     rarity_filter?: string,
+    size_filter?: string
 }
 
 type ColumnsType = Column[]
@@ -80,16 +78,19 @@ const columns: ColumnsType = [
         value: 'level',
         label: 'Level',
         type: 'double',
+        disabled: true,
         minWidth: 150,
         subColumns: [
             {
                 value: 'max_level',
                 label: 'Min lvl',
+                disabled: true,
                 type: 'input'
             },
             {
                 value: 'min_level',
                 label: 'Max lvl',
+                disabled: true,
                 type: 'input'
             },
         ]
@@ -97,6 +98,7 @@ const columns: ColumnsType = [
     },
     {
         value: 'hp',
+        disabled: true,
         label: 'Hp',
         type: 'input',
         minWidth: 100
@@ -226,8 +228,8 @@ const BasicTable = ({ onRowClick }: Props) => {
         let tmpFilters = { ...filters }
 
         tmpFilters[filterName as keyof FiltersType] = value
+
         setCursor(0)
-        console.log(tmpFilters);
         
         setFilters(tmpFilters)
     }
@@ -294,9 +296,12 @@ const BasicTable = ({ onRowClick }: Props) => {
             <TableContainer sx={{
                 overflow: 'auto',
                 maxHeight: 'calc(100vh - 500px)',
-                minHeight: 'calc(100vh - 500px)'
+                minHeight: 'calc(100vh - 500px)',
             }} >
-                <Table stickyHeader={true}>
+                <Table sx={{
+                    minWidth: '1100px',
+                    maxWidth: '1100px'
+                }} stickyHeader={true}>
                     <TableHead >
                         <TableRow sx={{
                             borderBottom: '1px solid grey'
@@ -327,28 +332,6 @@ const BasicTable = ({ onRowClick }: Props) => {
                                             }} key={option.value}>{option.label}</MenuItem>
                                         ))}
                                     </Menu>
-                                       
-                                        {/* <Select
-                                            disableUnderline
-                                            id='order-select-label'
-                                            variant='filled'
-                                            label='Sort by'
-                                            value={sortField}
-                                            onChange={(e) => {
-                                                const {
-                                                    value
-                                                } = e.target
-
-                                                if (value) {
-                                                    setCursor(0)
-                                                    setSortField(value || '')
-                                                }
-                                            }}
-                                        >
-                                            {orderOptions.map(option => (
-                                                <MenuItem value={option.value} key={option.value}>{option.label}</MenuItem>
-                                            ))}
-                                        </Select> */}
                                     <IconButton sx={{
                                         minWidth: '56px',
                                         minHeight: '56px'
@@ -368,6 +351,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     background: '#BF9E6D',
                                     borderBottom: '0px',
                                     minWidth: column.minWidth,
+                                    maxWidth: column.minWidth,
                                     padding: '3.5px'
                                 }} >
                                     <TableHeader onChange={onFilterChange} options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
@@ -400,10 +384,13 @@ const BasicTable = ({ onRowClick }: Props) => {
                                         <TableCell sx={{
                                             border: '0px'
                                         }}>
-                                            <SearchButton link={creature.archive_link || ''}></SearchButton></TableCell>
+                                            <SearchButton link={creature.archive_link || ''}></SearchButton>
+                                        </TableCell>
                                         {columns.filter(column => column.type !== 'empty' && isColumnVisible(column.value)).map((column: Column, index: number) => (
                                             <TableCell key={index} sx={{
-                                                border: '0px'
+                                                border: '0px',
+                                                minWidth: column.minWidth,
+                                                maxWidth: column.minWidth
                                             }}>{creature[column.value]}</TableCell>
                                         ))}
                                     </TableRow>

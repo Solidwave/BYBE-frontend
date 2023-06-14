@@ -17,7 +17,7 @@ function InputHeader({column, onChange}: Props) {
       }
     }} variant='filled' InputProps={{
       disableUnderline: true
-    }}  fullWidth label={column.label} placeholder={column.label}></TextField>
+    }} disabled={column.disabled}  fullWidth label={column.label} placeholder={column.label}></TextField>
   )
 }
 

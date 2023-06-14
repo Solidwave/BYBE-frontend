@@ -21,6 +21,7 @@ function SelectHeader({onChange, column,options}: Props) {
       onChange={(e, value) => {
         onChange(column.value + '_filter', value?.value)
       }}
+      disabled={column.disabled}
       limitTags={0}
       options={options || []}
       renderInput={(params) => <TextField onChange={(e) => {console.log(e.target.value);

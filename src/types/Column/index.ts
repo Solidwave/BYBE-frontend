@@ -3,6 +3,7 @@ export type Column = {
     type: ColumnType
     label: string
     icon?: string,
+    disabled?: boolean,
     options?: 'families' | 'rarities' | 'sizes' | 'alignments' | OptionType[]
     minWidth?: number
     maxWidth?: string,
