@@ -1,5 +1,4 @@
 import React from 'react'
-import Empty from './Empty'
 import InputHeader from './InputHeader'
 import SelectHeader from './SelectHeader'
 import Text from './Text'
@@ -14,7 +13,7 @@ type Props = {
         label: string,
         value: string
     }[],
-    onChange: Function,
+    onChange: (filter: string, value: string ) => void,
     padding?: string
 }
 

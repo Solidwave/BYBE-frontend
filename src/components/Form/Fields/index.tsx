@@ -6,7 +6,7 @@ import ArrayField from './ArrayField'
 
 type Props = {
     field: EncounterField,
-    onChange: Function
+    onChange: (name: string, value: string | number | number[] | undefined) => void
 }
 
 const types = {

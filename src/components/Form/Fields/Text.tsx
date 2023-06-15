@@ -4,7 +4,7 @@ import { TextField } from '@mui/material'
 
 type Props = {
     field: EncounterField,
-    onChange: Function
+    onChange: (name: string, value: string) => void
 }
 
 function Text({field, onChange}: Props) {

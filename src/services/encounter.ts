@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Creature } from '../types/Creature';
-import { creaturesApi } from './creatures';
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL
 
@@ -63,7 +62,7 @@ export const encounterApi = createApi({
                     body: party_levels
                 }
             },
-            transformResponse: (response: EncounterResponse, meta, arg) => {
+            transformResponse: (response: EncounterResponse) => {
 
                 response.results = response.results.map(creature => {
                     return {

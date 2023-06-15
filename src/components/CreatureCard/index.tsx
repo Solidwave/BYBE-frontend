@@ -7,9 +7,9 @@ import { useLazyGetCreatureQuery, useLazyGetEliteQuery, useLazyGetWeakQuery } fr
 
 type Props = {
   creature: Creature,
-  removeCreature: Function,
+  removeCreature: (index: number) => void,
   index: number,
-  updateCreature: Function
+  updateCreature: (creature: Creature, index: number) => void
 }
 
 const Container = styled('div')((props => ({

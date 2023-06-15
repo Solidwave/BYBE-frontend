@@ -1,7 +1,6 @@
 import { DialogContent, Modal } from '@mui/material'
 import React, { ReactNode } from 'react'
-import modal, { closeModal, getCurrentModal } from '../../slices/modal'
-import { RootState } from '../../app/store'
+import { closeModal, getCurrentModal } from '../../slices/modal'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 type Props = {
@@ -12,13 +11,13 @@ type Props = {
 
 
 
-const ModalContainer = ({modalId, ModalContent,children }: Props) => {
+const ModalContainer = ({modalId,children }: Props) => {
   const current_modal = useAppSelector(getCurrentModal)
 
   const dispatch = useAppDispatch()
 
   return (
-    <Modal open = {current_modal === modalId} onClose={() => dispatch(closeModal(modalId))}>
+    <Modal open = {current_modal === modalId} onClose={() => dispatch(closeModal())}>
       <DialogContent>
        {children}
       </DialogContent>

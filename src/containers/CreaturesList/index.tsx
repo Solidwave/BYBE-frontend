@@ -9,18 +9,18 @@ import { RootState } from '../../app/store'
 
 type Props = {
     creatures: Creature[]
-    removeCreature: Function
-    removeAll: Function
-    updateCreature: Function
+    removeCreature: (index: number) => void
+    removeAll: () => void
+    updateCreature: (creature: Creature, index: number) => void
 }
 
 
 
-const Root = styled('div')(props => ({
+const Root = styled('div')(() => ({
     width: '100%',
     padding: 10
 }))
-const ListContainer = styled('div')(props => ({
+const ListContainer = styled('div')(() => ({
     width: '100%',
     maxHeight: 'calc(100vh - 400px)',
     overflowY: 'auto',
@@ -50,10 +50,10 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
     }, [creaturesLevels])
 
     useEffect(() => {
-        let tempLevels : number[] = []
+        const tempLevels : number[] = []
 
         creatures.forEach(creature => {
-            let quantity = typeof creature.quantity === 'number' ? creature.quantity : 1
+            const quantity = typeof creature.quantity === 'number' ? creature.quantity : 1
 
             for (let index = 0; index < quantity; index++) {
                 tempLevels.push(creature.level)

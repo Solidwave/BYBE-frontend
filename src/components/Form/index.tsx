@@ -1,5 +1,5 @@
-import React, {  useEffect, useState } from 'react'
-import { EncounterField, EncounterForm, FormActionType, ValuesType } from '../../types/EncounterForm'
+import React, {   useState } from 'react'
+import {  EncounterForm, FormActionType, ValuesType } from '../../types/EncounterForm'
 import Field from './Fields'
 import { Button, CircularProgress, Paper, SxProps } from '@mui/material'
 import Header from '../Header'
@@ -37,7 +37,7 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
 
     const action = {
         text: 'close',
-        callback: () => dispatch(closeModal(modalId))
+        callback: () => dispatch(closeModal())
     }
 
     const handleAction = (action: FormActionType) => {

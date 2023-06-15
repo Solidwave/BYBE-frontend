@@ -6,15 +6,15 @@ import { styled } from '@mui/material'
 type Props = {
     column: Column,
     padding?: string,
-    onChange: Function
+    onChange: (filter: string, value: string) => void
 }
 
-const Root = styled('div')((props) => ({
+const Root = styled('div')(() => ({
     display: 'flex',
     flexDirection: 'row'
 }))
 
-const HeaderContainer = styled('div')((props) => ({
+const HeaderContainer = styled('div')(() => ({
     ":last-child": {
         paddingLeft: '3px'
     }

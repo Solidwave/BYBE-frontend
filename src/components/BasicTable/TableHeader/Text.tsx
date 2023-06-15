@@ -2,8 +2,7 @@ import { Typography } from '@mui/material'
 import React from 'react'
 
 type Props = {
-  text?: string,
-  onChange?: Function
+  text?: string
 }
 
 function Text({text}: Props) {

@@ -5,12 +5,12 @@ import { Add, Remove } from '@mui/icons-material'
 
 type Props = {
     field: EncounterField,
-    onChange: Function
+    onChange: (name: string, value: string | number | number[] | undefined) => void
 }
 
 // type ArrayFieldState = Number[]
 
-const Root = styled('div')(props => ({
+const Root = styled('div')(() => ({
     display: 'flex'
 }))
 
@@ -34,16 +34,20 @@ function ArrayField({ field, onChange }: Props) {
                     alignItems: 'center'
                 }}>
                     <IconButton onClick={() => {
-                        let tmpValues = [...values]
+                        const tmpValues = [...values]
+
                         tmpValues.pop()
+                        
                         setValues(tmpValues)
                     }}>
                         <Remove />
                     </IconButton>
                     <Typography sx={{ color: theme.palette.primary.main, fontSize: 8, textAlign: 'center',verticalAlign:'center', whiteSpace: 'break-spaces', maxWidth: '50px' }} >add/remove value</Typography>
                     <IconButton onClick={() => {
-                        let tmpValues = [...values]
+                        const tmpValues = [...values]
+
                         tmpValues.push(3)
+
                         setValues(tmpValues)
                     }}>
                         <Add  />
@@ -66,9 +70,10 @@ function ArrayField({ field, onChange }: Props) {
                             return
                         }
 
-                        let tmpValues = [...values]
+                        const tmpValues = [...values]
 
                         tmpValues[index] = Number(event.target.value)
+
                         setValues(tmpValues)
                     }} />
                 ))}

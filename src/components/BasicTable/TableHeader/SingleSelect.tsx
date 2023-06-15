@@ -1,9 +1,9 @@
-import { Icon, MenuItem, Select } from '@mui/material'
-import React, { ChangeEventHandler } from 'react'
+import {  MenuItem, Select } from '@mui/material'
+import React from 'react'
 import { Column } from '../../../types/Column'
 
 type Props = {
-    onChange?: Function,
+    onChange?: (filter: string, value: string) => void,
     column: Column,
     options?: {
         label: string,

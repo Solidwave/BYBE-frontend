@@ -17,8 +17,7 @@ type StateType = {
 }
 
 type Props = {
-    updateEncounter?: Function,
-    onRowClick?: Function
+    onRowClick?: (creature: Creature) => void
 }
 
 const page_size = 50
@@ -215,7 +214,7 @@ const BasicTable = ({ onRowClick }: Props) => {
     }
 
     const onFilterChange = (filterName: string, value: string) => {
-        let tmpFilters = { ...filters }
+        const tmpFilters = { ...filters }
 
         tmpFilters[filterName as keyof FiltersType] = value
 
@@ -224,7 +223,7 @@ const BasicTable = ({ onRowClick }: Props) => {
         setFilters(tmpFilters)
     }
 
-    const placeHolder = () => [...Array(page_size).keys()].map((item,index) => (
+    const placeHolder = () => [...Array(page_size).keys()].map(() => (
         <TableRow key={uniqueId("prefix")}>
             {columns.map((column: Column, index: number) => (
                 <TableCell key={index} sx={{

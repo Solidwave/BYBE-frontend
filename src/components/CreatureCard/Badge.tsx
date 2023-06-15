@@ -4,12 +4,12 @@ import { Variant } from '../../types/Creature'
 
 
 type Props = {
-    text?: String,
+    text?: string,
     value?: number,
     variant?: Variant,
     theme?: Theme,
     selected: boolean,
-    onClick: Function & MouseEventHandler<HTMLButtonElement>
+    onClick: MouseEventHandler<HTMLButtonElement>
 }
 
 const getColor = (variant: Variant) => {

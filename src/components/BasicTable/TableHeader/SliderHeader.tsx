@@ -1,10 +1,10 @@
-import { Button, Menu, Popover, Popper, Slider, TextField, Typography } from '@mui/material'
+import { Popover,  Slider, TextField, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
-import { Column, ColumnType } from '../../../types/Column'
+import { Column } from '../../../types/Column'
 import usePrevious from '../../../app/hooks'
 
 type Props = {
-    onChange?: Function,
+    onChange?: (filter: string, value: string) => void,
     column?: Column
 }
 

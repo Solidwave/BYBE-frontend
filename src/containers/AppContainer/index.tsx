@@ -1,5 +1,5 @@
 
-import { Button, DialogContent, Grid, Modal, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Grid, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/Panel';
 import Background from '../../components/Backround';
 import BasicTable from '../../components/BasicTable';
@@ -25,10 +25,8 @@ const AppContainer = () => {
 
   const dispatch = useAppDispatch()
 
-  const [modalOpen,setModalOpen] = useState(false)
-
   const [localCreatures, setLocalCreatures] = useState<Creature[]>(() => {
-    let storedEncounter = localStorage.getItem('encounter_list')
+    const storedEncounter = localStorage.getItem('encounter_list')
 
     let tmpData: Creature[] = []
 
@@ -37,7 +35,7 @@ const AppContainer = () => {
         tmpData = JSON.parse(storedEncounter) || []
         return tmpData
       } catch (error) {
-        
+        console.log('error retrieving local data')
       }
     }
 
@@ -56,15 +54,15 @@ const AppContainer = () => {
   },[localCreatures])
 
 
-  const handleModalClose = (modalId: string) => {
-    dispatch(closeModal(modalId))
+  const handleModalClose = () => {
+    dispatch(closeModal())
   }
 
   const addCreature = (creature: Creature) => {
     setLocalCreatures(() => {
-      let tmpData = [...localCreatures]
+      const tmpData = [...localCreatures]
 
-      let tmpCreature : Creature = {...creature, variant: 'normal'}
+      const tmpCreature : Creature = {...creature, variant: 'normal'}
 
       tmpData.push(tmpCreature)
 
@@ -74,7 +72,7 @@ const AppContainer = () => {
 
   const removeCreature = (index: number) => {
     setLocalCreatures(() => {
-      let tmpData = [...localCreatures]
+      const tmpData = [...localCreatures]
 
       tmpData.splice(index, 1)
 
@@ -87,7 +85,7 @@ const AppContainer = () => {
   }
 
   const updateCreature = (creature: Creature, index: number) => {
-    let tmpLocalCretures = [...localCreatures]
+    const tmpLocalCretures = [...localCreatures]
 
     tmpLocalCretures[index] = creature
 
@@ -106,7 +104,7 @@ const AppContainer = () => {
   const getRequestEncounter = (form: ValuesType): EncounterRequest => {
     const tmpEncounterRequest : EncounterRequest = {}
     form.forEach(field => {
-      let value: (string & number[]) | undefined = field.value as (string & number[]) | undefined;
+      const value: (string & number[]) | undefined = field.value as (string & number[]) | undefined;
 
       tmpEncounterRequest[field.field.fieldName] = value 
     });
@@ -172,16 +170,11 @@ const AppContainer = () => {
             
             encounter(encounterRequest).then(res => {
               if (res.isSuccess) {
-                handleModalClose(encounterModalId)
+                handleModalClose()
               }
             })
           }} form={form} />
         </ModalContainer>
-        <Modal keepMounted onClose={handleModalClose} open={modalOpen} >
-          <DialogContent>
-            
-          </DialogContent>
-        </Modal>
     </Background>
   );
 }

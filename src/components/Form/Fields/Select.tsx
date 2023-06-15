@@ -5,7 +5,7 @@ import { useGetAlignmentsListQuery, useGetFamiliesListQuery, useGetRaritiesListQ
 
 type Props = {
     field: EncounterField,
-    onChange: Function
+    onChange: (name: string, value: string) => void
 }
 
 function Select({field, onChange}: Props) {
@@ -19,7 +19,7 @@ function Select({field, onChange}: Props) {
 
     if (!field.options) return null
 
-    let tmpOptions = typeof field.options === 'string' ? options[field.options] : field.options
+    const tmpOptions = typeof field.options === 'string' ? options[field.options] : field.options
 
     if (!tmpOptions) return null
 

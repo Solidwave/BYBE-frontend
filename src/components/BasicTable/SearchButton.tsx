@@ -3,7 +3,6 @@ import React from 'react'
 import Search from '@mui/icons-material/Search';
 
 type Props = {
-    onClick?: Function,
     link: string
 }
 
