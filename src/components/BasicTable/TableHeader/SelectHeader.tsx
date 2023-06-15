@@ -24,8 +24,7 @@ function SelectHeader({onChange, column,options}: Props) {
       disabled={column.disabled}
       limitTags={0}
       options={options || []}
-      renderInput={(params) => <TextField onChange={(e) => {console.log(e.target.value);
-      }} variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true, style: {flexWrap: 'nowrap'},  }}  label={column.label} />}
+      renderInput={(params) => <TextField variant='filled' {...params} InputProps={{ ...params.InputProps, disableUnderline: true, style: {flexWrap: 'nowrap'},  }}  label={column.label} />}
     />
   )
 }

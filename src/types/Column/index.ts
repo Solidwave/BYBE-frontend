@@ -1,5 +1,5 @@
 export type Column = {
-    value: 'name' | 'level' | 'hp' | 'family' | 'alignment' | 'size' | 'rarity' | 'min_level' | 'max_level'
+    value: 'name' | 'level' | 'hp' | 'family' | 'alignment' | 'size' | 'rarity' | 'level'
     type: ColumnType
     label: string
     icon?: string,
@@ -8,6 +8,8 @@ export type Column = {
     minWidth?: number
     maxWidth?: string,
     subColumns?: Column[]
+    min?: number,
+    max?: number,
     subtype?: string
     align?: 'right'
 }
@@ -17,4 +19,4 @@ export type OptionType = {
     label: string
 }
 
-export type ColumnType = 'empty' | 'input' | 'select' | 'double' | 'text' | 'singleSelect'
+export type ColumnType = 'empty' | 'input' | 'select' | 'double' | 'text' | 'singleSelect' | 'slider'

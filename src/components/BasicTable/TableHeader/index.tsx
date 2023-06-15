@@ -6,6 +6,7 @@ import Text from './Text'
 import { Column } from '../../../types/Column'
 import Multi from './Multi'
 import SingleSelect from './SingleSelect'
+import SliderHeader from './SliderHeader'
 
 type Props = {
     column: Column,
@@ -22,7 +23,8 @@ const types = {
     input: InputHeader,
     select: SelectHeader,
     text: Text,
-    double: Multi
+    double: Multi,
+    slider: SliderHeader
 }
 
 function TableHeader({column,options, onChange}: Props) {

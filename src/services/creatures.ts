@@ -19,6 +19,8 @@ export type ListRequest = {
   order: string,
   sort_field?: string,
   name_filter?: string,
+  level_filter?: string,
+  hp_filter?: string,
   alignment_filter?: string,
   family_filter?: string,
   rarity_filter?: string,
@@ -31,20 +33,12 @@ export const creaturesApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: `${backendUrl}/bestiary/`, mode: 'cors' }),
   endpoints: (builder) => ({
     getCreaturesList: builder.query<CreaturesResponse, ListRequest>({
-      query: ({cursor, order, page_size, name_filter, sort_field, alignment_filter, family_filter, rarity_filter, size_filter}) => {
+      query: (args) => {
         return {
           url: 'list',
           method: 'get',
           params: {
-            cursor,
-            sort_field: sort_field ,
-            order: order,
-            page_size,
-            name_filter,
-            alignment_filter,
-            family_filter,
-            rarity_filter,
-            size_filter
+            ...args
           }
         }
       }

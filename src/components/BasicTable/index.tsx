@@ -77,31 +77,21 @@ const columns: ColumnsType = [
     {
         value: 'level',
         label: 'Level',
-        type: 'double',
+        type: 'slider',
         disabled: true,
-        minWidth: 150,
-        subColumns: [
-            {
-                value: 'max_level',
-                label: 'Min lvl',
-                disabled: true,
-                type: 'input'
-            },
-            {
-                value: 'min_level',
-                label: 'Max lvl',
-                disabled: true,
-                type: 'input'
-            },
-        ]
+        minWidth: 100,
+        max: 25,
+        min: -1
 
     },
     {
         value: 'hp',
         disabled: true,
         label: 'Hp',
-        type: 'input',
-        minWidth: 100
+        type: 'slider',
+        minWidth: 100,
+        max: 600,
+        min: 0
 
     },
     {

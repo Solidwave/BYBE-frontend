@@ -25,9 +25,6 @@ function SingleSelect({ onChange, column, options }: Props) {
                     value
                 } = e.target
 
-                console.log(value);
-                
-
                 onChange(column.value + '_filter',value)
             }}
             defaultValue={options[0].value}
