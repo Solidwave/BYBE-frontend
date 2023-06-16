@@ -32,6 +32,10 @@ const actions: ActionType[] = [
     {
         type: 'encounter_builder',
         label: 'ENCOUNTER BUILDER'
+    },
+    {
+        type: 'party_builder',
+        label: 'PARTY BUILDER'
     }
 ]
 

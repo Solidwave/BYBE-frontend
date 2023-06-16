@@ -1,3 +1,4 @@
+import React from "react";
 import { FormControl, IconButton, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
@@ -304,9 +305,8 @@ const BasicTable = ({ onRowClick }: Props) => {
                                 <div style={{
                                     display: 'flex',
                                 }}>
-                                    <IconButton  sx={{
-                                        minWidth: '56px',
-                                        minHeight: '56px'
+                                    <IconButton sx={{
+                                        margin: 'auto'
                                     }} onClick={handleClick}>
                                         <SortIcon />
                                     </IconButton>
@@ -322,8 +322,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                         ))}
                                     </Menu>
                                     <IconButton sx={{
-                                        minWidth: '56px',
-                                        minHeight: '56px'
+                                        margin: 'auto'
                                     }} onClick={() => {
                                         if (order === 'ASCENDING') {
                                             setOrder('DESCENDING')

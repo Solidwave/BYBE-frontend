@@ -4,8 +4,8 @@ import CreatureCard from '../../components/CreatureCard'
 import { styled } from '@mui/material'
 import Header from '../../components/Header'
 import { useLazyGetEncounterInfoQuery } from '../../services/encounter'
-import { useAppSelector } from '../../app/hooks'
-import { RootState } from '../../app/store'
+import { selectPartyPlayersLevels } from '../../slices/partySlice'
+import { useSelector } from 'react-redux'
 
 type Props = {
     creatures: Creature[]
@@ -13,8 +13,6 @@ type Props = {
     removeAll: () => void
     updateCreature: (creature: Creature, index: number) => void
 }
-
-
 
 const Root = styled('div')(() => ({
     width: '100%',
@@ -33,8 +31,8 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
     const [difficulty, setDifficulty] = useState<string>('')
     const [creaturesLevels, setCreatureLevels] = useState<number[]>([])
 
-    const party_levels = useAppSelector((state : RootState) => state.party.party_levels)
-    
+    const party_levels = useSelector(selectPartyPlayersLevels)
+
     useEffect(() => {
        setExperience(data?.experience || 0) 
        setDifficulty(data?.difficulty || '')

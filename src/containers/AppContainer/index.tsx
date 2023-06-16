@@ -12,16 +12,22 @@ import MainActions from '../../components/MainActions';
 import Form from '../../components/Form';
 import { EncounterForm, ValuesType } from '../../types/EncounterForm';
 import { EncounterRequest, useLazyGenerateEncounterQuery } from '../../services/encounter';
-import { setPartyLevels } from '../../slices/partySlice';
 import { useAppDispatch } from '../../app/hooks';
 import { ActionType } from '../../types/MainActions';
 import ModalContainer from '../ModalContainer/indext';
 import { closeModal, openModal } from '../../slices/modal';
+import { useSelector } from 'react-redux';
+import { selectPartyPlayersLevels } from '../../slices/partySlice';
+import PartyBuilder from '../../components/PartyBuilder';
 
 const encounterModalId = 'encounter_modal'
 
+const partyManagerModalId = 'party_manager_modal'
+
 const AppContainer = () => {
   const [encounter, { data, isFetching }] = useLazyGenerateEncounterQuery()
+
+  const party_levels = useSelector(selectPartyPlayersLevels)
 
   const dispatch = useAppDispatch()
 
@@ -40,18 +46,18 @@ const AppContainer = () => {
     }
 
     return data?.results || []
-    
+
   })
 
   useEffect(() => {
     if (data) {
       setLocalCreatures(data.results)
     }
-  },[data])
-    
+  }, [data])
+
   useEffect(() => {
-    localStorage.setItem('encounter_list',JSON.stringify(localCreatures))
-  },[localCreatures])
+    localStorage.setItem('encounter_list', JSON.stringify(localCreatures))
+  }, [localCreatures])
 
 
   const handleModalClose = () => {
@@ -62,7 +68,7 @@ const AppContainer = () => {
     setLocalCreatures(() => {
       const tmpData = [...localCreatures]
 
-      const tmpCreature : Creature = {...creature, variant: 'normal'}
+      const tmpCreature: Creature = { ...creature, variant: 'normal' }
 
       tmpData.push(tmpCreature)
 
@@ -93,20 +99,26 @@ const AppContainer = () => {
   }
 
   const handleAction = (action: ActionType) => {
-    switch(action.type){
+    switch (action.type) {
       case 'encounter_builder':
         dispatch(openModal(encounterModalId))
+        break
+      case 'party_builder':
+        dispatch(openModal(partyManagerModalId))
+        break
+      default:
+        break
     }
   }
 
   const form: EncounterForm = require('../../services/FormConfigurations/encounter-form.json')
 
   const getRequestEncounter = (form: ValuesType): EncounterRequest => {
-    const tmpEncounterRequest : EncounterRequest = {}
+    const tmpEncounterRequest: EncounterRequest = {}
     form.forEach(field => {
       const value: (string & number[]) | undefined = field.value as (string & number[]) | undefined;
 
-      tmpEncounterRequest[field.field.fieldName] = value 
+      tmpEncounterRequest[field.field.fieldName] = value
     });
 
     return tmpEncounterRequest
@@ -118,63 +130,64 @@ const AppContainer = () => {
 
   return (
     <Background >
-        <Panel  sx={{
-          height: '100%',
-          background: theme.gradient?.main,
-          position: 'relative',
-          [theme.breakpoints.down('md')]: {
-            width: '100%'
-          }
+      <Panel sx={{
+        height: '100%',
+        background: theme.gradient?.main,
+        position: 'relative',
+        [theme.breakpoints.down('md')]: {
+          width: '100%'
+        }
       }} borderRadius='2rem' padding={mobile ? '0' : '4rem 5.25rem 4rem 4rem'} border={mobile ? '0px' : '1rem solid'}>
-          {mobile ? '' : <MainActions handleAction={handleAction} />}
-          <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
-            <Grid  sx={{
-            }} item xs={12} md={7}>
-                <Panel  borderRadius='1rem' padding='1rem' border='5px solid' sx={{
-                  maxHeight: 'calc(100vh - 300px)',
-                  background: theme.gradient?.secondary,
-                  boxShadow: theme.extraShadows?.panel
-                }}>
-                  <Header text='Total encounter cost:' cost={180}></Header>
-                  <BasicTable onRowClick={addCreature} ></BasicTable>
-                </Panel>
-            </Grid>
-            {mobile && <Grid item xs={12}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
+        {mobile ? '' : <MainActions handleAction={handleAction} />}
+        <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
+          <Grid sx={{
+          }} item xs={12} md={7}>
+            <Panel borderRadius='1rem' padding='1rem' border='5px solid' sx={{
+              maxHeight: 'calc(100vh - 300px)',
+              background: theme.gradient?.secondary,
+              boxShadow: theme.extraShadows?.panel
+            }}>
+              <Header text='Total encounter cost:' cost={180}></Header>
+              <BasicTable onRowClick={addCreature} ></BasicTable>
+            </Panel>
+          </Grid>
+          {mobile && <Grid item xs={12}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
               <Button variant='action' fullWidth onClick={() => {
-                handleAction({type: 'encounter_builder', label: 'anything'})
+                handleAction({ type: 'encounter_builder', label: 'anything' })
               }} sx={{
                 margin: 'auto'
               }}>Generate random encounter</Button>
             </div>
-            </Grid> }
-            <Grid item xs={12} md={5}>
-            <Panel minWidth='100px'  minHeight='400px' border='0px' >
-                <CreaturesList removeAll={removeAllCreatures}  removeCreature={removeCreature} updateCreature={updateCreature} creatures={localCreatures || []} />
-              </Panel>
-            </Grid>
+          </Grid>}
+          <Grid item xs={12} md={5}>
+            <Panel minWidth='100px' minHeight='400px' border='0px' >
+              <CreaturesList removeAll={removeAllCreatures} removeCreature={removeCreature} updateCreature={updateCreature} creatures={localCreatures || []} />
+            </Panel>
           </Grid>
+        </Grid>
 
-        </Panel>
-        <ModalContainer modalId={encounterModalId}>
-           <Form modalId={encounterModalId} isSubmitting={isFetching} onSubmit={(values: ValuesType) => {
-            const encounterRequest = getRequestEncounter(values)
-            
-            if (encounterRequest.party_levels) {
-              dispatch(setPartyLevels(encounterRequest.party_levels))
+      </Panel>
+      <ModalContainer modalId={encounterModalId}>
+        <Form modalId={encounterModalId} isSubmitting={isFetching} onSubmit={(values: ValuesType) => {
+          const encounterRequest = getRequestEncounter(values)
+
+          encounterRequest['party_levels'] = party_levels
+
+          encounter(encounterRequest).then(res => {
+            if (res.isSuccess) {
+              handleModalClose()
             }
-            
-            encounter(encounterRequest).then(res => {
-              if (res.isSuccess) {
-                handleModalClose()
-              }
-            })
-          }} form={form} />
-        </ModalContainer>
+          })
+        }} form={form} />
+      </ModalContainer>
+      <ModalContainer modalId={partyManagerModalId}>
+        <PartyBuilder />
+      </ModalContainer>
     </Background>
   );
 }

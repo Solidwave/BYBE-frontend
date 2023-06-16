@@ -12,6 +12,7 @@ function Action({action, handleAction}: Props) {
     <Button sx={{
           boxSizing: 'border-box',
           minHeight: 40,
+          minWidth: 200,
           marginRight: '.5rem',
           ":last-child": {
             marginRight: 0
