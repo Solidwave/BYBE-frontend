@@ -20,7 +20,7 @@ const ModalContainer = ({ modalId, children }: Props) => {
     <Modal open={current_modal === modalId} onClose={() => dispatch(closeModal())}>
       <DialogContent >
         <Paper variant='fantasy' sx={{
-          position: 'absolute' as 'absolute',
+          position: 'absolute',
           display: 'flex',
           flexDirection: 'column',
           top: '50%',

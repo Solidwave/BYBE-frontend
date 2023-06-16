@@ -1,16 +1,15 @@
-import { IconButton, Paper, TextField, styled } from '@mui/material'
+import { IconButton } from '@mui/material'
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { addPlayer, selectParty, updatePlayer } from '../../slices/partySlice'
+import { addPlayer, selectParty } from '../../slices/partySlice'
 import { useAppDispatch } from '../../app/hooks'
 import Header from '../Header'
 import { closeModal } from '../../slices/modal'
 import PlayerEditor from './PlayerEditor'
 import { Add } from '@mui/icons-material'
 
-type Props = {
-}
-const PartyBuilder = ({ }: Props) => {
+
+const PartyBuilder = () => {
     const party = useSelector(selectParty)
 
     const dispatch = useAppDispatch()

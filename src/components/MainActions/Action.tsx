@@ -4,7 +4,7 @@ import { ActionType } from '../../types/MainActions'
 
 type Props = {
     action: ActionType,
-    handleAction: Function
+    handleAction: (action: ActionType) => void
 }
 
 function Action({action, handleAction}: Props) {

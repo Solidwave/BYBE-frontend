@@ -5,7 +5,7 @@ type Props = {
   text?: string,
   cost?: number,
   action?: {
-    callback: Function,
+    callback: () => void,
     text: string
   },
   subtitle?: string

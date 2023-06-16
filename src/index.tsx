@@ -8,6 +8,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import AppContainer from './containers/AppContainer';
 
 const container = document.getElementById('root')!;
+
 const root = createRoot(container);
 
 const theme = createTheme({

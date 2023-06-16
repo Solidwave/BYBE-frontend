@@ -9,13 +9,13 @@ import { closeModal } from '../../slices/modal'
 type Props = {
     form: EncounterForm,
     modalId?: string,
-    onSubmit: Function,
+    onSubmit: (value: ValuesType) => void,
     isSubmitting?: boolean
 }
 
 
 const style: SxProps = {
-    position: 'absolute' as 'absolute',
+    position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
     top: '50%',
@@ -51,10 +51,10 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
         }
     }
 
-    const onChange = (fieldName: String, value: number | string | undefined) => {
+    const onChange = (fieldName: string, value: number | string | undefined) => {
         const fieldIndex = values.findIndex(field => field.field.fieldName === fieldName)
 
-        let tmpValues = [...values]
+        const tmpValues = [...values]
 
         tmpValues[fieldIndex] = { ...values[fieldIndex], value }
         
@@ -73,7 +73,7 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
             ))}
             {actions.map((action, index) => {
                 if (action.type === 'submit' && isSubmitting) {
-                    return <CircularProgress  sx={{
+                    return <CircularProgress key={index}  sx={{
                         alignSelf: 'center'
                     }}></CircularProgress>
                 }
