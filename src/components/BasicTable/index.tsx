@@ -11,7 +11,7 @@ import SearchButton from "./SearchButton"
 import { Column } from "../../types/Column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
-import { uniqueId } from "lodash"
+import { isArray, uniqueId } from "lodash"
 
 type StateType = {
     hideColumns: string[]
@@ -23,11 +23,15 @@ type Props = {
 
 const page_size = 50
 
-type FiltersType = {
+export type FiltersType = {
     name_filter?: string,
     family_filter?: string,
     rarity_filter?: string,
-    size_filter?: string
+    size_filter?: string,
+    min_level_filter?: number,
+    max_level_filter?: number,
+    min_hp_filter?:  number,
+    max_hp_filter?:  number,
 }
 
 type ColumnsType = Column[]
@@ -214,13 +218,24 @@ const BasicTable = ({ onRowClick }: Props) => {
         return !state.hideColumns.includes(type)
     }
 
-    const onFilterChange = (filterName: string, value: string) => {
+    const onFilterChange = (filterName: string | string[], value:  string | string[] | number | number[]) => {
         const tmpFilters = { ...filters }
 
-        tmpFilters[filterName as keyof FiltersType] = value
+        if (isArray(filterName) && isArray(value)) {
+            for (let i = 0; i < filterName.length; i++) {
+                const tmpFilterName = filterName[i];
+
+                const tmpFilterValue = value[i]
+
+                tmpFilters[tmpFilterName] = tmpFilterValue
+                
+            }
+        } else if (!isArray(filterName) && !isArray(value)) {
+            tmpFilters[filterName] = value
+        }
 
         setCursor(0)
-        
+
         setFilters(tmpFilters)
     }
 

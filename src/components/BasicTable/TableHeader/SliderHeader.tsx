@@ -4,7 +4,7 @@ import { Column } from '../../../types/Column'
 import usePrevious from '../../../app/hooks'
 
 type Props = {
-    onChange?: (filter: string, value: string) => void,
+    onChange?: (filter: string | string[], value: number | number[]) => void,
     column?: Column
 }
 
@@ -27,7 +27,9 @@ const SliderHeader = ({ onChange, column }: Props) =>  {
 
     useEffect(() => {
         if (preOpen && !open) {
-            onChange(column.value + '_filter', `min_${value[0]}_max_${value[1]}`)
+            console.log(value);
+            
+            onChange([`min_${column.value}_filter`, `max_${column.value}_filter`], value)
         }
     },[open])
 

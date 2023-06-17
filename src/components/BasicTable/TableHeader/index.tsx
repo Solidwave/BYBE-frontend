@@ -13,7 +13,7 @@ type Props = {
         label: string,
         value: string
     }[],
-    onChange: (filter: string, value: string ) => void,
+    onChange: (filter: string | string[], value: string | number | string[] | number[] ) => void,
     padding?: string
 }
 
