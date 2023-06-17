@@ -27,8 +27,6 @@ const SliderHeader = ({ onChange, column }: Props) =>  {
 
     useEffect(() => {
         if (preOpen && !open) {
-            console.log(value);
-            
             onChange([`min_${column.value}_filter`, `max_${column.value}_filter`], value)
         }
     },[open])
