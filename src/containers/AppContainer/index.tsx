@@ -153,19 +153,34 @@ const AppContainer = () => {
                             <BasicTable onRowClick={addCreature} ></BasicTable>
                         </Panel>
                     </Grid>
-                    {mobile && <Grid item xs={12}>
-                        <div style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <Button variant='action' fullWidth onClick={() => {
-                                handleAction({ type: 'encounter_builder', label: 'anything' })
-                            }} sx={{
-                                margin: 'auto'
-                            }}>Generate random encounter</Button>
-                        </div>
-                    </Grid>}
+                    {mobile && <React.Fragment>
+                        <Grid item xs={12}>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Button variant='action' fullWidth onClick={() => {
+                                    handleAction({ type: 'encounter_builder', label: 'anything' })
+                                }} sx={{
+                                    margin: 'auto'
+                                }}>ENCOUNTER BUILDER</Button>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                <Button variant='action' fullWidth onClick={() => {
+                                    handleAction({ type: 'party_builder', label: 'anything' })
+                                }} sx={{
+                                    margin: 'auto'
+                                }}>PARTY BUILDER</Button>
+                            </div>
+                        </Grid>
+                    </React.Fragment>}
                     <Grid item xs={12} md={5}>
                         <Panel minWidth='100px' minHeight='400px' border='0px' >
                             <CreaturesList removeAll={removeAllCreatures} removeCreature={removeCreature} updateCreature={updateCreature} creatures={localCreatures || []} />
