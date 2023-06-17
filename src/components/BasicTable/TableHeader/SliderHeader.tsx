@@ -5,10 +5,11 @@ import usePrevious from '../../../app/hooks'
 
 type Props = {
     onChange?: (filter: string | string[], value: number | number[]) => void,
+    resetFilters: boolean,
     column?: Column
 }
 
-const SliderHeader = ({ onChange, column }: Props) =>  {
+const SliderHeader = ({ onChange, column, resetFilters }: Props) =>  {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,8 +32,14 @@ const SliderHeader = ({ onChange, column }: Props) =>  {
         }
     },[open])
 
+    useEffect(() => {
+        if (resetFilters) {
+            setValue([column.min, column.max])
+        }
+    }, [resetFilters])
+
     return (
-        <div>
+        <div >
             <TextField InputLabelProps={{shrink: !open}} InputProps={{readOnly: true}} value={!open ? String(value[0]) + ' - ' + String(value[1]) : ''} variant='filled' label={column.label} fullWidth onClick={handleClick} ></TextField>
             <Popover sx={{
                 minWidth: '300px',

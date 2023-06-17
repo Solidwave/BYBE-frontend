@@ -6,6 +6,7 @@ import { styled } from '@mui/material'
 type Props = {
     column: Column,
     padding?: string,
+    resetFilters: boolean,
     onChange: (filter: string, value: string) => void
 }
 
@@ -20,7 +21,7 @@ const HeaderContainer = styled('div')(() => ({
     }
 }))
 
-function Multi({ column, onChange }: Props) {
+function Multi({ column, onChange, resetFilters }: Props) {
     if (!column.subColumns) {
         return <div></div>
     }
@@ -28,7 +29,7 @@ function Multi({ column, onChange }: Props) {
         <Root>
             {column.subColumns?.map((subColumn, index) => (
                 <HeaderContainer key={index} >
-                    <TableHeader onChange={onChange} column={subColumn}></TableHeader>
+                    <TableHeader resetFilters={resetFilters} onChange={onChange} column={subColumn}></TableHeader>
                 </HeaderContainer>
             ))}
         </Root>

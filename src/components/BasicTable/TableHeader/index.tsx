@@ -13,6 +13,7 @@ type Props = {
         label: string,
         value: string
     }[],
+    resetFilters: boolean,
     onChange: (filter: string | string[], value: string | number | string[] | number[] ) => void,
     padding?: string
 }
@@ -26,12 +27,12 @@ const types = {
     slider: SliderHeader
 }
 
-function TableHeader({column,options, onChange}: Props) {
+function TableHeader({column,options, onChange, resetFilters}: Props) {
     const TmpItem = types[column.type as keyof typeof types]
     
     return (
         <React.Fragment>
-            <TmpItem options={options} onChange={onChange} column={column} />
+            <TmpItem resetFilters={resetFilters} options={options} onChange={onChange} column={column} />
         </React.Fragment>
     )
 }

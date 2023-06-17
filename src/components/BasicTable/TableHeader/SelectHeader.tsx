@@ -1,10 +1,12 @@
 import { Autocomplete, TextField } from '@mui/material'
 import React from 'react'
 import { Column } from '../../../types/Column'
+import { uniqueId } from 'lodash'
 
 type Props = {
   onChange?: (filter: string, value: string) => void,
   column: Column,
+  resetFilters: boolean,
   options?: {
     label: string,
     value: string
@@ -12,12 +14,13 @@ type Props = {
 }
 
 
-function SelectHeader({onChange, column,options}: Props) {
+function SelectHeader({onChange, column,options, resetFilters}: Props) {
   return (
     <Autocomplete
       sx={{
         overflow: 'hidden'
       }}
+          key={resetFilters ? uniqueId('autocomplete') : column.value + '_select'}
       onChange={(e, value) => {
         onChange(column.value + '_filter', value?.value)
       }}

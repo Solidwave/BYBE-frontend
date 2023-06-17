@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, IconButton, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
+import { Button, FormControl, IconButton, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
 import { Clear } from "@mui/icons-material"
 import ImportExportIcon from '@mui/icons-material/ImportExport';
@@ -149,6 +149,8 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const [filters, setFilters] = useState<FiltersType>({})
 
+    const [resetFilters, setResetFilters] = useState(false)
+
     const { data, isLoading, isFetching, isError } = useGetCreaturesListQuery({ cursor, order,sort_field: sortField, page_size, ...filters })
 
     const [localData, setLocalData] = useState<Creature[]>(data?.results || [])
@@ -163,6 +165,12 @@ const BasicTable = ({ onRowClick }: Props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    useEffect(() => {
+        if (resetFilters) {
+            setResetFilters(false)
+        }
+    },[resetFilters])
 
     useEffect(() => {
         if (cursor != 0 ) {
@@ -268,6 +276,12 @@ const BasicTable = ({ onRowClick }: Props) => {
                     textAlign: 'center',
                     marginRight: 'auto'
                 }}>Creatures</Typography>
+                <Button onClick={() => {
+                    setCursor(0)
+                    setFilters({})
+                    setResetFilters(true)
+                
+                }} >Clear Filters</Button>
                 <FormControl sx={{
                     m: 1
                 }}>
@@ -357,7 +371,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                     maxWidth: column.minWidth,
                                     padding: '3.5px'
                                 }} >
-                                    <TableHeader onChange={onFilterChange} options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
+                                    <TableHeader resetFilters={resetFilters} onChange={onFilterChange} options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
                                 </TableCell>
                             ))}
                         </TableRow>
