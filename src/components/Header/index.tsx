@@ -1,4 +1,4 @@
-import { Button, Typography, styled } from '@mui/material'
+import { Button, Icon, IconButton, Typography, styled } from '@mui/material'
 import React from 'react'
 
 type Props = {
@@ -6,7 +6,8 @@ type Props = {
   cost?: number,
   action?: {
     callback: () => void,
-    text: string
+    text?: string,
+    icon?: React.ElementType
   },
   subtitle?: string
 }
@@ -25,16 +26,29 @@ const HeaderBackground = styled('div')(
     
   }))
 
+const CustomIconButton = styled(IconButton)(
+  props => ({
+    color: props.theme.palette.tertiary.main,
+    ':hover': {
+      color: props.theme.palette.tertiary.main,
+    }
+  })
+)
+
 function Header({text, cost, subtitle, action}: Props) {
   return (
     <HeaderBackground>
-      {action && <Button sx={{
+     {action && (action.icon ? <CustomIconButton sx={{
         marginRight: 'auto',
-        marginLeft: '1rem',
-        marginTop: '5px',
-        marginBottom: '5px',
-        visibility: 'hidden'
-      }} variant='outlined' color='tertiary' >{action.text}</Button>}
+        visibility: 'hidden',
+      }}  >
+        <action.icon/>
+      </CustomIconButton>  : 
+        <Button sx={{
+          marginRight: 'auto',
+          visibility: 'hidden'
+        }} variant='outlined' color='tertiary'>{action.text}
+        </Button>)}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
@@ -44,12 +58,17 @@ function Header({text, cost, subtitle, action}: Props) {
         <Typography>{text}: {cost}</Typography>
         <Typography>{subtitle}</Typography>
       </div>
-      {action && <Button sx={{
-        marginLeft: 'auto',
-        marginRight: '1rem'
-      }} variant='outlined' color='tertiary' onClick={() => {
-        action.callback()
-      }}>{action.text}</Button>}
+      {action && (action.icon ? <CustomIconButton sx={{
+        marginLeft: 'auto'
+      }}  onClick={action.callback}>
+        <action.icon/>
+      </CustomIconButton>  : 
+        <Button sx={{
+          marginLeft: 'auto',
+        }}  color='tertiary' onClick={() => {
+          action.callback()
+        }}>{action.text}
+        </Button>)}
     </HeaderBackground>
   )
 }

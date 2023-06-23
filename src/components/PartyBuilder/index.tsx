@@ -6,7 +6,7 @@ import { useAppDispatch } from '../../app/hooks'
 import Header from '../Header'
 import { closeModal } from '../../slices/modal'
 import PlayerEditor from './PlayerEditor'
-import { Add } from '@mui/icons-material'
+import { Add, Close } from '@mui/icons-material'
 
 
 const PartyBuilder = () => {
@@ -19,7 +19,8 @@ const PartyBuilder = () => {
                 callback: () => {
                     dispatch(closeModal())
                 },
-                text: 'CLOSE'
+                text: 'CLOSE',
+                icon: Close
             }} />
             {party.players.map((player, index) => (
                 <div key={player.id} style={{

@@ -1,10 +1,11 @@
 import React, {   useState } from 'react'
 import {  EncounterForm, FormActionType, ValuesType } from '../../types/EncounterForm'
 import Field from './Fields'
-import { Button, CircularProgress, Paper, SxProps } from '@mui/material'
+import { Button, CircularProgress, Paper, SxProps, styled } from '@mui/material'
 import Header from '../Header'
 import { useAppDispatch } from '../../app/hooks'
 import { closeModal } from '../../slices/modal'
+import { Close } from '@mui/icons-material'
 
 type Props = {
     form: EncounterForm,
@@ -14,18 +15,23 @@ type Props = {
 }
 
 
-const style: SxProps = {
+const CustomPaper = styled(Paper)(({theme}) => ({
     position: 'absolute',
     display: 'flex',
     flexDirection: 'column',
     top: '50%',
     left: '50%',
+    width: '95%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
-    boxShadow: 24,
-    p: '1rem',
-    borderRadius: '1rem'
-};
+    boxShadow: theme.shadows[24],
+    padding: '1rem',
+    borderRadius: '1rem',
+    [theme.breakpoints.up('md')]: {
+        width: '20%'
+    }
+})
+)
+
 
 
 
@@ -37,7 +43,8 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
 
     const action = {
         text: 'close',
-        callback: () => dispatch(closeModal())
+        callback: () => dispatch(closeModal()),
+        icon: Close
     }
 
     const handleAction = (action: FormActionType) => {
@@ -66,7 +73,7 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
     } : {}
 
     return (
-        <Paper variant='fantasy' sx={style}>
+        <div>
             <Header text='Encounter fields' {...headerExtraProps}  />
             {fields.map((field, index) => (
                 <Field key={index} onChange={onChange} field={field} />
@@ -84,7 +91,7 @@ const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
                     }} fullWidth variant='contained'>{action.label}</Button>
                 )
             })}
-        </Paper>
+        </div>
     )
 }
 

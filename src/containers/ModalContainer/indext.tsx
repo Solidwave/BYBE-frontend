@@ -1,4 +1,4 @@
-import { DialogContent, Modal, Paper } from '@mui/material'
+import { DialogContent, Modal, Paper, styled } from '@mui/material'
 import React, { ReactNode } from 'react'
 import { closeModal, getCurrentModal } from '../../slices/modal'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
@@ -8,6 +8,22 @@ type Props = {
   ModalContent?: Element,
   children: ReactNode
 }
+
+const CustomPaper = styled(Paper)(({theme}) => ({
+  position: 'absolute',
+  display: 'flex',
+  flexDirection: 'column',
+  top: '50%',
+  left: '50%',
+  width: '95%',
+  transform: 'translate(-50%, -50%)',
+  boxShadow: theme.shadows[24],
+  padding: '1rem',
+  borderRadius: '1rem',
+  [theme.breakpoints.up('md')]: {
+      width: '20%'
+  }
+}))
 
 
 
@@ -19,21 +35,9 @@ const ModalContainer = ({ modalId, children }: Props) => {
   return (
     <Modal open={current_modal === modalId} onClose={() => dispatch(closeModal())}>
       <DialogContent >
-        <Paper variant='fantasy' sx={{
-          position: 'absolute',
-          display: 'flex',
-          flexDirection: 'column',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 400,
-          boxShadow: 24,
-          p: '1rem',
-          borderRadius: '1rem'
-        }}>
+        <CustomPaper variant='fantasy'>
           {children}
-
-        </Paper>
+        </CustomPaper>
       </DialogContent>
     </Modal>
   )
