@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Creature } from '../../types/Creature'
 import CreatureCard from '../../components/CreatureCard'
-import { styled } from '@mui/material'
+import { Typography, styled } from '@mui/material'
 import Header from '../../components/Header'
 import { useLazyGetEncounterInfoQuery } from '../../services/encounter'
 import { selectPartyPlayersLevels } from '../../slices/partySlice'
@@ -65,6 +65,7 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
         //TODO rendere textfield uguali
         <Root >
             <Header action={{callback: removeAll, text: 'Clear'}} text='Encounter experience' subtitle={difficulty !== '' ? `Difficulty: ${difficulty}` : ''} cost={experience}></Header>
+            {creatures.length === 0 && <Typography textAlign='center'>Click a creature in the table to add it here! Or generate a random encounter by clicking on &quot;ENCOUNTER BUILDER&quot;</Typography>}
             <ListContainer>
                 {creatures.map((creature, index) => (
                     <CreatureCard updateCreature={updateCreature} key={index}  index={index} removeCreature={removeCreature} creature={creature}></CreatureCard>
