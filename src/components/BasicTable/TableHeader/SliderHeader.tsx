@@ -39,8 +39,8 @@ const SliderHeader = ({ onChange, column, resetFilters }: Props) =>  {
     }, [resetFilters])
 
     return (
-        <div >
-            <TextField InputLabelProps={{shrink: !open}} InputProps={{readOnly: true}} value={!open ? String(value[0]) + ' - ' + String(value[1]) : ''} variant='filled' label={column.label} fullWidth onClick={handleClick} ></TextField>
+        <div>
+            <TextField InputLabelProps={{shrink: !open}} inputProps={{style: {cursor: 'pointer'}}} InputProps={{readOnly: true, disableUnderline: true}} value={!open ? String(value[0]) + ' - ' + String(value[1]) : ''} variant='filled' label={column.label} fullWidth onClick={handleClick} ></TextField>
             <Popover sx={{
                 minWidth: '300px',
                 display: 'flex'

@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, FormControl, IconButton, InputLabel, Menu, MenuItem, Select, SelectChangeEvent, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
+import { Button,  IconButton, Menu, MenuItem, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, useTheme } from "@mui/material"
 import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from "../../services/creatures"
-import { Clear } from "@mui/icons-material"
+import { VisibilityOff } from "@mui/icons-material"
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import SortIcon from '@mui/icons-material/Sort';
 import { Creature } from "../../types/Creature"
@@ -12,10 +12,6 @@ import { Column } from "../../types/Column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import { isArray, uniqueId } from "lodash"
-
-type StateType = {
-    hideColumns: string[]
-}
 
 type Props = {
     onRowClick?: (creature: Creature) => void
@@ -159,11 +155,24 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const open = Boolean(anchorEl);
 
+    const [anchorElHide, setAnchorElHide] = useState<null | HTMLElement>(null);
+
+    const hideOpen = Boolean(anchorElHide);
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleClickHide = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorElHide(event.currentTarget);
+    };
+
+    const handleCloseHide = () => {
+        setAnchorElHide(null);
     };
 
     useEffect(() => {
@@ -201,29 +210,27 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const theme = useTheme()
 
-    const [state, setState] = useState<StateType>({
-        hideColumns: []
-    })
+    const [hideColumns, setHideColumns] = useState<string[]>([])
 
     const loading = cursor === 0 && (isLoading || isFetching)
 
-    const handleChange = (event: SelectChangeEvent<string[]>) => {
-        const {
-            target: { value },
-        } = event;
-        setState(
-            { ...state, hideColumns: typeof value === 'string' ? value.split(',') : value }
-        );
-    };
+    const handleChange = (value : string) => {
+        const tmpHideColumns = [...hideColumns]
 
-    const handleClearClick = () => {
-        setState(
-            { ...state, hideColumns: [] }
-        );
+        const index = tmpHideColumns.indexOf(value)
+
+        if (index != -1) {
+            tmpHideColumns.splice(index, 1)
+        } else {
+            tmpHideColumns.push(value)
+        }
+
+        setHideColumns(tmpHideColumns)
+        
     };
 
     const isColumnVisible = (type: string) => {
-        return !state.hideColumns.includes(type)
+        return !hideColumns.includes(type)
     }
 
     const onFilterChange = (filterName: string | string[], value:  string | string[] | number | number[]) => {
@@ -280,36 +287,28 @@ const BasicTable = ({ onRowClick }: Props) => {
                     setCursor(0)
                     setFilters({})
                     setResetFilters(true)
-                
                 }} >Clear Filters</Button>
-                <FormControl sx={{
-                    m: 1
-                }}>
-                    <InputLabel id='hide-column-select-label'>Show/hide columns</InputLabel>
-                    <Select sx={{
-                        minWidth: '200px'
-                    }}
-                        label='hide-column-select-label'
-                        color='secondary'
-                        id="hide-column-select"
-                        multiple
-                        endAdornment={<IconButton sx={{ visibility: state.hideColumns.length ? "visible" : "hidden", m: 1 }} onClick={handleClearClick}><Clear /></IconButton>}
-                        value={state.hideColumns}
-                        onChange={handleChange}
-                    >
-                        {columns.filter(column => column.type !== 'empty').map(column => (
+                <IconButton onClick={handleClickHide}>
+                    <VisibilityOff />
+                </IconButton>
+                <Menu open={hideOpen} onClose={handleCloseHide} anchorEl={anchorElHide}>
+                    {columns.filter(column => column.type !== 'empty').map(column => {
+                        const hidden = hideColumns.indexOf(column.value) !== -1
+                        return (
                             <MenuItem
                                 key={column.value}
                                 value={column.value}
-                                style={{
-                                    fontWeight: state.hideColumns.indexOf(column.value) === -1 ? 400 : 700
+                                sx={{
+                                    textDecoration: hidden ? 'line-through' : '',
+                                    opacity: hidden ? 0.5 : 1,
                                 }}
+                                onClick={() => handleChange(column.value)}
                             >
-                                {column.label}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
+                            {column.label}
+                        </MenuItem>
+                        )
+                    })}
+                </Menu>
             </div>
 
             <TableContainer sx={{

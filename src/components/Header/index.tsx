@@ -1,4 +1,4 @@
-import { Button, Icon, IconButton, Typography, styled } from '@mui/material'
+import { Button, IconButton, Typography, styled } from '@mui/material'
 import React from 'react'
 
 type Props = {
