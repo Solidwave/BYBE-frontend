@@ -140,7 +140,7 @@ const AppContainer = () => {
                     width: '100%'
                 }
             }} borderRadius='2rem' padding={mobile ? '0' : '4rem 5.25rem 4rem 4rem'} border={mobile ? '0px' : '1rem solid'}>
-                {mobile ? '' : <MainActions handleAction={handleAction} />}
+                {!mobile && <MainActions handleAction={handleAction} />}
                 <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
                     <Grid sx={{
                     }} item xs={12} md={7}>
@@ -154,7 +154,9 @@ const AppContainer = () => {
                         </Panel>
                     </Grid>
                     {mobile && <React.Fragment>
-                        <Grid item xs={12}>
+                        <Grid sx={{
+                            mx: '1rem'
+                        }} item xs={12}>
                             <div style={{
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -167,7 +169,9 @@ const AppContainer = () => {
                                 }}>ENCOUNTER BUILDER</Button>
                             </div>
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid sx={{
+                            mx: '1rem'
+                        }} item xs={12}>
                             <div style={{
                                 display: 'flex',
                                 justifyContent: 'center',
