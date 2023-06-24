@@ -1,7 +1,7 @@
 import React, {   useState } from 'react'
 import {  EncounterForm, FormActionType, ValuesType } from '../../types/EncounterForm'
 import Field from './Fields'
-import { Button, CircularProgress, Paper, SxProps, styled } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
 import Header from '../Header'
 import { useAppDispatch } from '../../app/hooks'
 import { closeModal } from '../../slices/modal'
@@ -15,28 +15,9 @@ type Props = {
 }
 
 
-const CustomPaper = styled(Paper)(({theme}) => ({
-    position: 'absolute',
-    display: 'flex',
-    flexDirection: 'column',
-    top: '50%',
-    left: '50%',
-    width: '95%',
-    transform: 'translate(-50%, -50%)',
-    boxShadow: theme.shadows[24],
-    padding: '1rem',
-    borderRadius: '1rem',
-    [theme.breakpoints.up('md')]: {
-        width: '20%'
-    }
-})
-)
-
-
-
-
 const Form = ({ form, onSubmit, isSubmitting, modalId }: Props) => {
     const {actions, fields} = form
+    
     const [values, setValues] = useState<ValuesType>(fields.map(field => ({value: undefined, field})))
 
     const dispatch = useAppDispatch()
