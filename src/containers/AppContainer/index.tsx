@@ -27,7 +27,7 @@ const encounterModalId = 'encounter_modal'
 const partyManagerModalId = 'party_manager_modal'
 
 const AppContainer = () => {
-    const [encounter, { data, isFetching }] = useLazyGenerateEncounterQuery()
+    const [encounter, { data : encounterData , isFetching }] = useLazyGenerateEncounterQuery()
 
     const party_levels = useSelector(selectPartyPlayersLevels)
 
@@ -47,15 +47,15 @@ const AppContainer = () => {
             }
         }
 
-        return data?.results || []
+        return encounterData?.results || []
 
     })
 
     useEffect(() => {
-        if (data) {
-            setLocalCreatures(data.results)
+        if (encounterData) {
+            setLocalCreatures(encounterData.results)
         }
-    }, [data])
+    }, [encounterData])
 
     useEffect(() => {
         localStorage.setItem('encounter_list', JSON.stringify(localCreatures))
@@ -149,7 +149,7 @@ const AppContainer = () => {
                             background: theme.gradient?.secondary,
                             boxShadow: theme.extraShadows?.panel
                         }}>
-                            <Header text='Total encounter cost:' cost={180}></Header>
+                            <Header text='Encounter experience' subtitle={encounterData.difficulty !== '' ? `Difficulty: ${encounterData?.difficulty }` : ''} cost={encounterData?.experience}></Header>
                             <BasicTable onRowClick={addCreature} ></BasicTable>
                         </Panel>
                     </Grid>

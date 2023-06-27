@@ -6,6 +6,8 @@ import Header from '../../components/Header'
 import { useLazyGetEncounterInfoQuery } from '../../services/encounter'
 import { selectPartyPlayersLevels } from '../../slices/partySlice'
 import { useSelector } from 'react-redux'
+import usePrevious from '../../app/hooks'
+import { isEqual } from 'lodash'
 
 type Props = {
     creatures: Creature[]
@@ -33,6 +35,8 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
 
     const party_levels = useSelector(selectPartyPlayersLevels)
 
+    const prev_party_levels = usePrevious(party_levels)
+
     useEffect(() => {
        setExperience(data?.experience || 0) 
        setDifficulty(data?.difficulty || '')
@@ -46,6 +50,15 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
             setDifficulty('')
         }
     }, [creaturesLevels])
+
+    useEffect(() => {
+      if (!isEqual(prev_party_levels,party_levels) && creaturesLevels.length > 0) {
+        encounterInfo({ party_levels, enemy_levels: creaturesLevels })
+      }
+    }, [party_levels])
+
+
+
 
     useEffect(() => {
         const tempLevels : number[] = []

@@ -28,43 +28,54 @@ const Container = styled('div')((props => ({
 })))
 
 function CreatureCard({ creature, removeCreature, index, updateCreature }: Props) {
-    const [getElite, { data: eliteData }] = useLazyGetEliteQuery()
-    const [getWeak, { data: weakData }] = useLazyGetWeakQuery()
-    const [getCreature, { data: creatureData }] = useLazyGetCreatureQuery()
+    const [getElite] = useLazyGetEliteQuery()
+    const [getWeak] = useLazyGetWeakQuery()
+    const [getCreature] = useLazyGetCreatureQuery()
     const [count, setCount] = useState(creature.quantity || 1)
     const [fav, setFav] = useState(false)
+    const [forceVariant, setForceVariant] = useState<Variant>(creature.variant)
+
 
     const handleBadgeClick = (badge: Variant) => {
+        setForceVariant(badge)
+
         switch (badge) {
             case 'elite':
-                getElite(creature.id)
+                getElite(creature.id).then((res) => {
+                    updateCreature(res.data.results, index)
+                })
                 break;
             case 'weak':
-                getWeak(creature.id)
+                getWeak(creature.id).then((res) => {
+                    updateCreature(res.data.results, index)
+                })
                 break;
             default:
-                getCreature(creature.id)
+                getCreature(creature.id).then((res) => {
+                    updateCreature(res.data.results, index)
+                })
                 break;
         }
     }
 
-    useEffect(() => {
-        if (eliteData) {
-            updateCreature(eliteData.results, index)
-        }
-    }, [eliteData])
+    // useEffect(() => {
+        
+    //     if (eliteData) {
+    //         updateCreature(eliteData.results, index)
+    //     }
+    // }, [eliteData])
 
-    useEffect(() => {
-        if (creatureData) {
-            updateCreature(creatureData.results, index)
-        }
-    }, [creatureData])
+    // useEffect(() => {
+    //     if (creatureData) {
+    //         updateCreature(creatureData.results, index)
+    //     }
+    // }, [creatureData])
 
-    useEffect(() => {
-        if (weakData) {
-            updateCreature(weakData.results, index)
-        }
-    }, [weakData])
+    // useEffect(() => {
+    //     if (weakData) {
+    //         updateCreature(weakData.results, index)
+    //     }
+    // }, [weakData])
 
     useEffect(() => {
         updateCreature({ ...creature, quantity: count }, index)
@@ -90,6 +101,7 @@ function CreatureCard({ creature, removeCreature, index, updateCreature }: Props
 
         setCount(Number(value))
     }
+
 
 
     return (
@@ -131,14 +143,14 @@ function CreatureCard({ creature, removeCreature, index, updateCreature }: Props
                         } else {
                             handleBadgeClick('weak')
                         }
-                    }} text={'Weak'} selected={creature.variant === 'weak'} variant='weak' />
+                    }} text={'Weak'} selected={forceVariant ==='weak' } variant='weak' />
                     <Badge onClick={() => {
                         if (creature.variant === 'elite') {
                             handleBadgeClick('normal')
                         } else {
                             handleBadgeClick('elite')
                         }
-                    }} text={'Elite'} selected={creature.variant === 'elite'} variant='elite' />
+                    }} text={'Elite'} selected={forceVariant === 'elite'} variant='elite' />
                 </div>
             </div>
             <div style={{

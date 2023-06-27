@@ -52,11 +52,16 @@ export const partySlice = createSlice({
             state.players.push({ level: 3, id: uniqueId('player')})
 
             saveStateLocally(state)
-        }
+        },
+        setParty: (state,  action: PayloadAction<Player[]>) => {
+            state.players = action.payload
+
+            saveStateLocally(state)
+        },
     }
 })
 
-export const {updatePlayer, removePlayer, addPlayer} = partySlice.actions
+export const {updatePlayer, removePlayer, addPlayer, setParty} = partySlice.actions
 
 export const selectPartyLEvels = (state: RootState) => {
     Object.keys(state.party.players)

@@ -34,7 +34,7 @@ const Root = styled('button')((props: Props) => ({
     alignItems: 'center',
     transition: 'opacity ease-in-out .2s',
     cursor: 'pointer',
-    background: props.theme?.palette.badge ? props.theme?.palette.badge[getColor(props.variant || 'weak')]  : '',
+    background: props.theme?.palette.badge ? props.theme?.palette.badge[getColor(props.variant || 'normal')]  : '',
     ":hover": {
         opacity: 1
     }
