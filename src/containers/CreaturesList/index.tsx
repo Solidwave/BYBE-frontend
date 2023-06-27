@@ -5,9 +5,10 @@ import { Typography, styled } from '@mui/material'
 import Header from '../../components/Header'
 import { useLazyGetEncounterInfoQuery } from '../../services/encounter'
 import { selectPartyPlayersLevels } from '../../slices/partySlice'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import usePrevious from '../../app/hooks'
 import { isEqual } from 'lodash'
+import { setEncounterInfo } from '../../slices/encounterinfoslice'
 
 type Props = {
     creatures: Creature[]
@@ -28,9 +29,14 @@ const ListContainer = styled('div')(() => ({
 }))
 
 const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }: Props) => {
+    const dispatch = useDispatch()
+
     const [encounterInfo, {data}] = useLazyGetEncounterInfoQuery()
+
     const [experience, setExperience] = useState<number>(0)
+
     const [difficulty, setDifficulty] = useState<string>('')
+
     const [creaturesLevels, setCreatureLevels] = useState<number[]>([])
 
     const party_levels = useSelector(selectPartyPlayersLevels)
@@ -39,7 +45,10 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
 
     useEffect(() => {
        setExperience(data?.experience || 0) 
+
        setDifficulty(data?.difficulty || '')
+
+       dispatch(setEncounterInfo({experience: data?.experience, difficulty: data?.difficulty}))
     }, [data])
 
     useEffect(() => {
@@ -48,6 +57,7 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
         } else {
             setExperience(0)
             setDifficulty('')
+            dispatch(setEncounterInfo({experience: 0, difficulty: 'trivial'}))
         }
     }, [creaturesLevels])
 
@@ -56,8 +66,6 @@ const CreaturesList = ({ creatures, removeCreature, removeAll, updateCreature }:
         encounterInfo({ party_levels, enemy_levels: creaturesLevels })
       }
     }, [party_levels])
-
-
 
 
     useEffect(() => {

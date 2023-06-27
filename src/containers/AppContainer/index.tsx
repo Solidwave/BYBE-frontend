@@ -21,6 +21,7 @@ import { closeModal, openModal } from '../../slices/modal';
 import { useSelector } from 'react-redux';
 import { selectPartyPlayersLevels } from '../../slices/partySlice';
 import PartyBuilder from '../../components/PartyBuilder';
+import { selectEncounterInfo } from '../../slices/encounterinfoslice';
 
 const encounterModalId = 'encounter_modal'
 
@@ -28,6 +29,8 @@ const partyManagerModalId = 'party_manager_modal'
 
 const AppContainer = () => {
     const [encounter, { data : encounterData , isFetching }] = useLazyGenerateEncounterQuery()
+
+    const encounterInfo = useSelector(selectEncounterInfo)
 
     const party_levels = useSelector(selectPartyPlayersLevels)
 
@@ -149,7 +152,7 @@ const AppContainer = () => {
                             background: theme.gradient?.secondary,
                             boxShadow: theme.extraShadows?.panel
                         }}>
-                            <Header text='Encounter experience' subtitle={encounterData.difficulty !== '' ? `Difficulty: ${encounterData?.difficulty }` : ''} cost={encounterData?.experience}></Header>
+                            <Header text='Encounter experience' subtitle={encounterInfo?.difficulty !== '' ? `Difficulty: ${encounterInfo?.difficulty }` : ''} cost={encounterInfo?.experience}></Header>
                             <BasicTable onRowClick={addCreature} ></BasicTable>
                         </Panel>
                     </Grid>
