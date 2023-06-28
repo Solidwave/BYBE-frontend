@@ -1,5 +1,5 @@
 
-import { Button, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Grid, Snackbar, useMediaQuery, useTheme } from '@mui/material';
 import Panel from '../../components/Panel';
 import Background from '../../components/Backround';
 import BasicTable from '../../components/BasicTable';
@@ -33,6 +33,8 @@ const AppContainer = () => {
     const encounterInfo = useSelector(selectEncounterInfo)
 
     const party_levels = useSelector(selectPartyPlayersLevels)
+
+    const [openSnackbar, setOpenSnackbar] = useState(false)
 
     const dispatch = useAppDispatch()
 
@@ -205,6 +207,9 @@ const AppContainer = () => {
                     encounter(encounterRequest).then(res => {
                         if (res.isSuccess) {
                             handleModalClose()
+                            if (res.data.results.length === 0) {
+                                setOpenSnackbar(true)
+                            }
                         }
                     })
                 }} form={encounterFormJson as EncounterForm} />
@@ -212,6 +217,13 @@ const AppContainer = () => {
             <ModalContainer modalId={partyManagerModalId}>
                 <PartyBuilder />
             </ModalContainer>
+            <Snackbar 
+                open={openSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                autoHideDuration={5000}
+                onClose={() => setOpenSnackbar(false)}
+                message="The filters you chose didn't produce any creature... Try changing them!"
+            />
         </Background>
     );
 }

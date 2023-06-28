@@ -28,7 +28,7 @@ function PlayerEditor({ player, index, updatePlayer, removePlayer }: Props) {
             alignItems: 'center',
             justifyContent: 'center'
         }}>
-            <TextField variant='filled' defaultValue={1} fullWidth label={'Player ' + String(index + 1)} value={showValue} onChange={(e) => {
+            <TextField variant='filled' fullWidth label={'Player ' + String(index + 1)} value={showValue} onChange={(e) => {
                 const {
                     value
                 } = e.target

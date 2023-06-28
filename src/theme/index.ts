@@ -42,6 +42,14 @@ const theme = createTheme({
         card: '0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12)'
     },
     components: {
+        MuiSnackbarContent: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#511E15',
+                    color: '#E2BE87'
+                }
+            }
+        },
         MuiAutocomplete: {
             styleOverrides: {
                 paper: {
