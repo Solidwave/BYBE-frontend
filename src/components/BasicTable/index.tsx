@@ -317,8 +317,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                 minHeight: 'calc(100vh - 500px)',
             }} >
                 <Table sx={{
-                    minWidth: '1100px',
-                    maxWidth: '1100px'
+                    width: "100%"
                 }} stickyHeader={true}>
                     <TableHead >
                         <TableRow sx={{

@@ -141,13 +141,12 @@ const AppContainer = () => {
                 height: '100%',
                 background: theme.gradient?.main,
                 position: 'relative',
-                [theme.breakpoints.down('md')]: {
-                    width: '100%'
-                }
-            }} borderRadius='2rem' padding={mobile ? '0' : '4rem 5.25rem 4rem 4rem'} border={mobile ? '0px' : '1rem solid'}>
+                width: '100%'
+            }} borderRadius='2rem' padding={mobile ? '0' : '4rem 5.25rem'} border={mobile ? '0px' : '1rem solid'}>
                 {!mobile && <MainActions handleAction={handleAction} />}
                 <Grid justifyContent={'space-evenly'} alignItems='flex-start' container spacing={'30px'}>
                     <Grid sx={{
+                        width: '100%'
                     }} item xs={12} md={7}>
                         <Panel borderRadius='1rem' padding='1rem' border='5px solid' sx={{
                             maxHeight: 'calc(100vh - 300px)',
@@ -191,7 +190,7 @@ const AppContainer = () => {
                         </Grid>
                     </React.Fragment>}
                     <Grid item xs={12} md={5}>
-                        <Panel minWidth='100px' minHeight='400px' border='0px' >
+                        <Panel border='0px' >
                             <CreaturesList removeAll={removeAllCreatures} removeCreature={removeCreature} updateCreature={updateCreature} creatures={localCreatures || []} />
                         </Panel>
                     </Grid>
