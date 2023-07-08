@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Column } from '../../../types/Column'
 import { uniqueId } from 'lodash'
 
@@ -10,13 +10,22 @@ type Props = {
 }
 
 function InputHeader({column, onChange, resetFilters}: Props) {
+  const nameFilter = column.value + '_filter'
+
+  const [searchTerm, setSearchTerm] = useState('')
+  
+  useEffect(() => {
+    const delaySearch = setTimeout(() => {
+      onChange(nameFilter, searchTerm)
+    }, 500)
+    return () => clearTimeout(delaySearch)
+  }, [searchTerm])
+
   return (
     <TextField key={resetFilters ? uniqueId('input') : column.value + '_input'} onChange={(e) => {
       const { value } = e.target
-      
-      if (onChange) {
-        onChange(column.value + '_filter', value)
-      }
+
+      setSearchTerm(value)
     }} variant='filled' InputProps={{
       disableUnderline: true
     }} disabled={column.disabled}  fullWidth label={column.label} placeholder={column.label}></TextField>
