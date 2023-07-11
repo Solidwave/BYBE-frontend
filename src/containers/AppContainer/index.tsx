@@ -22,6 +22,7 @@ import { useSelector } from 'react-redux';
 import { selectPartyPlayersLevels } from '../../slices/partySlice';
 import PartyBuilder from '../../components/PartyBuilder';
 import { selectEncounterInfo } from '../../slices/encounterinfoslice';
+import MobileList from '../../components/MobileList';
 
 const encounterModalId = 'encounter_modal'
 
@@ -149,12 +150,14 @@ const AppContainer = () => {
                         width: '100%'
                     }} item xs={12} md={7}>
                         <Panel borderRadius='1rem' padding='1rem' border='5px solid' sx={{
-                            maxHeight: 'calc(100vh - 300px)',
+                            height: 'calc(100vh - 300px)',
                             background: theme.gradient?.secondary,
-                            boxShadow: theme.extraShadows?.panel
+                            boxShadow: theme.extraShadows?.panel,
+                            display: mobile ? 'flex' : 'inherit',
+                            flexDirection: 'column'
                         }}>
                             <Header text='Encounter experience' subtitle={encounterInfo?.difficulty !== '' ? `Difficulty: ${encounterInfo?.difficulty }` : ''} cost={encounterInfo?.experience}></Header>
-                            <BasicTable onRowClick={addCreature} ></BasicTable>
+                            {mobile ? <MobileList /> : <BasicTable onRowClick={addCreature} ></BasicTable>}
                         </Panel>
                     </Grid>
                     {mobile && <React.Fragment>
