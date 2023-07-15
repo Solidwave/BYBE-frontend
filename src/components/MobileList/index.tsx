@@ -3,12 +3,17 @@ import { useGetCreaturesListQuery } from '../../services/creatures'
 import { FiltersType } from '../BasicTable'
 import { Creature } from '../../types/Creature'
 import Container from '../Container'
-import { Box, ButtonBase, Card, CardContent, Typography } from '@mui/material'
+import { Box, Button, ButtonBase, Card, CardContent, Collapse, Typography } from '@mui/material'
+import { ArrowDownward, ArrowUpward, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import ResponsiveFilters from '../ResponsiveFilters'
+import { columns } from '../BasicTable/config'
 
 const page_size = 50
 
-
-function MobileList(props) {
+type PropsType = {
+  onRowClick?: (creature: Creature) => void
+}
+const MobileList = ({onRowClick}: PropsType) =>  {
   
   const [cursor, setCursor] = useState(0)
 
@@ -35,6 +40,8 @@ function MobileList(props) {
 
   const hideOpen = Boolean(anchorElHide);({ cursor, order,sort_field: sortField, page_size, ...filters })
 
+  const [filtersOpen, setFiltersOpen] = useState(false)
+
   useEffect(() => {
       if (cursor != 0 ) {
           setLocalData([...localData, ...data?.results || []])
@@ -45,33 +52,59 @@ function MobileList(props) {
 
 
   return (
-    <div style={{
-      height: '100%',
-      flexGrow: 1,
-      overflow: 'auto',
+    <Container sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      flex: '1 1 1px',
+      padding: '.5rem'
     }}>
-     
-      {localData.map((creature, index) => <Card sx={{
-        margin: '.5rem'
-      }} key={creature.id}>
-        <ButtonBase sx={{
-          width: '100%',
-          justifyContent: 'start'
-        }}>
-          <CardContent>
-            <Typography sx={{
-              textAlign: 'start'
-            }}>{creature.name}</Typography>
-            <Box sx={{
-              display: 'flex',
-            }}>
-              <Typography>lv: {creature.level}</Typography>
-              <Typography>family {creature.family}</Typography>
-            </Box>
-          </CardContent>
-        </ButtonBase>
-      </Card>)}
-    </div>
+      <Container height='auto' width='auto' margin='1rem 0' sx={{
+        border: '2px solid',
+        borderRadius: '.5rem',
+        boxShadow: 5,
+        borderColor: 'primary.main',
+        display: 'flex',
+        flexDirection: 'column'
+      }} >
+        <Button sx={{
+          marginLeft: 'auto'
+        }} fullWidth={false} onClick={() => setFiltersOpen(!filtersOpen)} endIcon={!filtersOpen ? <KeyboardArrowDown /> : <KeyboardArrowUp />}>
+          Filters
+        </Button>
+        <Collapse in={filtersOpen}>
+          <ResponsiveFilters filters={columns} />
+        </Collapse>
+      </Container>
+      <div style={{
+        height: '100%',
+        overflow: 'auto',
+        flex: '1 1 1px'
+      }}>
+        {localData.map((creature, index) => <Card sx={{
+          margin: '1rem 1px',
+          boxShadow: 2
+        }} key={creature.id}>
+          <ButtonBase onClick={() => {
+            onRowClick(creature)
+          }} sx={{
+            width: '100%',
+            justifyContent: 'start'
+          }}>
+            <CardContent>
+              <Typography sx={{
+                textAlign: 'start'
+              }}>{creature.name}</Typography>
+              <Box sx={{
+                display: 'flex',
+              }}>
+                <Typography>lv: {creature.level}</Typography>
+                <Typography>family {creature.family}</Typography>
+              </Box>
+            </CardContent>
+          </ButtonBase>
+        </Card>)}
+      </div>
+    </Container>
   )
 }
 

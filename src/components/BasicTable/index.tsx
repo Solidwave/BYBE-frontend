@@ -12,6 +12,7 @@ import { Column } from "../../types/Column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import { isArray, uniqueId } from "lodash"
+import { columns } from "./config";
 
 type Props = {
     onRowClick?: (creature: Creature) => void
@@ -30,7 +31,6 @@ export type FiltersType = {
     max_hp_filter?:  number,
 }
 
-type ColumnsType = Column[]
 
 const orderOptions = [
     {
@@ -66,64 +66,7 @@ const orderOptions = [
     }
 ]
 
-const columns: ColumnsType = [
 
-    {
-        value: 'name',
-        label: 'Name',
-        type: 'input',
-        minWidth: 200
-    },
-    {
-        value: 'level',
-        label: 'Level',
-        type: 'slider',
-        disabled: true,
-        minWidth: 100,
-        max: 25,
-        min: -1
-
-    },
-    {
-        value: 'hp',
-        disabled: true,
-        label: 'Hp',
-        type: 'slider',
-        minWidth: 100,
-        max: 600,
-        min: 0
-
-    },
-    {
-        value: 'family',
-        label: 'Family',
-        type: 'select',
-        options: 'families',
-        minWidth: 100
-    },
-    {
-        value: 'alignment',
-        label: 'Alignment',
-        type: 'select',
-        options: 'alignments',
-        minWidth: 100
-    },
-    {
-        value: 'size',
-        label: 'Size',
-        type: 'select',
-        options: 'sizes',
-        minWidth: 100
-    },
-    {
-        value: 'rarity',
-        label: 'Rarity',
-        type: 'select',
-        options: 'rarities',
-        minWidth: 100
-
-    }
-]
 
 const BasicTable = ({ onRowClick }: Props) => {
 
@@ -271,7 +214,9 @@ const BasicTable = ({ onRowClick }: Props) => {
     return (
         <Container width="100%" sx={{
             overflow: 'hidden',
-            maxHeight: 'calc(100vh - 300px)'
+            maxHeight: 'calc(100vh - 300px)',
+            display: 'flex',
+            flexDirection: 'column'
         }} >
             <div style={{
                 display: 'flex',
@@ -313,8 +258,6 @@ const BasicTable = ({ onRowClick }: Props) => {
 
             <TableContainer sx={{
                 overflow: 'auto',
-                maxHeight: 'calc(100vh - 500px)',
-                minHeight: 'calc(100vh - 500px)',
             }} >
                 <Table sx={{
                     width: "100%"

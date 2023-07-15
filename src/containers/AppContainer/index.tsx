@@ -37,6 +37,8 @@ const AppContainer = () => {
 
     const [openSnackbar, setOpenSnackbar] = useState(false)
 
+    const [creatureAddedSnackbar, setCreatureAddedSnackbar] = useState(false)
+
     const dispatch = useAppDispatch()
 
     const [localCreatures, setLocalCreatures] = useState<Creature[]>(() => {
@@ -82,6 +84,8 @@ const AppContainer = () => {
 
             return tmpData
         })
+
+        setCreatureAddedSnackbar(true)
     }
 
     const removeCreature = (index: number) => {
@@ -153,11 +157,12 @@ const AppContainer = () => {
                             height: 'calc(100vh - 300px)',
                             background: theme.gradient?.secondary,
                             boxShadow: theme.extraShadows?.panel,
-                            display: mobile ? 'flex' : 'inherit',
+                            display: 'flex',
                             flexDirection: 'column'
+                            
                         }}>
                             <Header text='Encounter experience' subtitle={encounterInfo?.difficulty !== '' ? `Difficulty: ${encounterInfo?.difficulty }` : ''} cost={encounterInfo?.experience}></Header>
-                            {mobile ? <MobileList /> : <BasicTable onRowClick={addCreature} ></BasicTable>}
+                            {mobile ? <MobileList onRowClick={addCreature}/> : <BasicTable onRowClick={addCreature} ></BasicTable>}
                         </Panel>
                     </Grid>
                     {mobile && <React.Fragment>
@@ -225,6 +230,13 @@ const AppContainer = () => {
                 autoHideDuration={5000}
                 onClose={() => setOpenSnackbar(false)}
                 message="The filters you chose didn't produce any creature... Try changing them!"
+            />
+            <Snackbar 
+                open={creatureAddedSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                autoHideDuration={5000}
+                onClose={() => setCreatureAddedSnackbar(false)}
+                message="Creature added!"
             />
         </Background>
     );
