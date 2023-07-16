@@ -84,9 +84,11 @@ const AppContainer = () => {
 
             return tmpData
         })
-
+        
         setCreatureAddedSnackbar(true)
     }
+
+   
 
     const removeCreature = (index: number) => {
         setLocalCreatures(() => {
