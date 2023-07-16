@@ -126,7 +126,6 @@ const MobileList = ({ onRowClick }: PropsType) => {
 
   const theme = useTheme()
 
-
   return (
     <Container sx={{
       display: 'flex',

@@ -12,9 +12,13 @@ type Props = {
 function InputHeader({column, onChange, resetFilters}: Props) {
   const nameFilter = column.value + '_filter'
 
-  const [searchTerm, setSearchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState<string>()
   
   useEffect(() => {
+    if (searchTerm == null) {
+      return
+    }
+    
     const delaySearch = setTimeout(() => {
       onChange(nameFilter, searchTerm)
     }, 500)
@@ -25,7 +29,7 @@ function InputHeader({column, onChange, resetFilters}: Props) {
     <TextField key={resetFilters ? uniqueId('input') : column.value + '_input'} onChange={(e) => {
       const { value } = e.target
 
-      setSearchTerm(value)
+        setSearchTerm(value)
     }} variant='filled' InputProps={{
       disableUnderline: true
     }} disabled={column.disabled}  fullWidth label={column.label} placeholder={column.label}></TextField>
