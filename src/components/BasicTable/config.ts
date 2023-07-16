@@ -64,3 +64,37 @@ export const columns: ColumnsType = [
 
     }
 ]
+
+export const orderOptions = [
+    {
+        value: 'ID',
+        label: 'Id'
+    },
+    {
+        value: 'NAME',
+        label: 'Name'
+    }, {
+        value: 'HP',
+        label: 'Hp'
+    },
+    {
+        value: 'FAMILY',
+        label: 'Family'
+    },
+    {
+        value: 'LEVEL',
+        label: 'Level'
+    },
+    {
+        value: 'ALIGNMENT',
+        label: 'Alignement'
+    },
+    {
+        value: 'SIZE',
+        label: 'Size'
+    },
+    {
+        value: 'RARITY',
+        label: 'Rarity'
+    }
+]

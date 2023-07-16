@@ -12,7 +12,7 @@ import { Column } from "../../types/Column"
 import TableHeader from "./TableHeader"
 import { useInView } from "react-intersection-observer"
 import { isArray, uniqueId } from "lodash"
-import { columns } from "./config";
+import { columns, orderOptions } from "./config";
 
 type Props = {
     onRowClick?: (creature: Creature) => void
@@ -32,39 +32,7 @@ export type FiltersType = {
 }
 
 
-const orderOptions = [
-    {
-        value: 'ID',
-        label: 'Id'
-    },
-    {
-        value: 'NAME',
-        label: 'Name'
-    }, {
-        value: 'HP',
-        label: 'Hp'
-    },
-    {
-        value: 'FAMILY',
-        label: 'Family'
-    },
-    {
-        value: 'LEVEL',
-        label: 'Level'
-    },
-    {
-        value: 'ALIGNMENT',
-        label: 'Alignement'
-    },
-    {
-        value: 'SIZE',
-        label: 'Size'
-    },
-    {
-        value: 'RARITY',
-        label: 'Rarity'
-    }
-]
+
 
 
 

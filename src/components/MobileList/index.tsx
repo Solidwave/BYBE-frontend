@@ -3,12 +3,13 @@ import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesList
 import { FiltersType } from '../BasicTable'
 import { Creature } from '../../types/Creature'
 import Container from '../Container'
-import { Box, Button, ButtonBase, Card, CardContent, Collapse, IconButton, Skeleton, Typography, useTheme } from '@mui/material'
-import { ArrowDownward, ArrowUpward, Cancel, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import { Box, Button, ButtonBase, Card, CardContent, Collapse, IconButton, Menu, MenuItem, Skeleton, Typography, useTheme } from '@mui/material'
+import {  Cancel, KeyboardArrowDown, KeyboardArrowUp, Sort, ImportExport, Close} from '@mui/icons-material'
 import ResponsiveFilters from '../ResponsiveFilters'
-import { columns } from '../BasicTable/config'
+import { columns, orderOptions } from '../BasicTable/config'
 import { isArray, isEmpty, uniqueId } from 'lodash'
 import { useInView } from 'react-intersection-observer'
+
 
 const page_size = 50
 
@@ -115,6 +116,16 @@ const MobileList = ({ onRowClick }: PropsType) => {
     }
   }, [resetFilters])
 
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+      setAnchorEl(null);
+  };
+
+  const theme = useTheme()
+
 
   return (
     <Container sx={{
@@ -134,16 +145,42 @@ const MobileList = ({ onRowClick }: PropsType) => {
         <Container height='auto' width='auto' sx={{
           display: 'flex'
         }} >
+          <IconButton color='primary' onClick={handleClick}>
+              <Sort />
+          </IconButton>
+          <Menu open={open} onClose={handleClose} anchorEl={anchorEl}>
+              {orderOptions.map(option => (
+                  <MenuItem value={option.value} sx={{
+                      fontWeight: option.value === sortField ? '700' : 400
+                  }} onClick={() => {
+                      setCursor(0)
+                      setAnchorEl(null)
+                      setSortField(option.value || '')
+                  }} key={option.value}>{option.label}</MenuItem>
+              ))}
+          </Menu>
+          <IconButton color='primary' onClick={() => {
+              if (order === 'ASCENDING') {
+                  setOrder('DESCENDING')
+              } else {
+                  setOrder('ASCENDING')
+              }
+          }}>
+              <ImportExport />
+          </IconButton>
           <Button sx={{
             marginLeft: 'auto'
-          }} fullWidth={false} onClick={() => setFiltersOpen(!filtersOpen)} endIcon={!filtersOpen ? <KeyboardArrowDown /> : <KeyboardArrowUp />}>
+          }} fullWidth={false} onClick={() => setFiltersOpen(!filtersOpen)} endIcon={<KeyboardArrowDown sx={{
+            transform: filtersOpen ? 'rotate(-180deg)' : 'none',
+            transition: theme.transitions.create(['transform'], {duration: theme.transitions.duration.short})
+          }}/>}>
             Filters
           </Button>
-          {!isEmpty(filters) && <IconButton onClick={() => {
+          {!isEmpty(filters) && <IconButton color='primary' onClick={() => {
             setCursor(0)
             setFilters({})
             setResetFilters(true)
-          }} ><Cancel /></IconButton>}
+          }} ><Close /></IconButton>}
 
         </Container>
 
