@@ -213,15 +213,19 @@ const MobileList = ({ onRowClick }: PropsType) => {
               justifyContent: 'start'
             }}>
               <CardContent>
-                <Typography sx={{
-                  textAlign: 'start'
-                }}>{creature.name}</Typography>
+               
                 <Box sx={{
                   display: 'flex',
                 }}>
-                  <Typography>lv: {creature.level}</Typography>
-                  <Typography>family {creature.family}</Typography>
+                  <Typography mr={theme.spacing(1)}  fontSize={'small'}>lv {creature.level}</Typography>
+                  <Typography mr={theme.spacing(1)}  fontSize={'small'}>{creature.family}</Typography>
+                  <Typography mr={theme.spacing(1)}  fontSize={'small'}>{creature.alignment}</Typography>
+                  <Typography mr={theme.spacing(1)}  fontSize={'small'}>{creature.size}</Typography>
+                  <Typography mr={theme.spacing(1)}  fontSize={'small'}>{creature.hp} HP</Typography>
                 </Box>
+                <Typography fontWeight={600} sx={{
+                  textAlign: 'start'
+                }}>{creature.name}</Typography>
               </CardContent>
             </ButtonBase>
           </Card>

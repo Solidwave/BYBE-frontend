@@ -35,7 +35,7 @@ const ResponsiveFilters = ({filters, resetFilters, onChange} : PropsType) => {
     <Grid container spacing={2} sx={{
         padding: '.5rem'
     }}>
-        {filters.map((filter, index) => (
+        {filters.map((filter) => (
             <Grid key={filter.value} item xs={filter.grid}>
                 <TableHeader column={filter} resetFilters={resetFilters} onChange={onChange} options={typeof filter.options === 'string' ? options[filter.options as keyof typeof options] : filter.options} />
             </Grid>
