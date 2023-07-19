@@ -5,13 +5,14 @@ export type Column = {
     icon?: string,
     disabled?: boolean,
     options?: 'families' | 'rarities' | 'sizes' | 'alignments' | OptionType[]
-    minWidth?: number
-    maxWidth?: string,
+    minWidth?: number | string
+    maxWidth?: number | string,
+    width?: number | string,
     subColumns?: Column[]
     min?: number,
     max?: number,
     subtype?: string
-    align?: 'right',
+    align?: 'right' | 'left',
     grid?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 }
 

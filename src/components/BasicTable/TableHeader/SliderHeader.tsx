@@ -39,7 +39,7 @@ const SliderHeader = ({ onChange, column, resetFilters }: Props) =>  {
     }, [resetFilters])
 
     return (
-        <div>
+        <React.Fragment>
             <TextField InputLabelProps={{shrink: !open}} inputProps={{style: {cursor: 'pointer'}}} InputProps={{readOnly: true, disableUnderline: true}} value={!open ? String(value[0]) + ' - ' + String(value[1]) : ''} variant='filled' label={column.label} fullWidth onClick={handleClick} ></TextField>
             <Popover sx={{
                 minWidth: '300px',
@@ -74,7 +74,7 @@ const SliderHeader = ({ onChange, column, resetFilters }: Props) =>  {
                     }}>{value[1]}</Typography>
                 </div>
             </Popover>
-        </div >
+        </React.Fragment >
     )
 }
 

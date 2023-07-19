@@ -31,9 +31,7 @@ function TableHeader({column,options, onChange, resetFilters}: Props) {
     const TmpItem = types[column.type as keyof typeof types]
     
     return (
-        <React.Fragment>
-            <TmpItem resetFilters={resetFilters} options={options} onChange={onChange} column={column} />
-        </React.Fragment>
+        <TmpItem resetFilters={resetFilters} options={options} onChange={onChange} column={column} />
     )
 }
 

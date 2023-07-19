@@ -7,15 +7,15 @@ export const columns: ColumnsType = [
         value: 'name',
         label: 'Name',
         type: 'input',
-        minWidth: 200,
-        grid: 6
+        align: 'left',
+        grid: 6,
     },
     {
         value: 'level',
         label: 'Level',
         type: 'slider',
         disabled: true,
-        minWidth: 100,
+        width: 100,
         max: 25,
         min: -1,
         grid: 6
@@ -25,7 +25,7 @@ export const columns: ColumnsType = [
         disabled: true,
         label: 'Hp',
         type: 'slider',
-        minWidth: 100,
+        width: 100,
         max: 600,
         min: 0,
         grid: 6
@@ -35,7 +35,7 @@ export const columns: ColumnsType = [
         label: 'Family',
         type: 'select',
         options: 'families',
-        minWidth: 100,
+        width: 150,
         grid: 6
     },
     {
@@ -43,15 +43,15 @@ export const columns: ColumnsType = [
         label: 'Alignment',
         type: 'select',
         options: 'alignments',
-        minWidth: 100,
+        width: 150,
         grid: 6
     },
     {
         value: 'size',
         label: 'Size',
+        width: 150,
         type: 'select',
         options: 'sizes',
-        minWidth: 100,
         grid: 6
     },
     {
@@ -59,7 +59,7 @@ export const columns: ColumnsType = [
         label: 'Rarity',
         type: 'select',
         options: 'rarities',
-        minWidth: 100,
+        width: 100,
         grid: 6
 
     }

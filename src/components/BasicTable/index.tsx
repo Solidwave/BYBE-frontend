@@ -31,11 +31,6 @@ export type FiltersType = {
     max_hp_filter?:  number,
 }
 
-
-
-
-
-
 const BasicTable = ({ onRowClick }: Props) => {
 
     const { ref, inView, entry } = useInView({
@@ -121,7 +116,7 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const theme = useTheme()
 
-    const [hideColumns, setHideColumns] = useState<string[]>([])
+    const [hideColumns, setHideColumns] = useState<string[]>(['size','rarity'])
 
     const loading = cursor === 0 && (isLoading || isFetching)
 
@@ -167,7 +162,7 @@ const BasicTable = ({ onRowClick }: Props) => {
 
     const placeHolder = () => [...Array(page_size).keys()].map(() => (
         <TableRow key={uniqueId("prefix")}>
-            {columns.map((column: Column, index: number) => (
+            {columns.filter(column => isColumnVisible(column.value)).map((column: Column, index: number) => (
                 <TableCell key={index} sx={{
                     border: '0px',
                 }}><Skeleton ></Skeleton></TableCell>
@@ -226,6 +221,7 @@ const BasicTable = ({ onRowClick }: Props) => {
 
             <TableContainer sx={{
                 overflow: 'auto',
+                tableLayout: 'auto'
             }} >
                 <Table sx={{
                     width: "100%"
@@ -238,7 +234,7 @@ const BasicTable = ({ onRowClick }: Props) => {
                                 background: '#BF9E6D',
                                 borderBottom: '0px',
                                 padding: '3.5px',
-                               
+                                width: 0
                             }} >
                                 <div style={{
                                     display: 'flex',
@@ -273,12 +269,13 @@ const BasicTable = ({ onRowClick }: Props) => {
                                 </div>
                             </TableCell>
                             {columns.filter(column => isColumnVisible(column.value)).map((column, index) => (
-                                <TableCell key={index} sx={{
+                                <TableCell align={column.align || 'right'} key={index} sx={{
                                     background: '#BF9E6D',
                                     borderBottom: '0px',
-                                    minWidth: column.minWidth,
-                                    maxWidth: column.minWidth,
-                                    padding: '3.5px'
+                                    padding: '3.5px',
+                                    width: column.width,
+                                    minWidth: column.width,
+                                    maxWidth: column.width,
                                 }} >
                                     <TableHeader resetFilters={resetFilters} onChange={onFilterChange} options={typeof column.options === 'string' ? options[column.options as keyof typeof options] : column.options} column={column}></TableHeader>
                                 </TableCell>
