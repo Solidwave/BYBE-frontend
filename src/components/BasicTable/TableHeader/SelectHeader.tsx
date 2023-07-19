@@ -1,4 +1,4 @@
-import { Autocomplete, Popper, TextField } from '@mui/material'
+import { Autocomplete, TextField } from '@mui/material'
 import React from 'react'
 import { Column } from '../../../types/Column'
 import { uniqueId } from 'lodash'

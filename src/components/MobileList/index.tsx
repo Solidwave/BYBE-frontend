@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useGetAlignmentsListQuery, useGetCreaturesListQuery, useGetFamiliesListQuery, useGetRaritiesListQuery, useGetSizesListQuery } from '../../services/creatures'
+import {  useGetCreaturesListQuery } from '../../services/creatures'
 import { FiltersType } from '../BasicTable'
 import { Creature } from '../../types/Creature'
 import Container from '../Container'
 import { Box, Button, ButtonBase, Card, CardContent, Collapse, IconButton, Menu, MenuItem, Skeleton, Typography, useTheme } from '@mui/material'
-import {  Cancel, KeyboardArrowDown, KeyboardArrowUp, Sort, ImportExport, Close} from '@mui/icons-material'
+import {  KeyboardArrowDown, Sort, Close, ImportExport} from '@mui/icons-material'
 import ResponsiveFilters from '../ResponsiveFilters'
 import { columns, orderOptions } from '../BasicTable/config'
 import { isArray, isEmpty, uniqueId } from 'lodash'
@@ -45,10 +45,6 @@ const MobileList = ({ onRowClick }: PropsType) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
-
-  const [anchorElHide, setAnchorElHide] = useState<null | HTMLElement>(null);
-
-  const hideOpen = Boolean(anchorElHide); ({ cursor, order, sort_field: sortField, page_size, ...filters })
 
   const [filtersOpen, setFiltersOpen] = useState(false)
 
