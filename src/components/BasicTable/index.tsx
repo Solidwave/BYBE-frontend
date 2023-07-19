@@ -196,8 +196,19 @@ const BasicTable = ({ onRowClick }: Props) => {
                     setFilters({})
                     setResetFilters(true)
                 }} >Clear Filters</Button>
-                <IconButton onClick={handleClickHide}>
+                <IconButton sx={{
+                    position: 'relative'
+                }} onClick={handleClickHide}>
                     <VisibilityOff />
+                    {hideColumns.length > 0 && <div style={{
+                        width: 5,
+                        height: 5,
+                        backgroundColor: theme.palette.primary.main,
+                        borderRadius: '50%',
+                        position: 'absolute',
+                        right: '25%',
+                        top:'25%'
+                    }} />}
                 </IconButton>
                 <Menu open={hideOpen} onClose={handleCloseHide} anchorEl={anchorElHide}>
                     {columns.filter(column => column.type !== 'empty').map(column => {
